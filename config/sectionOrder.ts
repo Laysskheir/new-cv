@@ -1,0 +1,53 @@
+export const defaultSectionOrders = {
+  DoubleColumn: [
+    "header",
+    "education",
+    "experience",
+    "achievements",
+    "summary",
+    "skills",
+    "languages",
+    "projects",
+    "customSections",
+  ],
+  ElegantClassic: [
+    "header",
+    "contact",
+    "experience",
+    "education",
+    "achievements",
+    "skills",
+    "languages",
+  ],
+  IvyLeague: [
+    "header",
+    "summary",
+    "skills",
+    "languages",
+    "experience",
+    "projects",
+    "education",
+    "achievements",
+  ],
+  Polished: [
+    "header",
+    "contact",
+    "summary",
+    "achievements",
+    "experience",
+    "education",
+    "projects",
+  ],
+  Default: [
+    "header",
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "languages",
+    "projects",
+    "achievements",
+  ],
+};
+
+export type SectionId = keyof typeof defaultSectionOrders.Default;
