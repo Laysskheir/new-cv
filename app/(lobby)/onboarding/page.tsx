@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Get started with creating your professional resume",
 };
 
-export default async function OnboardingPage() {
+export default function OnboardingPage() {
   return (
       <Shell className=" h-screen max-w-screen-lg">
         <GridPattern
