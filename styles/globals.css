@@ -23,7 +23,7 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
-    --radius: 1rem;
+    --radius: 0rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -66,6 +66,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-chillax), sans-serif;
   }
 }
 
@@ -101,6 +102,7 @@ body::-webkit-scrollbar {
   background-size: 8px 8px;
 }
 
+/* Theme Variables */
 :root {
   /* Default theme */
   --text-primary: hsl(var(--primary));
@@ -108,32 +110,63 @@ body::-webkit-scrollbar {
   --accent: hsl(var(--primary));
 }
 
-.theme-windows98 {
-  --text-primary: #2424bc;
-  --text-secondary: #0000ff;
-  --accent: #000080;
+/* Updated Theme Variables */
+.theme-modern {
+  --text-primary: #2c3e50; /* Dark Blue */
+  --text-secondary: #34495e; /* Charcoal */
+  --accent: #3498db; /* Light Blue */
 }
 
-.theme-daylight {
-  --text-primary: #a67c52;
-  --text-secondary: #71553f;
-  --accent: #71553f;
+.theme-classic {
+  --text-primary: #000000; /* Black */
+  --text-secondary: #7f8c8d; /* Gray */
+  --accent: #000000; /* Black */
 }
 
-.theme-forest {
-  --text-primary: #729d39;
-  --text-secondary: #4a3728;
-  --accent: #5d7c34;
+.theme-sophisticated {
+  --text-primary: #ecf0f1; /* Light Gray */
+  --text-secondary: #34495e; /* Charcoal */
+  --accent: #e74c3c; /* Red */
 }
 
-.theme-ocean {
-  --text-primary: #0496d0;
-  --text-secondary: #60a3d9;
-  --accent: #0389bd;
+.theme-creative {
+  --text-primary: #2980b9; /* Blue */
+  --text-secondary: #e67e22; /* Orange */
+  --accent: #e67e22; /* Orange */
+}
+
+.theme-minimalist {
+  --text-primary: #495057; /* Dark Gray */
+  --text-secondary: #6c757d; /* Medium Gray */
+  --accent: #6c757d; /* Medium Gray */
+}
+
+.theme-academic {
+  --text-primary: #003366; /* Dark Blue */
+  --text-secondary: #d4af37; /* Gold */
+  --accent: #d4af37; /* Gold */
+}
+
+.theme-tech {
+  --text-primary: #007acc; /* Light Blue */
+  --text-secondary: #005f99; /* Dark Blue */
+  --accent: #005f99; /* Dark Blue */
+}
+
+.theme-earthy {
+  --text-primary: #2c5f2d; /* Dark Green */
+  --text-secondary: #8e735b; /* Brown */
+  --accent: #8e735b; /* Brown */
 }
 
 .theme-sunset {
-  --text-primary: #ff9500;
-  --text-secondary: #ffd700;
-  --accent: #de8d1b;
+  --text-primary: #ff5733; /* Orange */
+  --text-secondary: #c70039; /* Red */
+  --accent: #c70039; /* Red */
+}
+
+.theme-oceanic {
+  --text-primary: #003b6f; /* Dark Blue */
+  --text-secondary: #1abc9c; /* Teal */
+  --accent: #1abc9c; /* Teal */
 }

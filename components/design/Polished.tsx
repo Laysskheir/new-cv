@@ -17,7 +17,7 @@ const Polished: React.FC<TemplateProps> = ({
   languages,
   projects,
 }) => (
-  <div className=" h-full text-sm flex space-y-[var(--section-spacing)] text-[length:var(--font-size)]">
+  <div className="h-auto text-sm flex space-y-[var(--section-spacing)] text-[length:var(--font-size)]">
     <div className="w-1/3 bg-[var(--accent)] text-secondary p-8">
       <h1 className="text-xl font-bold mb-4">{`${firstName} ${surname}`}</h1>
       <p className="mb-8 text-secondary/95">{profession}</p>

@@ -7,6 +7,7 @@ import { Icons } from "../icons";
 import { motion } from "framer-motion";
 import AnimatedLight from "./AnimatedLight";
 import { cn } from "@/lib/utils";
+import { client } from "@/lib/auth-client";
 
 export default function Hero({ className }: { className?: string }) {
   const containerVariants = {
@@ -30,9 +31,14 @@ export default function Hero({ className }: { className?: string }) {
     },
   };
 
+  const { data: session } = client.useSession();
+
   return (
     <motion.div
-      className={cn("relative p-8 container bg-primary min-h-[90vh] flex flex-col justify-between items-start overflow-hidden", className)}
+      className={cn(
+        "relative p-8 container bg-primary min-h-[90vh] flex flex-col justify-between items-start overflow-hidden",
+        className
+      )}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -56,13 +62,26 @@ export default function Hero({ className }: { className?: string }) {
         <Logo className="text-primary-foreground" />
         <nav className="flex gap-x-6">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              variant="link"
-              className="font-semibold text-background hover:text-secondary transition-colors"
-            >
-              <Icons.fingerprint className="w-4 h-4 mr-2" />
-              <Link href="/login">Login</Link>
-            </Button>
+            {session?.session ? (
+              <Button
+                variant="link"
+                className="font-semibold text-background hover:text-secondary transition-colors"
+                onClick={() => {
+                  client.signOut();
+                }}
+              >
+                <Icons.fingerprint className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            ) : (
+              <Button
+                variant="link"
+                className="font-semibold text-background hover:text-secondary transition-colors"
+              >
+                <Icons.fingerprint className="w-4 h-4 mr-2" />
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
+            )}
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
@@ -89,7 +108,9 @@ export default function Hero({ className }: { className?: string }) {
 
         <motion.div>
           <Button variant="secondary" size="lg" asChild>
-            <Link href="/onboarding">Let's Start</Link>
+            <Link href="/dashboard/resumes">
+              {session?.session ? "Go to Dashboard" : "Let's Start"}
+            </Link>
           </Button>
         </motion.div>
       </motion.div>

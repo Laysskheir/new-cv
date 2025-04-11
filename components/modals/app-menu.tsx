@@ -12,8 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import Appearance from "../appearance";
 
-// Icons can be imported or defined
-import { MessageSquare, Heart, Twitter, Users } from "lucide-react";
 import { Card } from "../ui/card";
 import Logo from "../logo";
 import { Icons } from "../icons";

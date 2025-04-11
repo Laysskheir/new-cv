@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Hero from "@/components/home/hero";
 import TextMoving from "@/components/home/text-moving";
-import { SectionVideo } from "./home/section-video";
 import Questions from "@/components/home/Questions";
 import Footer from "@/components/layouts/footer";
 import ScalableFoundation from "./home/ScalableFoundation";
@@ -32,7 +31,6 @@ export default function StartPage() {
       <div className="container mx-auto px-0 space-y-16 md:space-y-24">
         <TextMoving />
         <CVCreationSteps />
-        <SectionVideo />
         <ScalableFoundation />
         <Questions />
       </div>

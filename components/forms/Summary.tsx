@@ -1,5 +1,5 @@
+// forms/summry.tsx
 "use client";
-
 import React from "react";
 import { useAtom } from "jotai";
 import { resumeStateAtom } from "@/state/resumeAtoms";
@@ -11,19 +11,34 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "../ui/textarea";
+import { TemplateProps, FormVisibility } from "@/types/resume";
 
-const Summary: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (
+    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
+  ) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (
+    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
+  ) => void;
+}
 
+const Summary = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       summary: event.target.value,
     }));
   };
 
   return (
-    <Card className="mt-4">
+    <Card id="summary" className="mt-4">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
           Briefly tell us about your background

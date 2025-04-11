@@ -12,22 +12,18 @@ export default function Appearance() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 sm:grid-cols-2">
         <button type="button" onClick={() => setTheme("light")}>
           <LightModeCard active={theme === "light"} />
-          <span className="mt-2  text-muted-foreground text-sm">
-            Light
-          </span>
+          <span className="mt-2  text-muted-foreground text-sm">Light</span>
         </button>
-        <button type="button" disabled className="cursor-not-allowed opacity-50">
+        <button type="button" className="cursor-not-allowed opacity-50">
           <div className="relative">
             <DarkModeCard active={false} />
             <span className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-1 py-0.5 rounded">
               Soon
             </span>
           </div>
-          <span className="mt-2  text-muted-foreground text-sm">
-            Dark
-          </span>
+          <span className="mt-2  text-muted-foreground text-sm">Dark</span>
         </button>
-        <button type="button" disabled className="cursor-not-allowed opacity-50">
+        <button type="button" className="cursor-not-allowed opacity-50">
           <div className="relative">
             <LightModeCard active={false} />
             <div
@@ -42,9 +38,7 @@ export default function Appearance() {
               Soon
             </span>
           </div>
-          <span className="mt-2  text-muted-foreground text-sm">
-            System
-          </span>
+          <span className="mt-2  text-muted-foreground text-sm">System</span>
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
+// forms/eduction.tsx
 "use client";
-
 import React from "react";
 import { useAtom } from "jotai";
 import {
@@ -21,6 +21,7 @@ import { Button } from "../ui/button";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Icons } from "../icons";
+import { TemplateProps, FormVisibility } from "@/types/resume";
 
 // Define the types for the education entry and resume state
 interface GraduationDate {
@@ -40,53 +41,70 @@ interface ResumeState {
   education: EducationEntry[];
 }
 
-const Education: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom<ResumeState>(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (
+    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
+  ) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (
+    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
+  ) => void;
+}
 
+const Education = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleInputChange = (
     index: number,
-    field: keyof EducationEntry,
-    value: string | GraduationDate
+    field: keyof (typeof resumeState.education)[0],
+    value: string | { month: string; year: string }
   ) => {
-    setResumeState((prevState) => {
-      const updatedEducation = prevState.education.map((entry, i) => {
+    setResumeState((prevState: TemplateProps) => ({
+      ...prevState,
+      education: prevState.education.map((edu, i) => {
         if (i === index) {
-          return { ...entry, [field]: value };
+          return {
+            ...edu,
+            [field]: value,
+          };
         }
-        return entry;
-      });
-
-      return { ...prevState, education: updatedEducation };
-    });
+        return edu;
+      }),
+    }));
   };
 
   const handleAddEducation = () => {
-    const newEducationEntry: EducationEntry = {
-      schoolName: "",
-      schoolLocation: "",
-      degree: "",
-      fieldOfStudy: "",
-      graduationDate: { month: "", year: "" },
-    };
-
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
-      education: [...prevState.education, newEducationEntry],
+      education: [
+        ...prevState.education,
+        {
+          schoolName: "",
+          schoolLocation: "",
+          degree: "",
+          fieldOfStudy: "",
+          graduationDate: { month: "", year: "" },
+        },
+      ],
     }));
   };
 
   const deleteEducation = (index: number) => {
-    setResumeState((prevState: ResumeState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
-      education: prevState.education.filter(
-        (_: EducationEntry, i: number) => i !== index
-      ),
+      education: prevState.education.filter((_, i) => i !== index),
     }));
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility(prev => ({ ...prev, education: !prev.education }));
+    setFormVisibility((prev: FormVisibility) => ({
+      ...prev,
+      education: !prev.education,
+    }));
   };
 
   const years = Array.from(
@@ -119,7 +137,7 @@ const Education: React.FC = () => {
   ];
 
   return (
-    <Card className="mt-4">
+    <Card id="education" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
           <div className="flex items-center">Tell us about your education</div>

@@ -1,3 +1,4 @@
+// forms/projects.tsx
 "use client";
 
 import React from "react";
@@ -11,22 +12,37 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
+import { TemplateProps, FormVisibility } from "@/types/resume";
+import { Trash2 } from "lucide-react";
 
-const Projects: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (
+    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
+  ) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (
+    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
+  ) => void;
+}
 
+const Projects = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleInputChange = (
     index: number,
     field: keyof (typeof resumeState.projects)[0],
-    value: any
+    value: string | string[]
   ) => {
-    setResumeState((prevState) => {
-      const updatedProjects = prevState.projects.map((project, i) => {
+    setResumeState((prevState: TemplateProps) => ({
+      ...prevState,
+      projects: prevState.projects.map((project, i) => {
         if (i === index) {
           return {
             ...project,
@@ -34,16 +50,12 @@ const Projects: React.FC = () => {
           };
         }
         return project;
-      });
-      return {
-        ...prevState,
-        projects: updatedProjects,
-      };
-    });
+      }),
+    }));
   };
 
   const handleAddProject = () => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       projects: [
         ...prevState.projects,
@@ -58,23 +70,24 @@ const Projects: React.FC = () => {
   };
 
   const deleteProject = (index: number) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       projects: prevState.projects.filter((_, i) => i !== index),
     }));
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility(prev => ({ ...prev, projects: !prev.projects }));
+    setFormVisibility((prev: FormVisibility) => ({
+      ...prev,
+      projects: !prev.projects,
+    }));
   };
 
   return (
-    <Card className="mt-4">
+    <Card id="projects" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">
-            Tell us about your projects
-          </div>
+          <div className="flex items-center">Tell us about your projects</div>
           <Button
             onClick={toggleFormVisibility}
             size="sm"
@@ -97,53 +110,77 @@ const Projects: React.FC = () => {
       {formVisibility.projects && (
         <CardContent>
           {resumeState.projects.map((project, index) => (
-            <div key={index} className="mt-4 pb-4 space-y-4">
-              <div className="flex justify-between">
-                <Label className="font-bold italic">Project #{index + 1}</Label>
-                <Button
-                  onClick={() => deleteProject(index)}
-                  size="icon"
-                  variant="outline"
-                  className="size-8"
-                >
-                  <Icons.trash className="w-4 h-4" />
-                </Button>
+            <div key={index} className="space-y-4">
+              <div>
+                <Label>
+                  Project Name <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  name={`projects.${index}.name`}
+                  value={project.name}
+                  onChange={(e) =>
+                    handleInputChange(index, "name", e.target.value)
+                  }
+                  required
+                  placeholder="Enter project name"
+                />
               </div>
-              <Input
-                type="text"
-                value={project.name}
-                onChange={(e) =>
-                  handleInputChange(index, "name", e.target.value)
-                }
-                placeholder="Project Name *"
-              />
-              <Textarea
-                value={project.description}
-                onChange={(e) =>
-                  handleInputChange(index, "description", e.target.value)
-                }
-                placeholder="Project Description *"
-              />
-              <Input
-                type="text"
-                value={project.technologies.join(", ")}
-                onChange={(e) =>
-                  handleInputChange(
-                    index,
-                    "technologies",
-                    e.target.value.split(", ")
-                  )
-                }
-                placeholder="Technologies Used (comma-separated)"
-              />
-              <Input
-                type="text"
-                value={project.link}
-                onChange={(e) =>
-                  handleInputChange(index, "link", e.target.value)
-                }
-                placeholder="Project Link"
-              />
+              <div>
+                <Label>
+                  Description <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  name={`projects.${index}.description`}
+                  value={project.description}
+                  onChange={(e) =>
+                    handleInputChange(index, "description", e.target.value)
+                  }
+                  rows={3}
+                  required
+                  placeholder="Enter project description"
+                />
+              </div>
+              <div>
+                <Label>
+                  Technologies <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  name={`projects.${index}.technologies`}
+                  value={project.technologies.join(", ")}
+                  onChange={(e) => {
+                    const technologies = e.target.value
+                      .split(",")
+                      .map((tech) => tech.trim());
+                    handleInputChange(index, "technologies", technologies);
+                  }}
+                  placeholder="Enter technologies separated by commas"
+                  required
+                />
+              </div>
+              <div>
+                <Label>Project Link</Label>
+                <Input
+                  type="url"
+                  name={`projects.${index}.link`}
+                  value={project.link}
+                  onChange={(e) =>
+                    handleInputChange(index, "link", e.target.value)
+                  }
+                  placeholder="Enter project URL"
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={() => deleteProject(index)}
+                size="icon"
+                variant="outline"
+                className="size-8 bg-destructive"
+                
+              >
+                <Icons.trash className="w-3 h-3 " />
+              </Button>
             </div>
           ))}
           <div className="flex justify-end w-full">

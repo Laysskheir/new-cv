@@ -2,18 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import {
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  LayoutTemplate,
+  FileText,
+  Download,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 export function Intro() {
   const router = useRouter();
   const showText = useDebounce(true, 800);
 
+
   return (
     <motion.div
-      className="flex size-full flex-col items-center justify-center"
+      className="flex size-full flex-col items-center justify-center px-4"
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, type: "spring" }}
     >
@@ -28,10 +37,10 @@ export function Intro() {
           }}
           initial="hidden"
           animate="show"
-          className="mx-5 flex flex-col items-center space-y-2.5 text-center sm:mx-auto"
+          className="mx-auto flex max-w-4xl flex-col items-center space-y-8 text-center"
         >
           <motion.h1
-            className="text-balance text-4xl font-bold transition-colors sm:text-5xl"
+            className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
             variants={{
               hidden: { opacity: 0, y: 50 },
               show: {
@@ -41,10 +50,11 @@ export function Intro() {
               },
             }}
           >
-            Welcome to {siteConfig.name}
+            Create Your Professional Resume
           </motion.h1>
+
           <motion.p
-            className="max-w-md text-muted-foreground transition-colors sm:text-lg"
+            className="max-w-2xl text-md text-muted-foreground sm:text-lg"
             variants={{
               hidden: { opacity: 0, y: 50 },
               show: {
@@ -54,11 +64,11 @@ export function Intro() {
               },
             }}
           >
-            Create your professional CV easily. Make a great first impression
-            and land your ideal job.
+            Stand out from the crowd with a professionally designed resume. Our
+            easy-to-use builder helps you create a resume that gets noticed.
           </motion.p>
+
           <motion.div
-            className="pt-4"
             variants={{
               hidden: { opacity: 0, y: 50 },
               show: {
@@ -68,9 +78,28 @@ export function Intro() {
               },
             }}
           >
-            <Button onClick={() => router.push("/onboarding?step=choose-template")}>
-              Get started
+            <Button
+              size="lg"
+              onClick={() => router.push("/onboarding?step=choose-template")}
+              className="gap-2"
+            >
+              Get Started
+              <ArrowRight className="h-4 w-4" />
             </Button>
+          </motion.div>
+
+          <motion.div
+            className="mt-8 flex items-center gap-4 text-sm text-muted-foreground"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { delay: 0.6 },
+              },
+            }}
+          >
+            <CheckCircle2 className="h-4 w-4 text-primary" />
+            <span>Trusted by professionals worldwide</span>
           </motion.div>
         </motion.div>
       )}

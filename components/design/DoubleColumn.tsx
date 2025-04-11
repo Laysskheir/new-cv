@@ -41,7 +41,7 @@ const DoubleColumn: React.FC<TemplateProps> = ({
               </div>
               <div className="flex items-center">
                 <MapPinIcon className="w-4 h-4 mr-1" />
-                <p>{`${city}, ${country} ${postalCode}`}</p>
+                <p>{`${city} ${country} ${postalCode}`}</p>
               </div>
             </div>
           </div>

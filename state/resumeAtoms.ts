@@ -1,5 +1,5 @@
-// src/state/resumeAtoms.ts
-import { TemplateProps } from "@/types/resume";
+//state/resumeAtoms.ts
+import { TemplateProps, FormVisibility } from "@/types/resume";
 import { atomWithStorage } from "jotai/utils";
 
 export const pageMarginsAtom = atomWithStorage("pageMargins", 2);
@@ -7,96 +7,147 @@ export const sectionSpacingAtom = atomWithStorage("sectionSpacing", 2);
 export const fontSizeAtom = atomWithStorage("fontSize", 16);
 export const fontFamilyAtom = atomWithStorage("fontFamily", "Arial");
 
-export const formVisibilityAtom = atomWithStorage("formVisibility", {
-  skills: false,
-  education: false,
-  workHistory: false,
-  projects: false,
-  summary: false,
-  personalDetails: false,
-  languages: false,
-  customSections: false,
-});
+export const formVisibilityAtom = atomWithStorage<FormVisibility>(
+  "formVisibility",
+  {
+    skills: true,
+    education: true,
+    workHistory: true,
+    projects: true,
+    summary: true,
+    personalDetails: true,
+    languages: true,
+    customSections: true,
+  }
+);
 
-// Atom for the resume state including personal details, work history, and education...
-export const resumeStateAtom = atomWithStorage<TemplateProps>("resumeState", {
-  heading: "Welcome to My Resume",
+const defaultResumeData: TemplateProps = {
+  heading: "Professional Resume",
   firstName: "John",
   surname: "Doe",
-  profession: "Software Engineer",
+  profession: "Senior Software Engineer",
   city: "San Francisco",
   country: "USA",
-  postalCode: "94103",
-  phone: "+1 555 123 4567",
+  postalCode: "94105",
+  phone: "+1 (555) 123-4567",
   email: "john.doe@example.com",
   workHistory: [
     {
-      title: "Senior Developer",
+      title: "Senior Software Engineer",
+      employer: "Tech Innovations Inc.",
+      location: "San Francisco, CA",
+      startDate: { month: "Jan", year: "2020" },
+      endDate: { month: "", year: "", current: true },
       description: [
-        "Designed and developed complex web applications using React, Node.js, and MongoDB",
-        "Implemented robust testing frameworks and CI/CD pipelines to ensure high-quality and reliable software",
-        "Mentored junior developers and contributed to team-wide technical decisions",
+        "Led development of cloud-based applications using React and Node.js",
+        "Implemented CI/CD pipelines reducing deployment time by 40%",
+        "Mentored junior developers and conducted code reviews",
+        "Architected microservices architecture for improved scalability",
       ],
-      employer: "Tech Corp",
-      location: "Remote",
-      startDate: { month: "January", year: "2020" },
-      endDate: { month: "June", year: "2023", current: false },
+    },
+    {
+      title: "Software Engineer",
+      employer: "Digital Solutions Ltd.",
+      location: "New York, NY",
+      startDate: { month: "Jun", year: "2017" },
+      endDate: { month: "Dec", year: "2019", current: false },
+      description: [
+        "Developed and maintained frontend applications using React and TypeScript",
+        "Collaborated with UX designers to implement responsive interfaces",
+        "Optimized application performance resulting in 30% faster load times",
+        "Participated in agile development processes and sprint planning",
+      ],
     },
   ],
   projects: [
     {
-      name: "Personal Portfolio Website",
+      name: "E-commerce Platform",
       description:
-        "Designed and developed a responsive portfolio website to showcase my projects and skills.",
-      technologies: ["React", "Next.js", "Tailwind CSS"],
-      link: "https://johndoe-portfolio.com",
+        "Developed a full-stack e-commerce platform with React, Node.js, and MongoDB",
+      technologies: ["React", "Node.js", "MongoDB", "Express", "Redux"],
+      link: "https://github.com/johndoe/ecommerce",
+    },
+    {
+      name: "Task Management App",
+      description:
+        "Created a collaborative task management application with real-time updates",
+      technologies: ["React", "Firebase", "Material UI", "TypeScript"],
+      link: "https://github.com/johndoe/taskmanager",
     },
   ],
   education: [
     {
-      schoolName: "University of Technology",
-      schoolLocation: "New York, NY",
-      degree: "Bachelor of Science in Computer Science",
+      degree: "Master of Science in Computer Science",
+      schoolName: "Stanford University",
+      schoolLocation: "Stanford, CA",
       fieldOfStudy: "Computer Science",
-      graduationDate: { month: "May", year: "2019" },
+      graduationDate: { month: "May", year: "2015" },
+    },
+    {
+      degree: "Bachelor of Science in Software Engineering",
+      schoolName: "MIT",
+      schoolLocation: "Cambridge, MA",
+      fieldOfStudy: "Software Engineering",
+      graduationDate: { month: "May", year: "2013" },
     },
   ],
   achievements: [
     {
-      title: "Best Employee of the Year",
+      title: "Best Innovation Award",
+      date: "2021",
       description:
-        "Recognized for outstanding performance and contributions to the team.",
-      date: "December 2022",
+        "Received award for developing an innovative solution to reduce server costs by 60%",
+    },
+    {
+      title: "Conference Speaker",
+      date: "2020",
+      description:
+        "Presented at React Summit on 'Building Scalable React Applications'",
     },
   ],
+  skills: [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "SQL",
+    "Docker",
+    "AWS",
+    "CI/CD",
+    "Git",
+    "RESTful APIs",
+    "GraphQL",
+    "Redux",
+    "Next.js",
+    "HTML/CSS",
+    "Sass",
+    "Jest",
+    "Agile/Scrum",
+  ],
+  summary:
+    "Experienced software engineer with a strong background in full-stack development. Passionate about creating efficient, scalable applications and mentoring junior developers. Skilled in modern web technologies with a focus on React and Node.js ecosystems. Proven track record of delivering high-quality solutions that meet business needs.",
   languages: [
     { name: "English", proficiency: "Native" },
+    { name: "Spanish", proficiency: "Fluent" },
     { name: "French", proficiency: "Intermediate" },
   ],
-  customSections: [
-    {
-      title: "Custom Section 1",
-      description: "Description for custom section 1",
-      icon: "Choose icon",
-      startDate: { month: "July", year: "2019" },
-      endDate: { month: "", year: "", current: true },
-    },
-  ],
-  skills: ["JavaScript", "React", "Node.js", "CSS"],
-  summary:
-    "Passionate developer with over 5 years of experience in building web applications.",
-});
+  customSections: [],
+};
 
-// Atom for the selected resume template
+export const resumeStateAtom = atomWithStorage<TemplateProps>(
+  "resumeState",
+  defaultResumeData
+);
+
 export const resumeTemplateAtom = atomWithStorage<string>(
   "resumeTemplate",
   "ElegantClassic"
 );
 
-// Atom for managing the selected theme
 export const themeAtom = atomWithStorage<string>("theme", "light");
 
-// Atom for managing the list of skills
 export const skillsAtom = atomWithStorage<string[]>("skills", [
   "JavaScript",
   "React",
@@ -104,17 +155,9 @@ export const skillsAtom = atomWithStorage<string[]>("skills", [
   "CSS",
 ]);
 
-// Atom for managing the summary text
 export const summaryAtom = atomWithStorage(
   "summary",
   "Passionate developer with over 5 years of experience in building web applications."
 );
 
-// Atom for managing the share ID
 export const shareIdAtom = atomWithStorage<string | null>("shareId", null);
-
-// Add this new atom for the download format
-export const downloadFormatAtom = atomWithStorage<"pdf" | "docx" | "txt">(
-  "downloadFormat",
-  "pdf"
-);

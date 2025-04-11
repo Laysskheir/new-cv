@@ -24,7 +24,7 @@ export const IvyLeague: React.FC<TemplateProps> = ({
         <h1 className="text-xl font-bold uppercase mb-1 leading-tight tracking-wide">{`${firstName} ${surname}`}</h1>
         <p className="text-muted-foreground text-sm">{profession}</p>
         <p className="text-muted-foreground text-sm mt-2">
-          {phone} • {email} • {city}, {country} {postalCode}
+          {phone} • {email} • {city} • {country} {postalCode}
         </p>
       </header>
 

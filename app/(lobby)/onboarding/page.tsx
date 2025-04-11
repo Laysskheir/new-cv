@@ -13,18 +13,18 @@ export const metadata: Metadata = {
 
 export default function OnboardingPage() {
   return (
-      <Shell className=" h-screen max-w-screen-lg">
-        <GridPattern
-          width={30}
-          height={30}
-          x={-1}
-          y={-1}
-          strokeDasharray={"4 2"}
-          className="[mask-image:radial-gradient(300px_circle_at_left_top,white,transparent)]"
-        />
-        <React.Suspense fallback={<Skeleton className="size-full" />}>
-          <Onboarding />
-        </React.Suspense>
-      </Shell>
+    <Shell className=" h-screen max-w-screen-lg">
+      <GridPattern
+        width={30}
+        height={30}
+        x={-1}
+        y={-1}
+        strokeDasharray={"4 2"}
+        className="[mask-image:radial-gradient(300px_circle_at_left_top,white,transparent)]"
+      />
+      <React.Suspense fallback={<Skeleton className="size-full" />}>
+        <Onboarding />
+      </React.Suspense>
+    </Shell>
   );
 }

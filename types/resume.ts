@@ -1,4 +1,30 @@
 // types/resume.ts
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  Session: any[];
+  Account: any[];
+  Resume: Resume[];
+  onboardingCompleted: boolean;
+}
+
+export interface Resume {
+  id: string;
+  title: string;
+  slug: string;
+  data: Record<string, any>;
+  userId: string;
+  user: User;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface WorkHistory {
   title: string;
   description: string[];
@@ -96,4 +122,15 @@ export interface ResumeData {
     date: string;
   }[];
   customSections: CustomSection[];
+}
+
+export interface FormVisibility {
+  skills: boolean;
+  education: boolean;
+  workHistory: boolean;
+  projects: boolean;
+  summary: boolean;
+  personalDetails: boolean;
+  languages: boolean;
+  customSections: boolean;
 }

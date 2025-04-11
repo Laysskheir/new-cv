@@ -36,6 +36,7 @@ import { useTheme } from "next-themes";
 import { Textarea } from "../ui/textarea";
 import { DatePickerWithRange } from "../DatePickerWithRange";
 import { format } from "date-fns";
+import { TemplateProps } from "@/types/resume";
 
 interface CustomSection {
   title: string;
@@ -76,9 +77,30 @@ function EmojiPickerPopper({
   );
 }
 
-const CustomSection: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface FormVisibility {
+  skills: boolean;
+  education: boolean;
+  workHistory: boolean;
+  projects: boolean;
+  summary: boolean;
+  personalDetails: boolean;
+  languages: boolean;
+  customSections: boolean;
+}
+
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (newState: TemplateProps) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (visibility: FormVisibility) => void;
+}
+
+const CustomSection = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const [open, setOpen] = React.useState(false);
   const [includeTitle, setIncludeTitle] = React.useState(true);
   const [includeDescription, setIncludeDescription] = React.useState(true);
@@ -134,7 +156,7 @@ const CustomSection: React.FC = () => {
 
   if (!formVisibility.customSections) {
     return (
-      <Card className="mt-4">
+      <Card id="custom" className="mt-4">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-lg font-semibold">
             <div className="flex items-center">Custom Sections</div>
@@ -307,7 +329,7 @@ const CustomSection: React.FC = () => {
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end " >
+      <CardFooter className="flex justify-end ">
         <Button size="sm" onClick={() => setOpen(true)}>
           Add New Section
         </Button>

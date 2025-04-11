@@ -1,5 +1,5 @@
+// forms/languages.tsx
 "use client";
-
 import React from "react";
 import { useAtom } from "jotai";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
@@ -13,11 +13,32 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
+import { TemplateProps } from "@/types/resume";
 
-const Languages: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface FormVisibility {
+  skills: boolean;
+  education: boolean;
+  workHistory: boolean;
+  projects: boolean;
+  summary: boolean;
+  personalDetails: boolean;
+  languages: boolean;
+  customSections: boolean;
+}
 
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (newState: TemplateProps) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (visibility: FormVisibility) => void;
+}
+
+const Languages = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleAddLanguage = () => {
     setResumeState((prevState) => ({
       ...prevState,
@@ -54,7 +75,7 @@ const Languages: React.FC = () => {
   };
 
   return (
-    <Card className="mt-4">
+    <Card id="languages" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
           <div className="flex items-center">What languages do you speak?</div>

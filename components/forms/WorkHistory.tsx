@@ -1,5 +1,5 @@
+// forms/workhistory.tsx
 "use client";
-
 import React from "react";
 import { useAtom } from "jotai";
 import {
@@ -15,18 +15,36 @@ import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Trash2 } from "lucide-react";
 import { Icons } from "../icons";
+import { TemplateProps, FormVisibility } from "@/types/resume";
 
-const WorkHistory: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (
+    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
+  ) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (
+    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
+  ) => void;
+}
 
+const WorkHistory = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleInputChange = (
     index: number,
     field: keyof (typeof resumeState.workHistory)[0],
-    value: any
+    value:
+      | string
+      | string[]
+      | { month: string; year: string; current?: boolean }
   ) => {
-    setResumeState((prevState) => {
-      const updatedWorkHistory = prevState.workHistory.map((job, i) => {
+    setResumeState((prevState: TemplateProps) => ({
+      ...prevState,
+      workHistory: prevState.workHistory.map((job, i) => {
         if (i === index) {
           return {
             ...job,
@@ -34,15 +52,12 @@ const WorkHistory: React.FC = () => {
           };
         }
         return job;
-      });
-      return {
-        ...prevState,
-        workHistory: updatedWorkHistory,
-      };
-    });
+      }),
+    }));
   };
+
   const handleAddJob = () => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       workHistory: [
         ...prevState.workHistory,
@@ -59,18 +74,21 @@ const WorkHistory: React.FC = () => {
   };
 
   const deleteWorkEntry = (index: number) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       workHistory: prevState.workHistory.filter((_, i) => i !== index),
     }));
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility((prev) => ({ ...prev, workHistory: !prev.workHistory }));
+    setFormVisibility((prev: FormVisibility) => ({
+      ...prev,
+      workHistory: !prev.workHistory,
+    }));
   };
 
   return (
-    <Card className="mt-4">
+    <Card id="workHistory" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
           <div className="flex items-center">Tell us about your job</div>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return (
-    <div className="container max-w-[750px]">
+    <div className="container max-w-[750px] ">
       <Button
         size="icon"
         variant="ghost"
@@ -22,7 +22,7 @@ export default async function Page() {
           <X className="w-4 h-4" />
         </Link>
       </Button>
-      <h1 className="mt-24 font-medium text-center text-5xl mb-16 leading-snug">
+      <h1 className="mt-24 font-medium text-center text-5xl mb-10 leading-snug">
         This is why we're building <br />
         {siteConfig.name}.
       </h1>

@@ -1,5 +1,5 @@
+// forms/archievemnst.tsx
 "use client";
-
 import React from "react";
 import { useAtom } from "jotai";
 import {
@@ -11,30 +11,52 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
+import { TemplateProps } from "@/types/resume";
 
-const Achievements: React.FC = () => {
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
+interface FormVisibility {
+  skills: boolean;
+  education: boolean;
+  workHistory: boolean;
+  projects: boolean;
+  summary: boolean;
+  personalDetails: boolean;
+  languages: boolean;
+  customSections: boolean;
+}
 
+interface TypesProps {
+  resumeState: TemplateProps;
+  setResumeState: (newState: TemplateProps) => void;
+  formVisibility: FormVisibility;
+  setFormVisibility: (visibility: FormVisibility) => void;
+}
+
+const Achievements = ({
+  resumeState,
+  setResumeState,
+  formVisibility,
+  setFormVisibility,
+}: TypesProps) => {
   const handleInputChange = (
     index: number,
     field: keyof (typeof resumeState.achievements)[0],
     value: string
   ) => {
     setResumeState((prevState) => {
-      const updatedAchievements = prevState.achievements.map((achievement, i) => {
-        if (i === index) {
-          return {
-            ...achievement,
-            [field]: value,
-          };
+      const updatedAchievements = prevState.achievements.map(
+        (achievement, i) => {
+          if (i === index) {
+            return {
+              ...achievement,
+              [field]: value,
+            };
+          }
+          return achievement;
         }
-        return achievement;
-      });
+      );
       return {
         ...prevState,
         achievements: updatedAchievements,
@@ -64,11 +86,14 @@ const Achievements: React.FC = () => {
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility(prev => ({ ...prev, achievements: !prev.achievements }));
+    setFormVisibility((prev) => ({
+      ...prev,
+      achievements: !prev.achievements,
+    }));
   };
 
   return (
-    <Card className="mt-4">
+    <Card id="achievements" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
           <div className="flex items-center">
@@ -98,7 +123,9 @@ const Achievements: React.FC = () => {
           {resumeState.achievements.map((achievement, index) => (
             <div key={index} className="mt-4 pb-4 space-y-4">
               <div className="flex justify-between">
-                <Label className="font-bold italic">Achievement #{index + 1}</Label>
+                <Label className="font-bold italic">
+                  Achievement #{index + 1}
+                </Label>
                 <Button
                   onClick={() => deleteAchievement(index)}
                   size="icon"
