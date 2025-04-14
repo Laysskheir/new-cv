@@ -12,17 +12,19 @@ datasource db {
 }
 
 model User {
-  id                  String    @id
-  name                String
-  email               String
-  emailVerified       Boolean
-  image               String?
-  createdAt           DateTime
-  updatedAt           DateTime
-  sessions            Session[]
-  accounts            Account[]
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+
+  sessions Session[]
+  accounts Account[]
+
   resumes             Resume[]
-  onboardingCompleted Boolean   @default(false)
+  onboardingCompleted Boolean  @default(false)
 
   @@unique([email])
   @@map("user")
@@ -31,14 +33,13 @@ model User {
 model Session {
   id        String   @id
   expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
   ipAddress String?
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  token     String
-  createdAt DateTime
-  updatedAt DateTime
 
   @@unique([token])
   @@map("session")
@@ -87,7 +88,5 @@ model Resume {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, id])
-  @@unique([userId, slug])
-  @@index(fields: [userId])
+  @@map("resumes")
 }

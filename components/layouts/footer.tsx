@@ -15,35 +15,23 @@ const Footer = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 p-6">
           {/* About Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-primary font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div>
+            <h2 className="font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               About Us
             </h2>
             <p className="text-sm leading-relaxed">{siteConfig.description}</p>
-          </motion.div>
+          </div>
 
           {/* Quick Links Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h2 className="text-primary font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div>
+            <h2 className="font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Quick Links
             </h2>
             <ul className="space-y-2">
               {["Home", "Story", "Contact"].map((link) => (
-                <motion.li
-                  key={link}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <li key={link}>
                   <Link
                     href={`/${link.toLowerCase()}`}
                     className="text-sm hover:text-primary transition-colors duration-200 flex items-center group"
@@ -51,18 +39,14 @@ const Footer = () => {
                     <span className="w-1 h-1 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors duration-200" />
                     {link}
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* Connect Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h2 className="text-primary font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div>
+            <h2 className="font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Connect
             </h2>
             <ul className="space-y-2">
@@ -88,11 +72,7 @@ const Footer = () => {
                   href: "#",
                 },
               ].map((platform) => (
-                <motion.li
-                  key={platform.name}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <li key={platform.name}>
                   <Link
                     href={platform.href}
                     className="text-sm hover:text-primary transition-colors duration-200 flex items-center group"
@@ -101,18 +81,14 @@ const Footer = () => {
                     {platform.icon}
                     <span className="ml-2">{platform.name}</span>
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* Newsletter Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h2 className="text-primary font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div>
+            <h2 className=" font-semibold text-lg mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Newsletter
             </h2>
             <p className="text-sm mb-4 leading-relaxed">
@@ -124,14 +100,11 @@ const Footer = () => {
                 placeholder="Enter your email"
                 className="flex-grow bg-background/50 border-border/50 focus:border-primary/50 transition-colors duration-200"
               />
-              <Button
-                type="submit"
-                className="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
-              >
+              <Button type="submit" className="w-full sm:w-auto ">
                 Subscribe
               </Button>
             </form>
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer Bottom */}

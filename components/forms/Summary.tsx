@@ -1,7 +1,7 @@
 // forms/summry.tsx
 "use client";
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { resumeStateAtom } from "@/state/resumeAtoms";
 import {
   Card,
@@ -11,25 +11,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "../ui/textarea";
-import { TemplateProps, FormVisibility } from "@/types/resume";
+import { TemplateProps } from "@/types/resume";
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (
-    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
-  ) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (
-    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
-  ) => void;
-}
+export function SummaryForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
 
-const Summary = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setResumeState((prevState: TemplateProps) => ({
       ...prevState,
@@ -40,9 +26,7 @@ const Summary = ({
   return (
     <Card id="summary" className="mt-4">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Briefly tell us about your background
-        </CardTitle>
+        <CardTitle className="text-lg font-semibold">Summary</CardTitle>
         <CardDescription>
           Write a concise summary highlighting your key qualifications and
           career objectives.
@@ -55,11 +39,9 @@ const Summary = ({
           onChange={handleChange}
           className="w-full p-2 mt-2 border rounded resize-vertical"
           placeholder="Enter a brief summary about yourself (2-3 sentences)"
-          rows={4}
+          rows={8}
         />
       </CardContent>
     </Card>
   );
-};
-
-export default Summary;
+}

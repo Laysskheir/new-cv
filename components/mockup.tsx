@@ -7,7 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { resumeStateAtom, resumeTemplateAtom } from "../state/resumeAtoms";
 import ResumeTemplate from "./ResumeTemplate";
 import { ScrollArea } from "./ui/scroll-area";

@@ -1,7 +1,7 @@
 // forms/eduction.tsx
 "use client";
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import {
   Card,
   CardContent,
@@ -19,45 +19,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
-import { Label } from "../ui/label";
-import { Icons } from "../icons";
 import { TemplateProps, FormVisibility } from "@/types/resume";
+import { Trash2 } from "lucide-react";
 
-// Define the types for the education entry and resume state
-interface GraduationDate {
-  month: string;
-  year: string;
-}
+export function EducationForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
-interface EducationEntry {
-  schoolName: string;
-  schoolLocation: string;
-  degree: string;
-  fieldOfStudy: string;
-  graduationDate: GraduationDate;
-}
-
-interface ResumeState {
-  education: EducationEntry[];
-}
-
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (
-    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
-  ) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (
-    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
-  ) => void;
-}
-
-const Education = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleInputChange = (
     index: number,
     field: keyof (typeof resumeState.education)[0],
@@ -65,14 +33,14 @@ const Education = ({
   ) => {
     setResumeState((prevState: TemplateProps) => ({
       ...prevState,
-      education: prevState.education.map((edu, i) => {
+      education: prevState.education.map((entry, i) => {
         if (i === index) {
           return {
-            ...edu,
+            ...entry,
             [field]: value,
           };
         }
-        return edu;
+        return entry;
       }),
     }));
   };
@@ -107,187 +75,115 @@ const Education = ({
     }));
   };
 
-  const years = Array.from(
-    { length: new Date().getFullYear() - 1990 + 1 },
-    (_, i) => (1990 + i).toString()
-  );
-
-  const degrees = [
-    "Bachelor's",
-    "Master's",
-    "PhD",
-    "Associate's",
-    "Diploma",
-    "Certificate",
-  ];
-
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   return (
     <Card id="education" className="mt-4">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">Tell us about your education</div>
-          <Button
-            onClick={toggleFormVisibility}
-            size="sm"
-            variant="link"
-            className="ml-2"
-          >
-            {formVisibility.education ? (
-              <Icons.eye className="w-5 h-5" />
-            ) : (
-              <Icons.eyeoff className="w-5 h-5" />
-            )}
-          </Button>
-        </CardTitle>
-        {formVisibility.education && (
-          <CardDescription>
-            Enter your education experience so far, even if you are a current
-            student or did not graduate.
-          </CardDescription>
-        )}
+        <CardTitle>Education</CardTitle>
+        <CardDescription>
+          Add your educational background in reverse chronological order
+        </CardDescription>
       </CardHeader>
-
-      {formVisibility.education && (
-        <CardContent>
-          {resumeState.education.map((entry, index) => (
-            <div key={index} className="mt-4 pb-4 space-y-4">
-              <div className="flex justify-between">
-                <Label className="font-bold italic">
-                  Education #{index + 1}
-                </Label>
-
-                {/* Delete Button */}
-                <Button
-                  onClick={() => deleteEducation(index)}
-                  size="icon"
-                  variant="outline"
-                  className="size-8"
-                >
-                  <Icons.trash className="w-3 h-3" />
-                </Button>
+      <CardContent>
+        {formVisibility.education ? (
+          <div className="space-y-4">
+            {resumeState.education.map((entry, index) => (
+              <div key={index} className="space-y-4 border p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium">Education {index + 1}</h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => deleteEducation(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="School Name"
+                        value={entry.schoolName}
+                        onChange={(e) =>
+                          handleInputChange(index, "schoolName", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="School Location"
+                        value={entry.schoolLocation}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "schoolLocation",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Degree"
+                        value={entry.degree}
+                        onChange={(e) =>
+                          handleInputChange(index, "degree", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Field of Study"
+                        value={entry.fieldOfStudy}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "fieldOfStudy",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Graduation Month"
+                        value={entry.graduationDate.month}
+                        onChange={(e) =>
+                          handleInputChange(index, "graduationDate", {
+                            ...entry.graduationDate,
+                            month: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Graduation Year"
+                        value={entry.graduationDate.year}
+                        onChange={(e) =>
+                          handleInputChange(index, "graduationDate", {
+                            ...entry.graduationDate,
+                            year: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div className="flex gap-4 mt-2">
-                {/* School Name */}
-                <Input
-                  type="text"
-                  value={entry.schoolName}
-                  onChange={(e) =>
-                    handleInputChange(index, "schoolName", e.target.value)
-                  }
-                  placeholder="School Name *"
-                />
-
-                {/* School Location */}
-                <Input
-                  type="text"
-                  value={entry.schoolLocation}
-                  onChange={(e) =>
-                    handleInputChange(index, "schoolLocation", e.target.value)
-                  }
-                  placeholder="School Location"
-                />
-              </div>
-
-              {/* Degree */}
-              <Select
-                onValueChange={(value) =>
-                  handleInputChange(index, "degree", value)
-                }
-                value={entry.degree}
-              >
-                <SelectTrigger className="w-full mt-2">
-                  <SelectValue placeholder="Select Degree" />
-                </SelectTrigger>
-                <SelectContent>
-                  {degrees.map((degree, idx) => (
-                    <SelectItem key={idx} value={degree}>
-                      {degree}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              {/* Field of Study */}
-              <Input
-                type="text"
-                value={entry.fieldOfStudy}
-                onChange={(e) =>
-                  handleInputChange(index, "fieldOfStudy", e.target.value)
-                }
-                placeholder="Field of Study"
-              />
-
-              {/* Graduation Date */}
-              <div className="flex gap-4 mt-2">
-                <Select
-                  onValueChange={(value) =>
-                    handleInputChange(index, "graduationDate", {
-                      ...entry.graduationDate,
-                      month: value,
-                    })
-                  }
-                  value={entry.graduationDate.month}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Graduation Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {months.map((month, idx) => (
-                      <SelectItem key={idx} value={month}>
-                        {month}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  onValueChange={(value) =>
-                    handleInputChange(index, "graduationDate", {
-                      ...entry.graduationDate,
-                      year: value,
-                    })
-                  }
-                  value={entry.graduationDate.year}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Graduation Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((year, idx) => (
-                      <SelectItem key={idx} value={year}>
-                        {year}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          ))}
-          <div className="flex justify-end w-full">
-            <Button onClick={handleAddEducation} size="sm">
-              Add Education
-            </Button>
+            ))}
+            <Button onClick={handleAddEducation}>Add Education</Button>
           </div>
-        </CardContent>
-      )}
+        ) : (
+          <Button variant="outline" onClick={toggleFormVisibility}>
+            Show Education
+          </Button>
+        )}
+      </CardContent>
     </Card>
   );
-};
-
-export default Education;
+}

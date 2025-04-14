@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { DownloadCloud, Settings2, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { AppMenu } from "../modals/app-menu";
@@ -11,7 +10,7 @@ import { TemplatesPopper } from "../modals/templates-popper";
 import Logo from "../logo";
 import { FeedbackModal } from "../modals/feedback-modal";
 import { Icons } from "../icons";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { resumeStateAtom, resumeTemplateAtom } from "@/state/resumeAtoms";
 import PreviewModal from "../modals/preview-modal";
 import { ThemePopper } from "../modals/themes-popper";
@@ -40,9 +39,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+    <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-200",
         isScrolled
@@ -117,6 +114,7 @@ export default function Navbar() {
                       </PreviewModal>
                     </div>
                     <ShareButton />
+                    <DownloadButton />
                   </nav>
                 </div>
               </SheetContent>
@@ -125,30 +123,24 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation - Bottom Bar */}
-        <AnimatePresence>
-          {isScrolled && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="md:hidden py-2 border-t"
-            >
-              <nav className="flex items-center justify-between gap-2 overflow-x-auto">
-                <TemplatesPopper>Template</TemplatesPopper>
-                <ThemePopper>Theme</ThemePopper>
-                <DesignFonts>Design & Font</DesignFonts>
-                <AtsAnalyze>ATS Check</AtsAnalyze>
-                <ResetButton />
-                <PreviewModal template={selectedTemplate} data={resumeData}>
-                  <Icons.zoom className="size-4 mr-1" />
-                  Preview
-                </PreviewModal>
-                <ShareButton />
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isScrolled && (
+          <div className="md:hidden py-2 border-t">
+            <nav className="flex items-center justify-between gap-2 overflow-x-auto">
+              <TemplatesPopper>Template</TemplatesPopper>
+              <ThemePopper>Theme</ThemePopper>
+              <DesignFonts>Design & Font</DesignFonts>
+              <AtsAnalyze>ATS Check</AtsAnalyze>
+              <ResetButton />
+              <PreviewModal template={selectedTemplate} data={resumeData}>
+                <Icons.zoom className="size-4 mr-1" />
+                Preview
+              </PreviewModal>
+              <ShareButton />
+              <DownloadButton />
+            </nav>
+          </div>
+        )}
       </div>
-    </motion.header>
+    </header>
   );
 }

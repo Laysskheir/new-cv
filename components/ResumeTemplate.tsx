@@ -1,7 +1,7 @@
 import React from "react";
 import { TemplateProps } from "../types/resume";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import {
   pageMarginsAtom,
   sectionSpacingAtom,

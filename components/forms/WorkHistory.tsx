@@ -1,7 +1,7 @@
 // forms/workhistory.tsx
 "use client";
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import {
   Card,
   CardContent,
@@ -15,28 +15,15 @@ import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Trash2 } from "lucide-react";
 import { Icons } from "../icons";
-import { TemplateProps, FormVisibility } from "@/types/resume";
+import { TemplateProps, FormVisibility, WorkHistory } from "@/types/resume";
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (
-    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
-  ) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (
-    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
-  ) => void;
-}
+export function WorkHistoryForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
-const WorkHistory = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleInputChange = (
     index: number,
-    field: keyof (typeof resumeState.workHistory)[0],
+    field: keyof WorkHistory,
     value:
       | string
       | string[]
@@ -67,7 +54,7 @@ const WorkHistory = ({
           location: "",
           startDate: { month: "", year: "" },
           endDate: { month: "", year: "", current: false },
-          description: [""],
+          description: [],
         },
       ],
     }));
@@ -88,134 +75,172 @@ const WorkHistory = ({
   };
 
   return (
-    <Card id="workHistory" className="mt-4">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">Tell us about your job</div>
-          <Button
-            onClick={toggleFormVisibility}
-            size="sm"
-            variant="link"
-            className="ml-2"
-          >
-            {formVisibility.workHistory ? (
-              <Icons.eye className="w-5 h-5" />
-            ) : (
-              <Icons.eyeoff className="w-5 h-5" />
-            )}
-          </Button>
-        </CardTitle>
-        {formVisibility.workHistory && (
+    <div id="workHistory" className="mt-4">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Work History</CardTitle>
           <CardDescription>
-            We'll put your work history in the right order.
+            Add your work experience in reverse chronological order
           </CardDescription>
-        )}
-      </CardHeader>
-      {formVisibility.workHistory && (
+        </CardHeader>
         <CardContent>
-          {resumeState.workHistory.map((job, index) => (
-            <div key={index} className="mt-4 pb-4 space-y-4">
-              <div className="flex justify-between">
-                <Label className="font-bold italic">Job #{index + 1}</Label>
-
-                {/* Delete Button */}
-                <Button
-                  onClick={() => deleteWorkEntry(index)}
-                  size="icon"
-                  variant="outline"
-                  className="size-8"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Input
-                type="text"
-                value={job.title}
-                onChange={(e) =>
-                  handleInputChange(index, "title", e.target.value)
-                }
-                placeholder="Job Title *"
-              />
-              <Input
-                type="text"
-                value={job.employer}
-                onChange={(e) =>
-                  handleInputChange(index, "employer", e.target.value)
-                }
-                placeholder="Employer *"
-              />
-              <Input
-                type="text"
-                value={job.location}
-                onChange={(e) =>
-                  handleInputChange(index, "location", e.target.value)
-                }
-                placeholder="Location"
-              />
-
-              <fieldset className="flex gap-4 mt-2">
-                <legend className="sr-only">Start Date</legend>
-                <Input
-                  type="text"
-                  value={job.startDate.month}
-                  onChange={(e) =>
-                    handleInputChange(index, "startDate", {
-                      ...job.startDate,
-                      month: e.target.value,
-                    })
-                  }
-                  placeholder="Start Month"
-                />
-                <Input
-                  type="text"
-                  value={job.startDate.year}
-                  onChange={(e) =>
-                    handleInputChange(index, "startDate", {
-                      ...job.startDate,
-                      year: e.target.value,
-                    })
-                  }
-                  placeholder="Start Year"
-                />
-              </fieldset>
-              <fieldset className="flex gap-4 mt-2">
-                <legend className="sr-only">End Date</legend>
-                <Input
-                  type="text"
-                  value={job.endDate.month}
-                  onChange={(e) =>
-                    handleInputChange(index, "endDate", {
-                      ...job.endDate,
-                      month: e.target.value,
-                    })
-                  }
-                  placeholder="End Month"
-                  disabled={job.endDate.current}
-                />
-                <Input
-                  type="text"
-                  value={job.endDate.year}
-                  onChange={(e) =>
-                    handleInputChange(index, "endDate", {
-                      ...job.endDate,
-                      year: e.target.value,
-                    })
-                  }
-                  placeholder="End Year"
-                  disabled={job.endDate.current}
-                />
-              </fieldset>
+          {formVisibility.workHistory ? (
+            <div className="space-y-4">
+              {resumeState.workHistory.map((job, index) => (
+                <div key={index} className="space-y-4 border p-4 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-medium">Job {index + 1}</h3>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => deleteWorkEntry(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="grid gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor={`title-${index}`}>Job Title</Label>
+                        <Input
+                          id={`title-${index}`}
+                          value={job.title}
+                          onChange={(e) =>
+                            handleInputChange(index, "title", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`employer-${index}`}>Employer</Label>
+                        <Input
+                          id={`employer-${index}`}
+                          value={job.employer}
+                          onChange={(e) =>
+                            handleInputChange(index, "employer", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`location-${index}`}>Location</Label>
+                      <Input
+                        id={`location-${index}`}
+                        value={job.location}
+                        onChange={(e) =>
+                          handleInputChange(index, "location", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Start Date</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Input
+                            placeholder="Month"
+                            value={job.startDate.month}
+                            onChange={(e) =>
+                              handleInputChange(index, "startDate", {
+                                ...job.startDate,
+                                month: e.target.value,
+                              })
+                            }
+                          />
+                          <Input
+                            placeholder="Year"
+                            value={job.startDate.year}
+                            onChange={(e) =>
+                              handleInputChange(index, "startDate", {
+                                ...job.startDate,
+                                year: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>End Date</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Input
+                            placeholder="Month"
+                            value={job.endDate.month}
+                            onChange={(e) =>
+                              handleInputChange(index, "endDate", {
+                                ...job.endDate,
+                                month: e.target.value,
+                              })
+                            }
+                          />
+                          <Input
+                            placeholder="Year"
+                            value={job.endDate.year}
+                            onChange={(e) =>
+                              handleInputChange(index, "endDate", {
+                                ...job.endDate,
+                                year: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      {job.description.map((desc, descIndex) => (
+                        <div key={descIndex} className="flex gap-2">
+                          <Input
+                            value={desc}
+                            onChange={(e) => {
+                              const newDescription = [...job.description];
+                              newDescription[descIndex] = e.target.value;
+                              handleInputChange(
+                                index,
+                                "description",
+                                newDescription
+                              );
+                            }}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              const newDescription = job.description.filter(
+                                (_, i) => i !== descIndex
+                              );
+                              handleInputChange(
+                                index,
+                                "description",
+                                newDescription
+                              );
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          handleInputChange(index, "description", [
+                            ...job.description,
+                            "",
+                          ]);
+                        }}
+                      >
+                        Add Description Point
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <Button onClick={handleAddJob}>Add Job</Button>
             </div>
-          ))}
-          <div className="flex justify-end w-full">
-            <Button onClick={handleAddJob} size="sm">
-              Add Another Job
+          ) : (
+            <Button variant="outline" onClick={toggleFormVisibility}>
+              Show Work History
             </Button>
-          </div>
+          )}
         </CardContent>
-      )}
-    </Card>
+      </Card>
+    </div>
   );
-};
-
-export default WorkHistory;
+}

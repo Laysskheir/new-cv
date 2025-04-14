@@ -1,16 +1,16 @@
 import {
-  Article,
-  Books,
+  FileText,
+  BookOpen,
   Briefcase,
-  Certificate,
-  CompassTool,
-  CursorClick,
+  Award,
+  Compass,
+  MousePointerClick,
   GraduationCap,
   IconProps,
-  PuzzlePiece,
-  Translate,
+  Puzzle,
+  Languages,
   User,
-} from "@phosphor-icons/react";
+} from "lucide-react";
 
 import { Button, ButtonProps } from "@/components/ui/button";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
@@ -36,7 +36,7 @@ export const getSectionIcon = (id: SectionId, props: IconProps = {}) => {
       return <User size={22} {...props} />;
     }
     case "summary": {
-      return <Article size={22} {...props} />;
+      return <FileText size={22} {...props} />;
     }
     case "workHistory": {
       return <Briefcase size={22} {...props} />;
@@ -45,22 +45,22 @@ export const getSectionIcon = (id: SectionId, props: IconProps = {}) => {
       return <GraduationCap size={22} {...props} />;
     }
     case "projects": {
-      return <PuzzlePiece size={22} {...props} />;
+      return <Puzzle size={22} {...props} />;
     }
     case "achievements": {
-      return <Books size={22} {...props} />;
+      return <BookOpen size={22} {...props} />;
     }
     case "certifications": {
-      return <Certificate size={22} {...props} />;
+      return <Award size={22} {...props} />;
     }
     case "languages": {
-      return <Translate size={22} {...props} />;
+      return <Languages size={22} {...props} />;
     }
     case "skills": {
-      return <CompassTool size={22} {...props} />;
+      return <Compass size={22} {...props} />;
     }
     case "custom": {
-      return <CursorClick size={22} {...props} />;
+      return <MousePointerClick size={22} {...props} />;
     }
     default: {
       return null;

@@ -61,6 +61,9 @@ export interface CustomSection {
   icon: string;
   startDate: { month: string; year: string };
   endDate: { month: string; year: string; current?: boolean };
+  includeTitle: boolean;
+  includeDescription: boolean;
+  includeDate: boolean;
 }
 
 export interface TemplateProps {

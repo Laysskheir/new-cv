@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { skillsAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import {
   Card,
@@ -14,33 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
-import { TemplateProps } from "@/types/resume";
+import { FormVisibility } from "@/types/resume";
 
-interface FormVisibility {
-  skills: boolean;
-  education: boolean;
-  workHistory: boolean;
-  projects: boolean;
-  summary: boolean;
-  personalDetails: boolean;
-  languages: boolean;
-  customSections: boolean;
-}
-
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (newState: TemplateProps) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (visibility: FormVisibility) => void;
-}
-
-const Skills = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
+export function SkillsForm() {
   const [skills, setSkills] = useAtom(skillsAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
   const handleAddSkill = () => {
     setSkills((prevSkills) => [...prevSkills, ""]);
@@ -57,16 +35,17 @@ const Skills = ({
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility((prev) => ({ ...prev, skills: !prev.skills }));
+    setFormVisibility((prev: FormVisibility) => ({
+      ...prev,
+      skills: !prev.skills,
+    }));
   };
 
   return (
     <Card id="skills" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">
-            What skills would you like to highlight?
-          </div>
+          <div className="flex items-center">Skills</div>
           <Button
             onClick={toggleFormVisibility}
             size="sm"
@@ -119,6 +98,4 @@ const Skills = ({
       )}
     </Card>
   );
-};
-
-export default Skills;
+}

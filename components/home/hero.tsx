@@ -78,7 +78,7 @@ export default function Hero({ className }: { className?: string }) {
                 variant="link"
                 className="font-semibold text-background hover:text-secondary transition-colors"
               >
-                <Icons.fingerprint className="w-4 h-4 mr-2" />
+                <Icons.fingerprint className="w-4 h-4 " />
                 <Link href="/sign-in">Sign In</Link>
               </Button>
             )}

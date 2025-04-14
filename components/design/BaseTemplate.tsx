@@ -1,5 +1,4 @@
 import React from "react";
-import { TemplateProps } from "@/types/resume";
 import { cn } from "@/lib/utils";
 
 export interface BaseTemplateProps {
@@ -13,7 +12,7 @@ export const Section: React.FC<{
   className?: string;
 }> = ({ title, children, className }) => (
   <section className={cn("mb-6", className)}>
-    <h2 className="font-bold mb-4 uppercase tracking-wide">{title}</h2>
+    <h2 className="font-bold mb-4 text-black uppercase tracking-wide">{title}</h2>
     {children}
   </section>
 );
@@ -22,7 +21,7 @@ export const ContactItem: React.FC<{
   icon: React.ReactNode;
   children: React.ReactNode;
 }> = ({ icon, children }) => (
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-2 text-gray-600">
     {icon}
     <span>{children}</span>
   </div>

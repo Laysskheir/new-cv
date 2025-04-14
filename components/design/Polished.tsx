@@ -1,6 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../../types/resume";
-import { PhoneIcon, MailIcon, GlobeIcon, LocateIcon } from "lucide-react";
+import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
 
 const Polished: React.FC<TemplateProps> = ({
   firstName,
@@ -16,112 +16,169 @@ const Polished: React.FC<TemplateProps> = ({
   education,
   languages,
   projects,
+  achievements,
 }) => (
-  <div className="h-auto text-sm flex space-y-[var(--section-spacing)] text-[length:var(--font-size)]">
-    <div className="w-1/3 bg-[var(--accent)] text-secondary p-8">
-      <h1 className="text-xl font-bold mb-4">{`${firstName} ${surname}`}</h1>
-      <p className="mb-8 text-secondary/95">{profession}</p>
+  <div className="bg-white w-full max-w-none m-0 p-0">
+    <div className="grid grid-cols-12 min-h-screen">
+      {/* Left Sidebar */}
+      <div className="col-span-4 bg-gray-50 p-8">
+        <div className="sticky top-8">
+          {/* Header */}
+          <header className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">{`${firstName} ${surname}`}</h1>
+            <p className="text-lg text-gray-700 mb-6">{profession}</p>
 
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">SKILLS</h2>
-      <ul className="mb-8 space-y-1 text-secondary/95">
-        {skills.map((skill, index) => (
-          <li key={index}>{skill}</li>
-        ))}
-      </ul>
+            {/* Contact Info */}
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center text-gray-700">
+                <PhoneIcon className="w-4 h-4 mr-2 text-gray-600" />
+                <span>{phone}</span>
+              </div>
+              <div className="flex items-center text-gray-700">
+                <MailIcon className="w-4 h-4 mr-2 text-gray-600" />
+                <span>{email}</span>
+              </div>
+              <div className="flex items-center text-gray-700">
+                <MapPinIcon className="w-4 h-4 mr-2 text-gray-600" />
+                <span>{`${city}, ${country}`}</span>
+              </div>
+            </div>
+          </header>
 
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        LANGUAGES
-      </h2>
-      <ul className="mb-8 space-y-1 text-secondary/95">
-        {languages.map((lang, index) => (
-          <li key={index}>{`${lang.name} - ${lang.proficiency}`}</li>
-        ))}
-      </ul>
-    </div>
+          {/* Skills Section */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Skills</h2>
+            <div className="space-y-2">
+              {skills.map((skill, index) => (
+                <p key={index} className="text-sm text-gray-700">
+                  • {skill}
+                </p>
+              ))}
+            </div>
+          </div>
 
-    <div className="w-2/3 p-8">
-      <div className="mb-8 text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <PhoneIcon className="w-4 h-4" />
-          <span>{phone}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <MailIcon className="w-4 h-4" />
-          <span>{email}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <LocateIcon className="w-4 h-4" />
-          <span>{`${city}, ${country}`}</span>
+          {/* Languages Section */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Languages</h2>
+            <div className="space-y-2">
+              {languages.map((lang, index) => (
+                <p key={index} className="text-sm text-gray-700">
+                  {lang.name} -{" "}
+                  <span className="text-gray-600">{lang.proficiency}</span>
+                </p>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        RESUME PROFILE
-      </h2>
-      <p className="mb-8 text-muted-foreground">{summary}</p>
-
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        KEY ACHIEVEMENTS
-      </h2>
-      {/* Add key achievements content here */}
-
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        EXPERIENCE
-      </h2>
-      {workHistory.map((job, index) => (
-        <div key={index} className="mb-6 border-b pb-4">
-          <h3 className="font-bold">{job.title}</h3>
-          <p className="italic text-muted-foreground">{job.employer}</p>
-          <p className="text-muted-foreground">{`${job.startDate.month} ${
-            job.startDate.year
-          } - ${
-            job.endDate.current
-              ? "Present"
-              : `${job.endDate.month} ${job.endDate.year}`
-          }`}</p>
-          <ul className="list-disc list-inside mt-2 text-muted-foreground">
-            {Array.isArray(job.description) ? (
-              job.description.map((desc: string, idx: number) => (
-                <li key={idx}>{desc}</li>
-              ))
-            ) : (
-              <li>{job.description}</li>
-            )}
-          </ul>
+      {/* Main Content */}
+      <div className="col-span-8 p-8">
+        {/* Professional Summary */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
+            Professional Summary
+          </h2>
+          <p className="text-sm text-gray-700 leading-relaxed">{summary}</p>
         </div>
-      ))}
 
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        EDUCATION
-      </h2>
-      {education.map((edu, index) => (
-        <div key={index} className="mb-4 border-b pb-4">
-          <h3 className="font-bold">{edu.degree}</h3>
-          <p className="text-muted-foreground">{edu.schoolName}</p>
-          <p className="text-muted-foreground">{`${edu.graduationDate.month} ${edu.graduationDate.year}`}</p>
+        {/* Work Experience */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
+            Professional Experience
+          </h2>
+          {workHistory.map((job, index) => (
+            <div key={index} className="mb-6">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {job.title}
+                  </h3>
+                  <p className="text-sm text-gray-700">{job.employer}</p>
+                </div>
+                <p className="text-sm text-gray-600">
+                  {job.startDate.month} {job.startDate.year} -{" "}
+                  {job.endDate.current
+                    ? "Present"
+                    : `${job.endDate.month} ${job.endDate.year}`}
+                </p>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">{job.location}</p>
+              <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                {job.description.map((desc, idx) => (
+                  <li key={idx} className="leading-relaxed">
+                    {desc}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-      ))}
 
-      <h2 className="text-xl font-bold mb-4 uppercase tracking-wide">
-        PROJECTS
-      </h2>
-      {projects.map((project, index) => (
-        <div key={index} className="mb-6 border-b pb-4">
-          <h3 className="font-bold">{project.name}</h3>
-          <p className="text-muted-foreground">{project.description}</p>
-          <p className="italic text-muted-foreground">
-            Technologies: {project.technologies.join(", ")}
-          </p>
-          <a
-            href={project.link}
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Project Link
-          </a>
+        {/* Education */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Education</h2>
+          {education.map((edu, index) => (
+            <div key={index} className="mb-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {edu.degree}
+                  </h3>
+                  <p className="text-sm text-gray-700">{edu.schoolName}</p>
+                </div>
+                <p className="text-sm text-gray-600">
+                  {edu.graduationDate.month} {edu.graduationDate.year}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Projects</h2>
+            {projects.map((project, index) => (
+              <div key={index} className="mb-4">
+                <h3 className="text-base font-semibold text-gray-900">
+                  {project.name}
+                </h3>
+                <p className="text-sm text-gray-700 mb-2">
+                  {project.description}
+                </p>
+                {project.technologies && (
+                  <p className="text-sm text-gray-600">
+                    Technologies: {project.technologies.join(", ")}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Achievements */}
+        {achievements && achievements.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">
+              Achievements
+            </h2>
+            {achievements.map((achievement, index) => (
+              <div key={index} className="mb-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {achievement.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{achievement.date}</p>
+                </div>
+                <p className="text-sm text-gray-700">
+                  {achievement.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   </div>
 );

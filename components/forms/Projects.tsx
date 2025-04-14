@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import {
   Card,
   CardContent,
@@ -15,29 +15,17 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
-import { TemplateProps, FormVisibility } from "@/types/resume";
+import { TemplateProps, FormVisibility, Project } from "@/types/resume";
 import { Trash2 } from "lucide-react";
+import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (
-    newState: TemplateProps | ((prev: TemplateProps) => TemplateProps)
-  ) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (
-    visibility: FormVisibility | ((prev: FormVisibility) => FormVisibility)
-  ) => void;
-}
+export function ProjectsForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
-const Projects = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleInputChange = (
     index: number,
-    field: keyof (typeof resumeState.projects)[0],
+    field: keyof Project,
     value: string | string[]
   ) => {
     setResumeState((prevState: TemplateProps) => ({
@@ -87,7 +75,7 @@ const Projects = ({
     <Card id="projects" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">Tell us about your projects</div>
+          <div className="flex items-center">Projects</div>
           <Button
             onClick={toggleFormVisibility}
             size="sm"
@@ -177,9 +165,8 @@ const Projects = ({
                 size="icon"
                 variant="outline"
                 className="size-8 bg-destructive"
-                
               >
-                <Icons.trash className="w-3 h-3 " />
+                <Icons.trash className="w-3 h-3" />
               </Button>
             </div>
           ))}
@@ -192,6 +179,4 @@ const Projects = ({
       )}
     </Card>
   );
-};
-
-export default Projects;
+}

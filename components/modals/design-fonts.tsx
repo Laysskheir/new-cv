@@ -1,5 +1,5 @@
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {

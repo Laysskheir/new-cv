@@ -1,6 +1,5 @@
 import React from "react";
 import { CustomSection, TemplateProps } from "@/types/resume";
-import Image from "next/image";
 import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
 
 const DoubleColumn: React.FC<TemplateProps> = ({
@@ -22,175 +21,185 @@ const DoubleColumn: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="p-2 space-y-[var(--section-spacing)] text-[length:var(--font-size)]">
-      <div className="max-w-5xl mx-auto">
-        <div data-section-id="header" className="flex items-center mb-8">
-          <div className="">
-            <h1 className="text-xl font-bold">
-              {firstName} {surname}
-            </h1>
-            <p className="text-muted-foreground text-sm">{profession}</p>
-            <div className="flex mt-2 text-muted-foreground text-sm ">
-              <div className="flex items-center mr-4">
-                <PhoneIcon className="w-4 h-4 mr-1" />
-                <p>{phone}</p>
-              </div>
-              <div className="flex items-center mr-4">
-                <MailIcon className="w-4 h-4 mr-1" />
-                <p>{email}</p>
-              </div>
-              <div className="flex items-center">
-                <MapPinIcon className="w-4 h-4 mr-1" />
-                <p>{`${city} ${country} ${postalCode}`}</p>
-              </div>
+    <div className="bg-white w-full max-w-none m-0 p-0">
+      <div className="max-w-6xl mx-auto p-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {firstName} {surname}
+          </h1>
+          <p className="text-lg text-gray-700 mb-4">{profession}</p>
+          <div className="flex flex-wrap gap-4 text-gray-700 text-sm">
+            <div className="flex items-center">
+              <PhoneIcon className="w-4 h-4 mr-2 text-gray-600" />
+              <span>{phone}</span>
+            </div>
+            <div className="flex items-center">
+              <MailIcon className="w-4 h-4 mr-2 text-gray-600" />
+              <span>{email}</span>
+            </div>
+            <div className="flex items-center">
+              <MapPinIcon className="w-4 h-4 mr-2 text-gray-600" />
+              <span>{`${city}, ${country}`}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex">
-          <div className="w-1/2 pr-8">
-            <div data-section-id="education">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
-                Education
-              </h2>
-              {education.map((edu, index) => (
-                <div key={index} className="mb-4">
-                  <h3 className="font-semibold text-sm">{edu.degree}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {edu.schoolName}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {edu.schoolLocation}
-                  </p>
-                  <p className="text-muted-foreground text-sm">{`${edu.graduationDate.month} ${edu.graduationDate.year}`}</p>
-                </div>
-              ))}
+        <div className="grid grid-cols-12 gap-8">
+          {/* Left Column - Shorter */}
+          <div className="col-span-4 space-y-8">
+            {/* Summary */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">Summary</h2>
+              <p className="text-sm text-gray-700 leading-relaxed">{summary}</p>
             </div>
 
-            <div data-section-id="experience">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mt-8 mb-4 uppercase tracking-wide">
-                Experience
-              </h2>
-              {workHistory.map((work, index) => (
-                <div key={index} className="mb-4">
-                  <h3 className="font-semibold text-sm">{work.title}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {work.employer}
-                  </p>
-                  <p className="text-muted-foreground text-sm">{`${
-                    work.startDate.month
-                  } ${work.startDate.year} - ${
-                    work.endDate.current
-                      ? "Present"
-                      : `${work.endDate.month} ${work.endDate.year}`
-                  }`}</p>
-                  <p className="text-muted-foreground text-sm">
-                    {work.location} {work.remote ? "(Remote)" : ""}
-                  </p>
-                  {work.description && Array.isArray(work.description) && (
-                    <ul className="list-disc list-inside">
-                      {work.description.map((desc, idx) => (
-                        <li key={idx} className="text-muted-foreground text-sm">
-                          {desc}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div data-section-id="achievements">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mt-8 mb-4 uppercase tracking-wide">
-                Achievements
-              </h2>
-              {achievements.map((achievement, index) => (
-                <div key={index} className="mb-4">
-                  <h3 className="font-semibold text-sm">{achievement.title}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {achievement.date}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {achievement.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-1/2 pl-8">
-            <div data-section-id="summary">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
-                Summary
-              </h2>
-              <p className="mb-8 text-muted-foreground text-sm">{summary}</p>
-            </div>
-
-            <div data-section-id="skills">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
-                Skills
-              </h2>
-              <div className="grid grid-cols-2 gap-2 mb-8">
+            {/* Skills */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">Skills</h2>
+              <div className="grid grid-cols-2 gap-2">
                 {skills.map((skill, index) => (
-                  <p key={index} className="text-muted-foreground text-sm">
+                  <p key={index} className="text-sm text-gray-700">
                     {skill}
                   </p>
                 ))}
               </div>
             </div>
 
-            <div data-section-id="languages">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
+            {/* Languages */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">
                 Languages
               </h2>
-              <div className="grid grid-cols-2 gap-2 mb-8">
+              <div className="space-y-1">
                 {languages.map((language, index) => (
-                  <p key={index} className="text-muted-foreground text-sm">
-                    {language.name} - {language.proficiency}
+                  <p key={index} className="text-sm text-gray-700">
+                    {language.name} -{" "}
+                    <span className="text-gray-600">
+                      {language.proficiency}
+                    </span>
                   </p>
                 ))}
               </div>
             </div>
+          </div>
 
-            <div data-section-id="projects">
-              <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
-                Projects
+          {/* Right Column - Longer */}
+          <div className="col-span-8 space-y-8">
+            {/* Work Experience */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                Work Experience
               </h2>
-              {projects.map((project, index) => (
+              {workHistory.map((job, index) => (
+                <div key={index} className="mb-6">
+                  <div className="flex justify-between items-start mb-1">
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900">
+                        {job.title}
+                      </h3>
+                      <p className="text-sm text-gray-700">{job.employer}</p>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {job.startDate.month} {job.startDate.year} -{" "}
+                      {job.endDate.current
+                        ? "Present"
+                        : `${job.endDate.month} ${job.endDate.year}`}
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">{job.location}</p>
+                  <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                    {job.description.map((desc, idx) => (
+                      <li key={idx} className="leading-relaxed">
+                        {desc}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Education */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                Education
+              </h2>
+              {education.map((edu, index) => (
                 <div key={index} className="mb-4">
-                  <h3 className="font-semibold text-sm">{project.name}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {project.link}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {project.description}
-                  </p>
-                  {project.technologies && (
-                    <p className="text-muted-foreground text-sm mt-1">
-                      Technologies: {project.technologies.join(", ")}
+                  <div className="flex justify-between items-start mb-1">
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900">
+                        {edu.degree}
+                      </h3>
+                      <p className="text-sm text-gray-700">{edu.schoolName}</p>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {edu.graduationDate.month} {edu.graduationDate.year}
+                    </p>
+                  </div>
+                  {edu.fieldOfStudy && (
+                    <p className="text-sm text-gray-600">
+                      Field of Study: {edu.fieldOfStudy}
                     </p>
                   )}
                 </div>
               ))}
             </div>
 
-            {/* Add Custom Sections */}
+            {/* Projects */}
+            {projects && projects.length > 0 && (
+              <div>
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Projects
+                </h2>
+                {projects.map((project, index) => (
+                  <div key={index} className="mb-4">
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {project.name}
+                    </h3>
+                    <p className="text-sm text-gray-700 mb-2">
+                      {project.description}
+                    </p>
+                    {project.technologies && (
+                      <p className="text-sm text-gray-600">
+                        Technologies: {project.technologies.join(", ")}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Achievements */}
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                Achievements
+              </h2>
+              {achievements.map((achievement, index) => (
+                <div key={index} className="mb-4">
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {achievement.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">{achievement.date}</p>
+                  </div>
+                  <p className="text-sm text-gray-700">
+                    {achievement.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Custom Sections */}
             {customSections?.map((section: CustomSection, index: number) => (
-              <div
-                key={index}
-                data-section-id={`custom-${index}`}
-                className="mt-8"
-              >
-                <h2 className="text-xl font-bold border-b border-primary pb-2 mb-4 uppercase tracking-wide">
+              <div key={index}>
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
                   {section.title}
                 </h2>
-                {section.icon && (
-                  <span className="text-lg mr-2">{section.icon}</span>
-                )}
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-gray-700 mb-2">
                   {section.description}
                 </p>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-gray-600">
                   {section.startDate?.month} {section.startDate?.year} -{" "}
                   {section.endDate?.current
                     ? "Present"

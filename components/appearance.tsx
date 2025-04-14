@@ -14,29 +14,21 @@ export default function Appearance() {
           <LightModeCard active={theme === "light"} />
           <span className="mt-2  text-muted-foreground text-sm">Light</span>
         </button>
-        <button type="button" className="cursor-not-allowed opacity-50">
-          <div className="relative">
-            <DarkModeCard active={false} />
-            <span className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-1 py-0.5 rounded">
-              Soon
-            </span>
-          </div>
+        <button type="button" onClick={() => setTheme("dark")}>
+          <DarkModeCard active={theme === "dark"} />
           <span className="mt-2  text-muted-foreground text-sm">Dark</span>
         </button>
-        <button type="button" className="cursor-not-allowed opacity-50">
+        <button type="button" onClick={() => setTheme("system")}>
           <div className="relative">
-            <LightModeCard active={false} />
+            <LightModeCard active={theme === "system"} />
             <div
               className="absolute top-0 right-0 bottom-0 left-0"
               style={{
                 clipPath: "polygon(100% 0, 0 0, 100% 100%)",
               }}
             >
-              <DarkModeCard active={false} />
+              <DarkModeCard active={theme === "system"} />
             </div>
-            <span className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-1 py-0.5 rounded">
-              Soon
-            </span>
           </div>
           <span className="mt-2  text-muted-foreground text-sm">System</span>
         </button>

@@ -153,35 +153,37 @@ export const Sidebar = ({ setOpen, session }: SidebarProps) => {
 
       <div className="mt-auto">
         <Separator className="my-2" />
-        <div className="flex items-center gap-3 p-3">
-          <Avatar className="size-8 border border-primary">
-            <AvatarImage src={session?.user?.image || ""} />
-            <AvatarFallback className="text-sm">
-              {session?.user?.name?.charAt(0) || "U"}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">
-              {session?.user?.name || "User"}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {session?.user?.email || ""}
-            </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 p-3">
+            <Avatar className="size-8 border border-primary">
+              <AvatarImage src={session?.user?.image || ""} />
+              <AvatarFallback className="text-sm">
+                {session?.user?.name?.charAt(0) || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">
+                Hi, {session?.user?.name || "User"}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {session?.user?.email}
+              </span>
+            </div>
+          </div>
+          <div className="px-3 pb-3">
+            <ModeToggle />
           </div>
         </div>
-        {/* <div className="px-3 pb-3">
-          <ModeToggle />
-        </div> */}
 
         <Separator className="my-2" />
         <div className="px-3 pb-3 space-y-2">
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground">
             Licensed under <span className="font-extrabold underline">MIT</span>
           </p>
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground">
             By the community, for the community
           </p>
-          <p className="text-xs text-muted-foreground  text-center">
+          <p className="text-xs text-muted-foreground ">
             A passion project by{" "}
             <Link
               href="https://github.com/laysskheir"
@@ -192,7 +194,7 @@ export const Sidebar = ({ setOpen, session }: SidebarProps) => {
               {siteConfig.auther}
             </Link>
           </p>
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground">
             {siteConfig.name} v1.0.0
           </p>
         </div>

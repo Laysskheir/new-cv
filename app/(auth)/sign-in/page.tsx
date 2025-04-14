@@ -1,9 +1,18 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-
-import { ArrowLeft } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Loader,
+  Lock,
+  Shield,
+  Users,
+} from "lucide-react";
+import { useFormState, useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,70 +29,112 @@ import Logo from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { customSignIn, signIn } from "@/lib/auth-client";
+import { signInAction } from "@/actions/signIn";
 import { PasswordInput } from "@/components/ui/password-input";
-import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth-client";
+import CustomAlert from "@/components/ui/custom-alert";
+
+const initialState = {
+  errors: {},
+  message: "",
+  isDatabaseError: false,
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" className="w-full" disabled={pending} size="lg">
+      {pending ? (
+        <>
+          <Loader className="mr-2 h-4 w-4 animate-spin" />
+          Signing in...
+        </>
+      ) : (
+        "Sign in"
+      )}
+    </Button>
+  );
+}
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [state, formAction] = useFormState(signInAction, initialState);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isGithubLoading, setIsGithubLoading] = useState(false);
+
+  const router = useRouter();
   const { toast } = useToast();
 
-  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await customSignIn(email, password);
-      toast({
-        title: "Welcome!",
-        description: "You have successfully signed in.",
-      });
-    } catch (error) {
-      toast({
-        title: "Sign-in failed",
-        description:
-          error instanceof Error ? error.message : "An unknown error occurred",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (state.message) {
+      if (!state.errors && !state.isDatabaseError) {
+        toast({
+          title: "Success",
+          description: state.message,
+          duration: 1500,
+        });
+        router.push("/dashboard");
+      } else if (!state.isDatabaseError) {
+        toast({
+          title: "Error",
+          description: state.message,
+          variant: "destructive",
+        });
+      }
     }
-  };
+  }, [state, toast, router]);
 
   return (
     <div className="min-h-screen flex">
-      <div className="flex-1 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <div className="flex justify-center">
-              <Logo showText={false} className="h-10 w-10" />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <Card className="w-full max-w-lg">
+          <CardHeader>
+            <div className="w-full space-y-1">
+              <CardTitle className="text-2xl font-bold">
+                Sign in to your account
+              </CardTitle>
+              <CardDescription className="flex items-center">
+                Don't have an account?
+                <Link
+                  href="/sign-up"
+                  className="font-medium ml-1 text-primary hover:underline transition-colors flex items-center"
+                >
+                  Create one now <ArrowRight className="ml-1 h-3 w-3" />
+                </Link>
+              </CardDescription>
+              <CardDescription className="text-muted-foreground">
+                {state.errors && Object.keys(state.errors).length > 0 && (
+                  <CustomAlert message="Please correct the errors below" />
+                )}
+                {state.isDatabaseError && (
+                  <CustomAlert message={state.message} />
+                )}
+              </CardDescription>
             </div>
-            <CardTitle className="text-3xl font-bold text-center">
-              Sign in to your account
-            </CardTitle>
-            <CardDescription className="text-center text-muted-foreground">
-              Enter your credentials to access your account
-            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4" onSubmit={handleSignIn}>
+            <form className="space-y-4" action={formAction}>
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">
                   Email
                 </Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  value={email}
+                  className={cn(state.errors?.email && "border-destructive")}
                 />
+                {state.errors?.email && (
+                  <p className="text-sm text-destructive">
+                    {state.errors.email}
+                  </p>
+                )}
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between">
@@ -92,18 +143,23 @@ export default function SignIn() {
                   </Label>
                   <Link
                     href="/forgot-password"
-                    className="text-sm text-primary hover:underline"
+                    className="text-sm text-primary hover:underline transition-colors"
                   >
                     Forgot password?
                   </Link>
                 </div>
                 <PasswordInput
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="password"
-                  placeholder="Password"
+                  name="password"
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  className={cn(state.errors?.password && "border-destructive")}
                 />
+                {state.errors?.password && (
+                  <p className="text-sm text-destructive">
+                    {state.errors.password}
+                  </p>
+                )}
 
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -111,20 +167,16 @@ export default function SignIn() {
                     checked={rememberMe}
                     onCheckedChange={(checked) => setRememberMe(!!checked)}
                   />
-                  <Label htmlFor="remember">Remember me</Label>
+                  <Label htmlFor="remember" className="text-sm">
+                    Remember me
+                  </Label>
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  "Sign in"
-                )}
-              </Button>
+              <SubmitButton />
             </form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="relative">
+            <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-muted" />
               </div>
@@ -137,46 +189,63 @@ export default function SignIn() {
             <div className="grid grid-cols-2 gap-4 w-full">
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full hover:bg-muted transition-colors"
+                disabled={!!(state.message && !state.errors) || isGoogleLoading}
                 onClick={async () => {
-                  await signIn.social({
-                    provider: "google",
-                    callbackURL: "/",
-                  });
+                  setIsGoogleLoading(true);
+                  try {
+                    await signIn.social({
+                      provider: "google",
+                      callbackURL: "/",
+                    });
+                  } finally {
+                    setIsGoogleLoading(false);
+                  }
                 }}
               >
-                <Icons.google className="mr-2 h-4 w-4" />
+                {isGoogleLoading ? (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Icons.google className="mr-2 h-4 w-4" />
+                )}
                 Google
               </Button>
               <Button
                 variant="outline"
-                className="w-full"
-                onClick={async () =>
-                  signIn.social({
-                    provider: "github",
-                    callbackURL: "/",
-                  })
-                }
+                className="w-full hover:bg-muted transition-colors"
+                disabled={!!(state.message && !state.errors) || isGithubLoading}
+                onClick={async () => {
+                  setIsGithubLoading(true);
+                  try {
+                    await signIn.social(
+                      {
+                        provider: "github",
+                        callbackURL: "/",
+                      },
+                      {
+                        onRequest(context) {},
+                        onError(context) {},
+                        onSuccess() {},
+                      }
+                    );
+                  } finally {
+                    setIsGithubLoading(false);
+                  }
+                }}
               >
-                <Icons.gitHub className="mr-2 h-4 w-4" />
+                {isGithubLoading ? (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Icons.gitHub className="mr-2 h-4 w-4" />
+                )}
                 GitHub
               </Button>
             </div>
-            <div className="text-center text-sm">
-              <span className="text-muted-foreground">
-                Don't have an account?{" "}
-              </span>
-              <Link
-                href="/sign-up"
-                className="font-medium text-primary hover:underline"
-              >
-                Sign up
-              </Link>
-            </div>
+
             <div className="text-sm text-center">
               <Link
                 href="/"
-                className="text-muted-foreground hover:text-primary hover:underline flex items-center justify-center"
+                className="text-muted-foreground hover:text-primary hover:underline transition-colors flex items-center justify-center"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
               </Link>
@@ -186,24 +255,31 @@ export default function SignIn() {
       </div>
       <Separator orientation="vertical" className="hidden lg:block" />
       <div className="hidden lg:flex flex-1 items-center justify-center">
-        <div className="max-w-md text-center">
-          <h2 className="text-3xl font-bold mb-6">Unlock Your Account</h2>
-          <p className="text-xl mb-8">
-            Sign in to access your personalized dashboard and explore all the
-            features tailored to your needs.
-          </p>
-          <div className="flex items-center justify-center">
-            <img
-              src="https://github.com/shadcn.png"
-              alt="Rick Blalock"
-              className="h-12 w-12 rounded-full mr-4"
-            />
-            <div className="text-left">
-              <p className="font-semibold">Rick Blalock</p>
-              <p className="text-sm text-muted-foreground">
-                Cofounder/CTO onestudy.ai
-              </p>
+        <div className="max-w-md text-center space-y-8 p-8">
+          <div className="space-y-4">
+            <h2 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+              Welcome Back
+            </h2>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Sign in to continue your journey and access your professional
+              profile.
+            </p>
+          </div>
+          <div className="flex flex-col items-center space-y-4">
+            <div className="flex space-x-4">
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+                <Users className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+                <Icons.settings className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+                <Lock className="h-5 w-5 text-primary-foreground" />
+              </div>
             </div>
+            <p className="text-sm text-muted-foreground">
+              Secure, Fast, and Reliable
+            </p>
           </div>
         </div>
       </div>

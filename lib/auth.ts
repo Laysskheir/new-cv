@@ -4,45 +4,63 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { headers } from "next/headers";
+import { siteConfig } from "@/config/site";
 
 export const auth = betterAuth({
+  appName: siteConfig.name,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  minPasswordLength: 8,
+  maxPasswordLength: 128,
+  autoSignIn: true,
+  accountLinking: {
+    enabled: true,
+    trustedProviders: ["google", "github", "email-password"],
+    allowDifferentEmails: false,
+  },
   user: {
     additionalFields: {
       onboardingCompleted: {
         type: "boolean",
       },
     },
+    deleteUser: {
+      enabled: true,
+    },
   },
-
   session: {
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60, // Cache duration in seconds
-      expiresIn: 60 * 60 * 24 * 7, // 7 days
-      updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
     },
   },
-
+  onAPIError: {
+    errorURL: "/auth/error",
+  },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/google`,
     },
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/github`,
     },
   },
   emailAndPassword: {
     enabled: true,
   },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify",
+  },
 });
 
 export async function getServerSession() {
-  "use server";
   const session = await auth.api.getSession({
     headers: headers(),
   });
@@ -50,11 +68,8 @@ export async function getServerSession() {
 }
 
 export async function getActiveSessions() {
-  "use server";
   const activeSessions = await auth.api.listSessions({
     headers: headers(),
   });
   return activeSessions;
 }
-
-

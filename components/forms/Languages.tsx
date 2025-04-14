@@ -1,7 +1,7 @@
 // forms/languages.tsx
 "use client";
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import {
   Card,
@@ -13,34 +13,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
-import { TemplateProps } from "@/types/resume";
+import { TemplateProps, FormVisibility } from "@/types/resume";
 
-interface FormVisibility {
-  skills: boolean;
-  education: boolean;
-  workHistory: boolean;
-  projects: boolean;
-  summary: boolean;
-  personalDetails: boolean;
-  languages: boolean;
-  customSections: boolean;
-}
+export function LanguagesForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (newState: TemplateProps) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (visibility: FormVisibility) => void;
-}
-
-const Languages = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleAddLanguage = () => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       languages: [
         ...(prevState.languages || []),
@@ -54,7 +34,7 @@ const Languages = ({
     field: "name" | "proficiency",
     value: string
   ) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       languages:
         prevState.languages?.map((lang, i) =>
@@ -64,21 +44,24 @@ const Languages = ({
   };
 
   const deleteLanguage = (index: number) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       languages: prevState.languages?.filter((_, i) => i !== index) || [],
     }));
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility((prev) => ({ ...prev, languages: !prev.languages }));
+    setFormVisibility((prev: FormVisibility) => ({
+      ...prev,
+      languages: !prev.languages,
+    }));
   };
 
   return (
     <Card id="languages" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">What languages do you speak?</div>
+          <div className="flex items-center">Languages</div>
           <Button
             onClick={toggleFormVisibility}
             size="sm"
@@ -106,7 +89,7 @@ const Languages = ({
                 <Button
                   size="icon"
                   variant="outline"
-                  className="absolute  left-2 top-1/2 size-8 -translate-y-1/2"
+                  className="absolute left-2 top-1/2 size-8 -translate-y-1/2"
                 >
                   <Icons.globe className="w-4 h-4" />
                 </Button>
@@ -148,6 +131,4 @@ const Languages = ({
       )}
     </Card>
   );
-};
-
-export default Languages;
+}

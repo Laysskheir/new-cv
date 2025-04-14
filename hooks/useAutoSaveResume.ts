@@ -1,7 +1,7 @@
 // hooks/useAutoSaveResume.ts
 "use client";
 
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import { useEffect, useCallback } from "react";
 import { debounce } from "lodash";
 import { resumeStateAtom } from "@/state/resumeAtoms";

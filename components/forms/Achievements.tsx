@@ -1,7 +1,7 @@
 // forms/archievemnst.tsx
 "use client";
 import React from "react";
-import { useAtom } from "jotai";
+import { useAtom } from "@/state/store";
 import {
   Card,
   CardContent,
@@ -14,38 +14,19 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
-import { TemplateProps } from "@/types/resume";
+import { TemplateProps, FormVisibility, Achievement } from "@/types/resume";
+import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 
-interface FormVisibility {
-  skills: boolean;
-  education: boolean;
-  workHistory: boolean;
-  projects: boolean;
-  summary: boolean;
-  personalDetails: boolean;
-  languages: boolean;
-  customSections: boolean;
-}
+export function AchievementsForm() {
+  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
+  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (newState: TemplateProps) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (visibility: FormVisibility) => void;
-}
-
-const Achievements = ({
-  resumeState,
-  setResumeState,
-  formVisibility,
-  setFormVisibility,
-}: TypesProps) => {
   const handleInputChange = (
     index: number,
-    field: keyof (typeof resumeState.achievements)[0],
+    field: keyof Achievement,
     value: string
   ) => {
-    setResumeState((prevState) => {
+    setResumeState((prevState: TemplateProps) => {
       const updatedAchievements = prevState.achievements.map(
         (achievement, i) => {
           if (i === index) {
@@ -65,7 +46,7 @@ const Achievements = ({
   };
 
   const handleAddAchievement = () => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       achievements: [
         ...prevState.achievements,
@@ -79,16 +60,16 @@ const Achievements = ({
   };
 
   const deleteAchievement = (index: number) => {
-    setResumeState((prevState) => ({
+    setResumeState((prevState: TemplateProps) => ({
       ...prevState,
       achievements: prevState.achievements.filter((_, i) => i !== index),
     }));
   };
 
   const toggleFormVisibility = () => {
-    setFormVisibility((prev) => ({
+    setFormVisibility((prev: FormVisibility) => ({
       ...prev,
-      achievements: !prev.achievements,
+      projects: !prev.projects, // Using projects visibility for achievements
     }));
   };
 
@@ -96,29 +77,27 @@ const Achievements = ({
     <Card id="achievements" className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg font-semibold">
-          <div className="flex items-center">
-            Tell us about your achievements
-          </div>
+          <div className="flex items-center">Achievements</div>
           <Button
             onClick={toggleFormVisibility}
             size="sm"
             variant="link"
             className="ml-2"
           >
-            {formVisibility.achievements ? (
+            {formVisibility.projects ? (
               <Icons.eye className="w-5 h-5" />
             ) : (
               <Icons.eyeoff className="w-5 h-5" />
             )}
           </Button>
         </CardTitle>
-        {formVisibility.achievements && (
+        {formVisibility.projects && (
           <CardDescription>
             Highlight your key achievements and accomplishments.
           </CardDescription>
         )}
       </CardHeader>
-      {formVisibility.achievements && (
+      {formVisibility.projects && (
         <CardContent>
           {resumeState.achievements.map((achievement, index) => (
             <div key={index} className="mt-4 pb-4 space-y-4">
@@ -169,6 +148,4 @@ const Achievements = ({
       )}
     </Card>
   );
-};
-
-export default Achievements;
+}

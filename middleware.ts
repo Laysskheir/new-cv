@@ -1,49 +1,30 @@
-//middleware.ts
-
-const protectedRoutes = ["/dashboard", "/editor"];
-const authRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
-
+import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
-import { prisma } from "@/lib/prisma";
+import type { Session } from "./lib/auth-types";
 
 export async function middleware(request: NextRequest) {
-  const cookies = getSessionCookie(request);
-  const { pathname } = request.nextUrl;
-
-  // Handle auth routes
-  // if (authRoutes.some((route) => pathname.startsWith(route))) {
-  //   if (cookies) {
-  //     return NextResponse.redirect(new URL("/dashboard", request.url));
-  //   }
-  //   return NextResponse.next();
-  // }
-
-  // Handle protected routes
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    if (!cookies) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+  const { data: session } = await betterFetch<Session>(
+    "/api/auth/get-session",
+    {
+      baseURL: request.nextUrl.origin,
+      headers: {
+        cookie: request.headers.get("cookie") || "",
+      },
     }
+  );
 
-    // Check if user has completed onboarding
-    const session = await prisma.session.findUnique({
-      where: { token: cookies },
-      include: { user: true },
-    });
-
-    if (session?.user && !session.user.onboardingCompleted) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
+  if (!session?.user) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
+
+  // const isAdminPage = request.nextUrl.pathname.startsWith("/admin");
+  // if (isAdminPage && session.user.role !== "ADMIN") {
+  //     return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/sign-in",
-    "/sign-up",
-    "/forgot-password",
-    "/onboarding",
-  ],
+  matcher: ["/onboarding", "/dashboard/:path*"],
 };

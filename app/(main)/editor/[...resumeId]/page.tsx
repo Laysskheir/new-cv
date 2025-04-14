@@ -2,15 +2,15 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import Achievements from "@/components/forms/Achievements";
-import CustomSection from "@/components/forms/CustomSection";
-import Education from "@/components/forms/Education";
-import Heading from "@/components/forms/Heading";
-import Languages from "@/components/forms/Languages";
-import Projects from "@/components/forms/Projects";
-import Skills from "@/components/forms/Skills";
-import Summary from "@/components/forms/Summary";
-import WorkHistory from "@/components/forms/WorkHistory";
+import { AchievementsForm } from "@/components/forms/Achievements";
+import { CustomSectionForm } from "@/components/forms/CustomSection";
+import { EducationForm } from "@/components/forms/Education";
+import { HeadingForm } from "@/components/forms/Heading";
+import { LanguagesForm } from "@/components/forms/Languages";
+import { ProjectsForm } from "@/components/forms/Projects";
+import { SkillsForm } from "@/components/forms/Skills";
+import { SummaryForm } from "@/components/forms/Summary";
+import { WorkHistoryForm } from "@/components/forms/WorkHistory";
 import { Mockup } from "@/components/mockup";
 import PreviewButton from "@/components/preview-button";
 import { ThemeWrapper } from "@/components/themes/theme-wrapper";
@@ -18,10 +18,9 @@ import { LeftSidebar } from "../_components/left-sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AutoSaveResumeWrapper } from "@/config/AutoSaveResumeWrapper";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
-import { useAtom } from "jotai";
-import { motion, AnimatePresence } from "framer-motion";
+import { useAtom } from "@/state/store";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Eye, EyeSlash } from "@phosphor-icons/react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TemplateProps } from "@/types/resume";
 
@@ -120,7 +119,7 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
               >
                 {isPreviewVisible ? (
                   <>
-                    <EyeSlash size={16} />
+                    <EyeOff size={16} />
                     <span>Hide Preview</span>
                   </>
                 ) : (
@@ -137,87 +136,28 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
             ref={containterRef}
             className="h-[calc(100vh-5rem)] w-full flex flex-col gap-5 pb-20"
           >
-            {/* Pass resumeState and setResumeState as props */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="pt-0 max-w-3xl mx-auto w-full"
-            >
-              <Heading
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Summary
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <WorkHistory
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Education
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Projects
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Achievements
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Skills
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <Languages
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-              <CustomSection
-                resumeState={resumeState}
-                setResumeState={setResumeState}
-                formVisibility={formVisibility}
-                setFormVisibility={setFormVisibility}
-              />
-            </motion.div>
+            <div className="pt-0 max-w-3xl mx-auto w-full">
+              <HeadingForm />
+              <SummaryForm />
+              <WorkHistoryForm />
+              <EducationForm />
+              <ProjectsForm />
+              <AchievementsForm />
+              <SkillsForm />
+              <LanguagesForm />
+              <CustomSectionForm />
+            </div>
           </ScrollArea>
         </section>
 
         {/* Mockup Section */}
-        <AnimatePresence>
-          {isPreviewVisible && (
-            <motion.section
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 50 }}
-              transition={{ duration: 0.3 }}
-              className="hidden lg:flex items-center justify-center lg:pr-8 sticky top-0 h-screen"
-            >
-              <ThemeWrapper>
-                <Mockup />
-              </ThemeWrapper>
-            </motion.section>
-          )}
-        </AnimatePresence>
+        {isPreviewVisible && (
+          <section className="hidden lg:flex items-center justify-center lg:pr-8 sticky top-0 h-screen">
+            <ThemeWrapper>
+              <Mockup />
+            </ThemeWrapper>
+          </section>
+        )}
 
         {/* Mobile preview button */}
         <div className="lg:hidden fixed bottom-4 right-4 z-50">
@@ -225,42 +165,30 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
         </div>
 
         {/* Mobile preview drawer */}
-        <AnimatePresence>
-          {isMobilePreviewOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 lg:hidden"
-              onClick={toggleMobilePreview}
+        {isMobilePreviewOpen && (
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 lg:hidden">
+            <div
+              className="absolute bottom-0 left-0 right-0 h-[80vh] bg-background rounded-t-xl shadow-lg overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
             >
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute bottom-0 left-0 right-0 h-[80vh] bg-background rounded-t-xl shadow-lg overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-center justify-between p-4 border-b">
-                  <h3 className="font-semibold">Resume Preview</h3>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={toggleMobilePreview}
-                  >
-                    <ArrowLeft size={20} />
-                  </Button>
-                </div>
-                <div className="h-[calc(80vh-4rem)] overflow-auto p-4">
-                  <ThemeWrapper>
-                    <Mockup />
-                  </ThemeWrapper>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <div className="flex items-center justify-between p-4 border-b">
+                <h3 className="font-semibold">Resume Preview</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleMobilePreview}
+                >
+                  <ArrowLeft size={20} />
+                </Button>
+              </div>
+              <div className="h-[calc(80vh-4rem)] overflow-auto p-4">
+                <ThemeWrapper>
+                  <Mockup />
+                </ThemeWrapper>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </AutoSaveResumeWrapper>
   );
