@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import localFont from "next/font/local";
 import { JotaiProvider } from "@/state/store";
-import { useAtom } from "@/state/store";
 
 export const chillaxFont = localFont({
   src: "../public/fonts/chillax/Chillax-Regular.woff2",
