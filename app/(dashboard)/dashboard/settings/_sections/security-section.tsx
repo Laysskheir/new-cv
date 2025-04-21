@@ -16,7 +16,7 @@ import {
 import { signOut, client as authClient } from "@/lib/auth-client";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SecuritySection(props: { accounts: any[] }) {
   const { accounts } = props;
@@ -26,6 +26,7 @@ export default function SecuritySection(props: { accounts: any[] }) {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [revokeOtherSessions, setRevokeOtherSessions] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   // Check if user is using OAuth
   const isOAuthUser = !accounts.some((account) => account.provider === "email");
@@ -73,7 +74,7 @@ export default function SecuritySection(props: { accounts: any[] }) {
       toast({
         description: "Logged out successfully",
       });
-      redirect("/");
+      router.push("/");
     } catch (error) {
       toast({
         description: "Failed to logout",

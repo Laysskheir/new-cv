@@ -1,5 +1,6 @@
 //state/resumeAtoms.ts
 import { TemplateProps, FormVisibility } from "@/types/resume";
+import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 export const pageMarginsAtom = atomWithStorage("pageMargins", 2);
@@ -136,9 +137,32 @@ const defaultResumeData: TemplateProps = {
   customSections: [],
 };
 
-export const resumeStateAtom = atomWithStorage<TemplateProps>(
+// Add a new atom to track if data is loaded from DB
+export const isDataLoadedAtom = atom(false);
+
+// Create the storage atom outside the getter
+const storageAtom = atomWithStorage<TemplateProps>(
   "resumeState",
   defaultResumeData
+);
+
+// Modify the resumeStateAtom to work with both local storage and DB
+export const resumeStateAtom = atom(
+  (get) => {
+    const localData = get(storageAtom);
+    const isLoaded = get(isDataLoadedAtom);
+
+    // If data is loaded from DB, use that instead of local storage
+    if (isLoaded) {
+      return localData;
+    }
+    return defaultResumeData;
+  },
+  (get, set, newValue: TemplateProps) => {
+    // Update both local storage and the atom
+    set(storageAtom, newValue);
+    set(isDataLoadedAtom, true);
+  }
 );
 
 export const resumeTemplateAtom = atomWithStorage<string>(

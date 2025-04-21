@@ -34,13 +34,13 @@ export default function DangerZone(props: { accounts: any[] }) {
       if (isOAuthUser) {
         // For OAuth users, we don't need a password
         await authClient.deleteUser({
-          callbackURL: "/goodbye",
+          callbackURL: "/",
         });
       } else {
         // For email/password users, require password
         await authClient.deleteUser({
           password,
-          callbackURL: "/goodbye",
+          callbackURL: "/",
         });
       }
       toast({

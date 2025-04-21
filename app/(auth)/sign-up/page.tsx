@@ -76,7 +76,7 @@ export default function SignUp() {
           description: state.message,
           duration: 1500,
         });
-        router.push("/dashboard");
+        router.push("/dashboard/resumes");
       } else if (!state.isDatabaseError) {
         toast({
           title: "Error",
@@ -249,7 +249,7 @@ export default function SignUp() {
                   try {
                     await signIn.social({
                       provider: "google",
-                      callbackURL: "/dashboard",
+                      callbackURL: "/dashboard/resumes",
                     });
                   } finally {
                     setIsGoogleLoading(false);
@@ -276,7 +276,7 @@ export default function SignUp() {
                   try {
                     await signIn.social({
                       provider: "github",
-                      callbackURL: "/dashboard",
+                      callbackURL: "/dashboard/resumes",
                     });
                   } finally {
                     setIsGithubLoading(false);

@@ -25,7 +25,7 @@ export function Onboarding() {
 
   // Redirect to dashboard if onboarding is already completed
   if (session?.user?.onboardingCompleted) {
-    router.replace("/dashboard");
+    router.replace("/dashboard/resumes");
   }
 
   const handleCompleteOnboarding = async () => {
@@ -39,7 +39,7 @@ export function Onboarding() {
               description: "Onboarding completed successfully",
             });
             // Use replace instead of push to prevent going back to onboarding
-            router.replace("/dashboard");
+            router.replace("/dashboard/resumes");
           },
           onError: (error: any) => {
             toast({

@@ -21,10 +21,7 @@ export default async function ResumesPage() {
       <title>Resumes</title>
 
       <div className="space-y-4">
-
-        <ScrollArea className="h-[calc(100vh-140px)] lg:h-[calc(100vh-88px)]">
-          <GridView resumes={resumes || []} />
-        </ScrollArea>
+        <GridView resumes={resumes || []} />
       </div>
     </>
   );
