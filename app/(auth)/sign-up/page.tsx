@@ -24,7 +24,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
-import Logo from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -76,7 +75,7 @@ export default function SignUp() {
           description: state.message,
           duration: 1500,
         });
-        router.push("/dashboard/resumes");
+        router.push("/");
       } else if (!state.isDatabaseError) {
         toast({
           title: "Error",

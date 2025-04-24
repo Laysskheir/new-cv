@@ -77,7 +77,7 @@ export default function SignIn() {
           description: state.message,
           duration: 1500,
         });
-        router.push("/dashboard");
+        router.push("/");
       } else if (!state.isDatabaseError) {
         toast({
           title: "Error",
@@ -223,9 +223,9 @@ export default function SignIn() {
                         callbackURL: "/",
                       },
                       {
-                        onRequest(context) {},
-                        onError(context) {},
-                        onSuccess() {},
+                        onRequest(context) { },
+                        onError(context) { },
+                        onSuccess() { },
                       }
                     );
                   } finally {
