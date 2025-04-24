@@ -96,26 +96,26 @@ export default function ResumeCard({ resume }: Props) {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="rounded-full bg-primary/10 p-2 text-primary hover:bg-primary/20"
+                  className="rounded-full bg-primary/10 p-1.5 sm:p-2 text-primary hover:bg-primary/20"
                   aria-label="Open resume"
                 >
-                  <FolderOpen size={20} />
+                  <FolderOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.button>
               </motion.div>
 
               <motion.div
                 className={cn(
-                  "absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end space-y-0.5 p-4 pt-12",
+                  "absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end space-y-0.5 p-3 sm:p-4 pt-8 sm:pt-12",
                   "transition-transform duration-200 group-hover:translate-y-1"
                 )}
                 initial={{ y: 0 }}
                 animate={{ y: isHovered ? 4 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <h4 className="line-clamp-2 font-medium transition-colors group-hover:text-primary">
+                <h4 className="line-clamp-2 text-sm sm:text-base font-medium transition-colors group-hover:text-primary">
                   {resume.title}
                 </h4>
-                <p className="line-clamp-1 text-xs opacity-75">
+                <p className="line-clamp-1 text-[10px] sm:text-xs opacity-75">
                   Last updated{" "}
                   {formatDistanceToNow(new Date(resume.updatedAt), {
                     addSuffix: true,
@@ -126,19 +126,19 @@ export default function ResumeCard({ resume }: Props) {
           </motion.div>
         </ContextMenuTrigger>
 
-        <ContextMenuContent className="w-48">
+        <ContextMenuContent className="w-40 sm:w-48">
           <ContextMenuItem onSelect={() => onOpen()}>
-            <FolderOpen size={14} className="mr-2" />
+            <FolderOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-2" />
             Open
           </ContextMenuItem>
 
           <ContextMenuItem onSelect={() => handleAction("rename")}>
-            <PencilSimple size={14} className="mr-2" />
+            <PencilSimple className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-2" />
             Rename
           </ContextMenuItem>
 
           <ContextMenuItem onSelect={() => handleAction("duplicate")}>
-            <CopySimple size={14} className="mr-2" />
+            <CopySimple className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-2" />
             Duplicate
           </ContextMenuItem>
 
@@ -147,7 +147,7 @@ export default function ResumeCard({ resume }: Props) {
             onSelect={() => handleAction("delete")}
             className="text-destructive focus:text-destructive"
           >
-            <TrashSimple size={14} className="mr-2" />
+            <TrashSimple className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-2" />
             Delete
           </ContextMenuItem>
         </ContextMenuContent>

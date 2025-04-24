@@ -1,8 +1,8 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { GridView } from "./_components/grid";
+
 import { getServerSession } from "@/lib/auth";
 import { getAllResumes } from "@/actions/resume/getAllResumes";
-
+import { Suspense } from "react";
+import { ResumeView } from "./_components/resume-view";
 export default async function ResumesPage() {
   const session = await getServerSession();
 
@@ -17,12 +17,10 @@ export default async function ResumesPage() {
   }
 
   return (
-    <>
-      <title>Resumes</title>
-
-      <div className="space-y-4">
-        <GridView resumes={resumes || []} />
-      </div>
-    </>
+    <div className="space-y-6">
+      <Suspense fallback={<div>Loading...</div>}>
+        <ResumeView initialResumes={resumes || []} />
+      </Suspense>
+    </div>
   );
 }

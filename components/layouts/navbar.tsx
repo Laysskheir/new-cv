@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 import { AppMenu } from "../modals/app-menu";
 import { TemplatesPopper } from "../modals/templates-popper";
-import Logo from "../logo";
 import { FeedbackModal } from "../modals/feedback-modal";
 import { Icons } from "../icons";
 import { useAtom } from "@/state/store";
@@ -22,6 +21,7 @@ import DownloadButton from "../download-button";
 import { HouseSimple } from "@phosphor-icons/react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Logo from "../logo";
 
 export default function Navbar() {
   const [resumeData] = useAtom(resumeStateAtom);
@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Left section - Logo and Desktop Navigation */}
           <div className="flex items-center gap-4">
-            <Logo className="hidden md:block" />
+            <Logo showText={false} className="hidden md:block" />
             <nav className="hidden md:flex items-center gap-2">
               <TemplatesPopper>Template</TemplatesPopper>
               <ThemePopper>Theme</ThemePopper>
@@ -97,7 +97,7 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col gap-4 py-4">
-                  <Logo />
+                  <Logo  />
                   <nav className="flex flex-col gap-2">
                     <TemplatesPopper>Template</TemplatesPopper>
                     <ThemePopper>Theme</ThemePopper>

@@ -15,11 +15,11 @@ interface ResumeProps {
 export const GridView = ({ resumes, isLoading = false }: ResumeProps) => {
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-9 w-48" />
+          <Skeleton className="h-7 sm:h-9 w-32 sm:w-48" />
         </div>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {[...Array(8)].map((_, i) => (
             <motion.div
               key={i}
@@ -27,7 +27,7 @@ export const GridView = ({ resumes, isLoading = false }: ResumeProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
-              <Skeleton className="h-[200px] w-full rounded-lg" />
+              <Skeleton className="h-[180px] sm:h-[200px] w-full rounded-lg" />
             </motion.div>
           ))}
         </div>
@@ -40,14 +40,10 @@ export const GridView = ({ resumes, isLoading = false }: ResumeProps) => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Resumes</h1>
-      </div>
-
+    <div className="space-y-4 sm:space-y-6">
       <div
         role="grid"
-        className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <motion.div
           role="gridcell"

@@ -70,7 +70,7 @@ export default function Hero({ className }: { className?: string }) {
                   client.signOut();
                 }}
               >
-                <Icons.fingerprint className="w-4 h-4 mr-2" />
+                <Icons.fingerprint className="w-4 h-4" />
                 Logout
               </Button>
             ) : (
@@ -95,9 +95,9 @@ export default function Hero({ className }: { className?: string }) {
         </nav>
       </motion.header>
 
-      <motion.div className="relative max-w-2xl" variants={itemVariants}>
+      <motion.div className="relative max-w-2xl w-full" variants={itemVariants}>
         <motion.h1
-          className="text-3xl md:text-4xl lg:text-5xl font-semibold text-start text-primary-foreground leading-tight mb-6"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-start text-primary-foreground leading-tight mb-6"
           variants={itemVariants}
         >
           Craft your career's
@@ -106,8 +106,8 @@ export default function Hero({ className }: { className?: string }) {
           <span className="text-secondary/30 ml-2">work of art</span>
         </motion.h1>
 
-        <motion.div>
-          <Button variant="secondary" size="lg" asChild>
+        <motion.div className="w-full sm:w-auto">
+          <Button variant="secondary" size="lg" asChild className="w-full sm:w-auto">
             <Link href="/dashboard/resumes">
               {session?.session ? "Go to Dashboard" : "Let's Start"}
             </Link>

@@ -2,7 +2,7 @@
 import { Plus, List } from "@phosphor-icons/react";
 import { RefObject, useState, useEffect } from "react";
 import { SectionIcon } from "./section-icon";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";

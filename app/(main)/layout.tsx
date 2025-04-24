@@ -1,4 +1,3 @@
-import Navbar from "@/components/layouts/navbar";
 import dynamic from "next/dynamic";
 
 export default function MainLayout({

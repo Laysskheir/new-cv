@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 
 interface LogoProps {
   className?: string;
@@ -9,19 +10,26 @@ interface LogoProps {
 
 export default function Logo({ className, showText = true }: LogoProps) {
   return (
-    <Link
-      href="/"
-      className="flex items-center gap-2 font-semibold transition-colors hover:text-primary"
-    >
-      <div className="w-8 h-8 bg-gradient-to-br from-primary-foreground via-white/50  to-gray-500 rounded-md shadow-md flex items-center justify-center">
-        <span className="text-priamry font-bold">-.-</span>
+    <Link href="/" className={cn("flex items-center gap-2", className)}>
+      <div className="relative w-10 h-10">
+        <Image
+          src={siteConfig.logo.light}
+          alt={siteConfig.logo.alt}
+          fill
+          className="object-contain dark:hidden"
+          priority
+        />
+        <Image
+          src={siteConfig.logo.dark}
+          alt={siteConfig.logo.alt}
+          fill
+          className="object-contain hidden dark:block"
+          priority
+        />
       </div>
-
       {showText && (
-        <span
-          className={cn("hidden font-bold lg:inline-block", className)}
-        >
-          new/cv
+        <span className={cn("font-semibold text-lg hidden sm:inline-block", className)}>
+          {siteConfig.name}
         </span>
       )}
     </Link>

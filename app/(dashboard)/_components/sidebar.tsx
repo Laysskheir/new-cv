@@ -136,7 +136,6 @@ export const Sidebar = ({ setOpen, session }: SidebarProps) => {
         <Button asChild size="icon" variant="ghost" className="size-8 p-0">
           <Logo showText={false} className="mx-auto hidden lg:block" />
         </Button>
-        <h1 className="ml-2 text-base font-semibold">{siteConfig.name}</h1>
       </div>
 
       <Separator className="my-2" />
@@ -191,7 +190,7 @@ export const Sidebar = ({ setOpen, session }: SidebarProps) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {siteConfig.auther}
+              {siteConfig.author}
             </Link>
           </p>
           <p className="text-xs text-muted-foreground">

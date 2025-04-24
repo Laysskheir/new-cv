@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
-import { useSession } from "@/lib/auth-client";
-import { user } from "@/lib/auth-client";
+import { useSession, client } from "@/lib/auth-client";
 import { useToast } from "@/components/ui/use-toast";
 import { Intro } from "./intro";
 import SelectResume from "./select-resume ";
@@ -31,21 +30,20 @@ export function Onboarding() {
   const handleCompleteOnboarding = async () => {
     try {
       setIsCompleting(true);
-      await user.update({
+      await client.updateUser({
         onboardingCompleted: true,
-        fetchOptions: {
-          onSuccess: () => {
-            toast({
-              description: "Onboarding completed successfully",
-            });
-            // Use replace instead of push to prevent going back to onboarding
-            router.replace("/dashboard/resumes");
-          },
-          onError: (error: any) => {
-            toast({
-              description: error.error.message,
-            });
-          },
+      }, {
+        onSuccess: () => {
+          toast({
+            description: "Onboarding completed successfully",
+          });
+          // Use replace instead of push to prevent going back to onboarding
+          router.replace("/dashboard/resumes");
+        },
+        onError: (error: any) => {
+          toast({
+            description: error.error.message,
+          });
         },
       });
     } catch (error) {
