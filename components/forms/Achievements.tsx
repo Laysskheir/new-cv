@@ -26,44 +26,39 @@ export function AchievementsForm() {
     field: keyof Achievement,
     value: string
   ) => {
-    setResumeState((prevState: TemplateProps) => {
-      const updatedAchievements = prevState.achievements.map(
-        (achievement, i) => {
-          if (i === index) {
-            return {
-              ...achievement,
-              [field]: value,
-            };
-          }
-          return achievement;
+    setResumeState({
+      ...resumeState,
+      achievements: resumeState.achievements.map((achievement, i) => {
+        if (i === index) {
+          return {
+            ...achievement,
+            [field]: value,
+          };
         }
-      );
-      return {
-        ...prevState,
-        achievements: updatedAchievements,
-      };
+        return achievement;
+      }),
     });
   };
 
   const handleAddAchievement = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       achievements: [
-        ...prevState.achievements,
+        ...resumeState.achievements,
         {
           title: "",
           description: "",
           date: "",
         },
       ],
-    }));
+    });
   };
 
   const deleteAchievement = (index: number) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      achievements: prevState.achievements.filter((_, i) => i !== index),
-    }));
+    setResumeState({
+      ...resumeState,
+      achievements: resumeState.achievements.filter((_, i) => i !== index),
+    });
   };
 
   const toggleFormVisibility = () => {
@@ -99,7 +94,7 @@ export function AchievementsForm() {
       </CardHeader>
       {formVisibility.projects && (
         <CardContent>
-          {resumeState.achievements.map((achievement, index) => (
+          {resumeState.achievements?.map((achievement, index) => (
             <div key={index} className="mt-4 pb-4 space-y-4">
               <div className="flex justify-between">
                 <Label className="font-bold italic">

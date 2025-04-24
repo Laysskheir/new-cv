@@ -17,10 +17,10 @@ export function SummaryForm() {
   const [resumeState, setResumeState] = useAtom(resumeStateAtom);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       summary: event.target.value,
-    }));
+    });
   };
 
   return (

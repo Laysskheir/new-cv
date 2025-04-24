@@ -20,13 +20,13 @@ export function LanguagesForm() {
   const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
   const handleAddLanguage = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       languages: [
-        ...(prevState.languages || []),
+        ...(resumeState.languages || []),
         { name: "", proficiency: "" },
       ],
-    }));
+    });
   };
 
   const handleLanguageChange = (
@@ -34,20 +34,19 @@ export function LanguagesForm() {
     field: "name" | "proficiency",
     value: string
   ) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      languages:
-        prevState.languages?.map((lang, i) =>
-          i === index ? { ...lang, [field]: value } : lang
-        ) || [],
-    }));
+    setResumeState({
+      ...resumeState,
+      languages: resumeState.languages?.map((lang, i) =>
+        i === index ? { ...lang, [field]: value } : lang
+      ) || [],
+    });
   };
 
   const deleteLanguage = (index: number) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      languages: prevState.languages?.filter((_, i) => i !== index) || [],
-    }));
+    setResumeState({
+      ...resumeState,
+      languages: resumeState.languages?.filter((_, i) => i !== index) || [],
+    });
   };
 
   const toggleFormVisibility = () => {

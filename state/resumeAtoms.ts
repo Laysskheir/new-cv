@@ -154,7 +154,17 @@ export const resumeStateAtom = atom(
 
     // If data is loaded from DB, use that instead of local storage
     if (isLoaded) {
-      return localData;
+      return {
+        ...defaultResumeData,
+        ...localData,
+        workHistory: localData.workHistory || defaultResumeData.workHistory,
+        projects: localData.projects || defaultResumeData.projects,
+        education: localData.education || defaultResumeData.education,
+        achievements: localData.achievements || defaultResumeData.achievements,
+        skills: localData.skills || defaultResumeData.skills,
+        languages: localData.languages || defaultResumeData.languages,
+        customSections: localData.customSections || defaultResumeData.customSections,
+      };
     }
     return defaultResumeData;
   },

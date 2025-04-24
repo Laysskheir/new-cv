@@ -17,10 +17,10 @@ export function HeadingForm() {
   const [resumeState, setResumeState] = useAtom(resumeStateAtom);
 
   const handleInputChange = (field: keyof TemplateProps, value: string) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       [field]: value,
-    }));
+    });
   };
 
   return (

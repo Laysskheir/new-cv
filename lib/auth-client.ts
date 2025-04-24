@@ -15,18 +15,4 @@ export const client = createAuthClient({
   baseURL,
 });
 
-export const { signUp, signIn, signOut, useSession, user } = client;
-
-// export const customSignIn = async (email: string, password: string) => {
-//   try {
-//     const result = await signIn.email({
-//       email,
-//       password,
-//       callbackURL: "/",
-//     });
-//     return result;
-//   } catch (error) {
-//     console.error("Sign-in error:", error);
-//     throw error;
-//   }
-// };
+export const { signUp, signIn, signOut, useSession } = client;

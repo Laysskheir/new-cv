@@ -14,7 +14,6 @@ import { Button } from "../ui/button";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import { Label } from "../ui/label";
 import { Trash2 } from "lucide-react";
-import { Icons } from "../icons";
 import { TemplateProps, FormVisibility, WorkHistory } from "@/types/resume";
 
 export function WorkHistoryForm() {
@@ -29,42 +28,45 @@ export function WorkHistoryForm() {
       | string[]
       | { month: string; year: string; current?: boolean }
   ) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      workHistory: prevState.workHistory.map((job, i) => {
-        if (i === index) {
-          return {
-            ...job,
-            [field]: value,
-          };
-        }
-        return job;
-      }),
-    }));
+    const newWorkHistory = resumeState.workHistory.map((job, i) => {
+      if (i === index) {
+        return {
+          ...job,
+          [field]: value,
+        };
+      }
+      return job;
+    });
+    setResumeState({
+      ...resumeState,
+      workHistory: newWorkHistory,
+    });
   };
 
   const handleAddJob = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      workHistory: [
-        ...prevState.workHistory,
-        {
-          title: "",
-          employer: "",
-          location: "",
-          startDate: { month: "", year: "" },
-          endDate: { month: "", year: "", current: false },
-          description: [],
-        },
-      ],
-    }));
+    const newWorkHistory = [
+      ...resumeState.workHistory,
+      {
+        title: "",
+        employer: "",
+        location: "",
+        startDate: { month: "", year: "" },
+        endDate: { month: "", year: "", current: false },
+        description: [],
+      },
+    ];
+    setResumeState({
+      ...resumeState,
+      workHistory: newWorkHistory,
+    });
   };
 
   const deleteWorkEntry = (index: number) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      workHistory: prevState.workHistory.filter((_, i) => i !== index),
-    }));
+    const newWorkHistory = resumeState.workHistory.filter((_, i) => i !== index);
+    setResumeState({
+      ...resumeState,
+      workHistory: newWorkHistory,
+    });
   };
 
   const toggleFormVisibility = () => {
@@ -86,7 +88,7 @@ export function WorkHistoryForm() {
         <CardContent>
           {formVisibility.workHistory ? (
             <div className="space-y-4">
-              {resumeState.workHistory.map((job, index) => (
+              {resumeState.workHistory?.map((job, index) => (
                 <div key={index} className="space-y-4 border p-4 rounded-lg">
                   <div className="flex justify-between items-center">
                     <h3 className="font-medium">Job {index + 1}</h3>

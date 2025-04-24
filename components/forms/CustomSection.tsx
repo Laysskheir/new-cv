@@ -35,10 +35,10 @@ export function CustomSectionForm() {
   const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
   const handleAddSection = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       customSections: [
-        ...prevState.customSections,
+        ...resumeState.customSections,
         {
           title: "",
           description: "",
@@ -50,7 +50,7 @@ export function CustomSectionForm() {
           includeDate: true,
         },
       ],
-    }));
+    });
   };
 
   const handleEditSection = (
@@ -58,9 +58,9 @@ export function CustomSectionForm() {
     field: keyof CustomSection,
     value: any
   ) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      customSections: prevState.customSections.map((section, i) => {
+    setResumeState({
+      ...resumeState,
+      customSections: resumeState.customSections.map((section, i) => {
         if (i === index) {
           return {
             ...section,
@@ -69,7 +69,7 @@ export function CustomSectionForm() {
         }
         return section;
       }),
-    }));
+    });
   };
 
   const handleEmojiClick = (index: number, emojiObject: any) => {
@@ -94,7 +94,7 @@ export function CustomSectionForm() {
       <CardContent>
         {formVisibility.customSections ? (
           <div className="space-y-4">
-            {resumeState.customSections.map((section, index) => (
+            {resumeState.customSections?.map((section, index) => (
               <div key={index} className="space-y-4 border p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <h3 className="font-medium">Section {index + 1}</h3>
@@ -102,12 +102,12 @@ export function CustomSectionForm() {
                     variant="ghost"
                     size="icon"
                     onClick={() => {
-                      setResumeState((prevState: TemplateProps) => ({
-                        ...prevState,
-                        customSections: prevState.customSections.filter(
+                      setResumeState({
+                        ...resumeState,
+                        customSections: resumeState.customSections.filter(
                           (_, i) => i !== index
                         ),
-                      }));
+                      });
                     }}
                   >
                     <Trash2 className="h-4 w-4" />

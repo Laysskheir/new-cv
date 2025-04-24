@@ -16,7 +16,6 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
 import { TemplateProps, FormVisibility, Project } from "@/types/resume";
-import { Trash2 } from "lucide-react";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 
 export function ProjectsForm() {
@@ -28,40 +27,43 @@ export function ProjectsForm() {
     field: keyof Project,
     value: string | string[]
   ) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      projects: prevState.projects.map((project, i) => {
-        if (i === index) {
-          return {
-            ...project,
-            [field]: value,
-          };
-        }
-        return project;
-      }),
-    }));
+    const newProjects = resumeState.projects.map((project, i) => {
+      if (i === index) {
+        return {
+          ...project,
+          [field]: value,
+        };
+      }
+      return project;
+    });
+    setResumeState({
+      ...resumeState,
+      projects: newProjects,
+    });
   };
 
   const handleAddProject = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      projects: [
-        ...prevState.projects,
-        {
-          name: "",
-          description: "",
-          technologies: [],
-          link: "",
-        },
-      ],
-    }));
+    const newProjects = [
+      ...resumeState.projects,
+      {
+        name: "",
+        description: "",
+        technologies: [],
+        link: "",
+      },
+    ];
+    setResumeState({
+      ...resumeState,
+      projects: newProjects,
+    });
   };
 
   const deleteProject = (index: number) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      projects: prevState.projects.filter((_, i) => i !== index),
-    }));
+    const newProjects = resumeState.projects.filter((_, i) => i !== index);
+    setResumeState({
+      ...resumeState,
+      projects: newProjects,
+    });
   };
 
   const toggleFormVisibility = () => {
@@ -97,7 +99,7 @@ export function ProjectsForm() {
       </CardHeader>
       {formVisibility.projects && (
         <CardContent>
-          {resumeState.projects.map((project, index) => (
+          {resumeState.projects?.map((project, index) => (
             <div key={index} className="space-y-4">
               <div>
                 <Label>

@@ -31,9 +31,9 @@ export function EducationForm() {
     field: keyof (typeof resumeState.education)[0],
     value: string | { month: string; year: string }
   ) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      education: prevState.education.map((entry, i) => {
+    setResumeState({
+      ...resumeState,
+      education: resumeState.education.map((entry, i) => {
         if (i === index) {
           return {
             ...entry,
@@ -42,14 +42,14 @@ export function EducationForm() {
         }
         return entry;
       }),
-    }));
+    });
   };
 
   const handleAddEducation = () => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
+    setResumeState({
+      ...resumeState,
       education: [
-        ...prevState.education,
+        ...resumeState.education,
         {
           schoolName: "",
           schoolLocation: "",
@@ -58,14 +58,14 @@ export function EducationForm() {
           graduationDate: { month: "", year: "" },
         },
       ],
-    }));
+    });
   };
 
   const deleteEducation = (index: number) => {
-    setResumeState((prevState: TemplateProps) => ({
-      ...prevState,
-      education: prevState.education.filter((_, i) => i !== index),
-    }));
+    setResumeState({
+      ...resumeState,
+      education: resumeState.education.filter((_, i) => i !== index),
+    });
   };
 
   const toggleFormVisibility = () => {
@@ -86,7 +86,7 @@ export function EducationForm() {
       <CardContent>
         {formVisibility.education ? (
           <div className="space-y-4">
-            {resumeState.education.map((entry, index) => (
+            {resumeState.education?.map((entry, index) => (
               <div key={index} className="space-y-4 border p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <h3 className="font-medium">Education {index + 1}</h3>

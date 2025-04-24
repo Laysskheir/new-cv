@@ -51,7 +51,7 @@ const ElegantClassic: React.FC<TemplateProps> = ({
       {/* Work Experience - Most important section first */}
       <Section title="Professional Experience" className="mb-8">
         <div className="space-y-6">
-          {workHistory.map((job, index) => (
+          {workHistory?.map((job, index) => (
             <div key={index} className="pb-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
@@ -83,7 +83,7 @@ const ElegantClassic: React.FC<TemplateProps> = ({
       {/* Education */}
       <Section title="Education" className="mb-8">
         <div className="space-y-4">
-          {education.map((edu, index) => (
+          {education?.map((edu, index) => (
             <div key={index} className="flex justify-between items-start">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">

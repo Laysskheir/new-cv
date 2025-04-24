@@ -10,12 +10,12 @@ export function CVCreationSteps() {
       transition={{ duration: 0.5 }}
       className="relative max-w-7xl container"
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('/path-to-dotted-background.png')] opacity-20"></div>
+      <div className="absolute top-0 left-0 w-full h-full opacity-20"></div>
       <div className="relative z-10">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="text-sm py-2 px-4 rounded-full mb-4 md:mb-6 bg-primary text-primary-foreground shadow-md transition-transform duration-200"
+          className="text-sm py-2 px-4 rounded-full mb-4 md:mb-6 bg-primary text-primary-foreground transition-transform duration-200"
         >
           ⚡ How it works
         </motion.button>
