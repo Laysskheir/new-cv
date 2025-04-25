@@ -17,12 +17,11 @@ import { ThemeWrapper } from "@/components/themes/theme-wrapper";
 import { LeftSidebar } from "../_components/left-sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AutoSaveResumeWrapper } from "@/config/AutoSaveResumeWrapper";
-import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
-import { useAtom } from "@/state/store";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { TemplateProps } from "@/types/resume";
+import ResumeTitleProvider from "../_components/resume-title-provider";
+
 
 interface FormVisibility {
   skills: boolean;
@@ -37,7 +36,7 @@ interface FormVisibility {
 
 
 
-export default function Editor({ params }: { params: { resumeId: string } }) {
+const EditorClient = ({ resumeId, children }: { resumeId: string; children: React.ReactNode }) => {
   const containterRef = useRef<HTMLDivElement | null>(null);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -88,7 +87,7 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
   };
 
   return (
-    <AutoSaveResumeWrapper resumeId={params.resumeId}>
+    <AutoSaveResumeWrapper resumeId={resumeId}>
       <main className="relative min-h-screen grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] bg-accent/10">
         {/* Left Sidebar */}
         <LeftSidebar containterRef={containterRef} />
@@ -183,5 +182,16 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
         )}
       </main>
     </AutoSaveResumeWrapper>
+  );
+};
+
+// Server component wrapper
+export default function Editor({ params }: { params: { resumeId: string } }) {
+  return (
+    <ResumeTitleProvider resumeId={params.resumeId}>
+      <EditorClient resumeId={params.resumeId}>
+        <div>Content</div>
+      </EditorClient>
+    </ResumeTitleProvider>
   );
 }

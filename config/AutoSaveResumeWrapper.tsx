@@ -4,9 +4,10 @@
 import { useAutoSaveResume } from "@/hooks/useAutoSaveResume";
 import { useAtom } from "@/state/store";
 import { resumeStateAtom, isDataLoadedAtom } from "@/state/resumeAtoms";
-import { useEffect, useRef } from "react";
-import { getResume } from "@/actions/resume/getResume";
+import { useEffect, useRef, useState } from "react";
+import { getResumeById } from "@/actions/resume/getResumeById";
 import { TemplateProps } from "@/types/resume";
+import { Loader2 } from "lucide-react";
 
 interface AutoSaveResumeWrapperProps {
   children: React.ReactNode;
@@ -19,6 +20,8 @@ export function AutoSaveResumeWrapper({
 }: AutoSaveResumeWrapperProps) {
   const [, setResumeState] = useAtom(resumeStateAtom);
   const [, setIsDataLoaded] = useAtom(isDataLoadedAtom);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const initialLoadRef = useRef(false);
   const resumeIdRef = useRef(resumeId);
 
@@ -27,16 +30,23 @@ export function AutoSaveResumeWrapper({
     const loadResumeData = async () => {
       if (initialLoadRef.current) return;
       initialLoadRef.current = true;
+      setIsLoading(true);
+      setError(null);
 
       try {
-        const result = await getResume(resumeIdRef.current);
+        const result = await getResumeById(resumeIdRef.current);
         if (result.success && result.resume) {
           const resumeData = result.resume.data as unknown as TemplateProps;
           setResumeState(resumeData);
           setIsDataLoaded(true);
+        } else {
+          setError(result.error || "Failed to load resume data");
         }
       } catch (error) {
+        setError("An unexpected error occurred while loading the resume");
         console.error("Failed to load resume data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,6 +55,22 @@ export function AutoSaveResumeWrapper({
 
   // Use the auto-save hook
   useAutoSaveResume(resumeIdRef.current);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

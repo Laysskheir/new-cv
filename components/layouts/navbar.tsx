@@ -23,7 +23,7 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Logo from "../logo";
 
-export default function Navbar() {
+export default function Navbar({ resumeTitle }: { resumeTitle: string }) {
   const [resumeData] = useAtom(resumeStateAtom);
   const [selectedTemplate] = useAtom(resumeTemplateAtom);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,7 +68,7 @@ export default function Navbar() {
               </Link>
             </Button>
             <span className="mr-2 text-xs opacity-40">{"/"}</span>
-            <h1 className="font-medium">title</h1>
+            <h1 className="font-medium">{resumeTitle}</h1>
           </div>
 
           {/* Right section - Actions */}
@@ -97,7 +97,7 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col gap-4 py-4">
-                  <Logo  />
+                  <Logo />
                   <nav className="flex flex-col gap-2">
                     <TemplatesPopper>Template</TemplatesPopper>
                     <ThemePopper>Theme</ThemePopper>

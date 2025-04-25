@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function getResume(resumeId: string | string[]) {
+export async function getResumeById(resumeId: string | string[]) {
   try {
     const id = Array.isArray(resumeId) ? resumeId[0] : resumeId;
 
@@ -13,8 +13,9 @@ export async function getResume(resumeId: string | string[]) {
     const resume = await prisma.resume.findUnique({
       where: { id },
       select: {
-        id: true,
-        data: true,
+          id: true,
+          data: true,
+          title: true,
       },
     });
 
