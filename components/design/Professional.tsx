@@ -30,7 +30,7 @@ const Professional: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <BaseTemplate className="bg-white w-full max-w-none m-0 p-8">
+    <div className="bg-white w-full max-w-none m-0 p-8">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold mb-1 text-gray-900">
@@ -97,10 +97,7 @@ const Professional: React.FC<TemplateProps> = ({
                         {job.employer} | {job.location}
                       </p>
                     </div>
-                    <DateRange
-                      startDate={job.startDate}
-                      endDate={job.endDate}
-                    />
+                    
                   </div>
                   <ul className="list-disc pl-6 mt-3 text-gray-700 space-y-2">
                     {job.description.map((responsibility, idx) => (
@@ -153,7 +150,7 @@ const Professional: React.FC<TemplateProps> = ({
           </Section>
         </div>
       </div>
-    </BaseTemplate>
+    </div>
   );
 };
 

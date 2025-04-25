@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowsIn,
-  ArrowsOut,
   Download,
   Printer,
   Eye,

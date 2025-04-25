@@ -3,13 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  AlertCircle,
   ArrowLeft,
   ArrowRight,
-  Check,
   Loader,
   Lock,
-  Shield,
   Users,
 } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -25,7 +22,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
-import Logo from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -70,21 +66,19 @@ export default function SignIn() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (state.message) {
-      if (!state.errors && !state.isDatabaseError) {
-        toast({
-          title: "Success",
-          description: state.message,
-          duration: 1500,
-        });
-        router.push("/");
-      } else if (!state.isDatabaseError) {
-        toast({
-          title: "Error",
-          description: state.message,
-          variant: "destructive",
-        });
-      }
+    if (state.message && !state.errors && !state.isDatabaseError) {
+      toast({
+        title: "Success",
+        description: state.message,
+        duration: 1500,
+      });
+      router.replace("/dashboard/resumes");
+    } else if (state.message && (state.errors || state.isDatabaseError)) {
+      toast({
+        title: "Error",
+        description: state.message,
+        variant: "destructive",
+      });
     }
   }, [state, toast, router]);
 

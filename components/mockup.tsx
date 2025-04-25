@@ -27,14 +27,11 @@ import {
   Eye,
   EyeSlash,
 } from "@phosphor-icons/react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { pdfGenerator } from "@/lib/pdf-generator";
 
 export const Mockup: React.FC = () => {
   const [resumeData] = useAtom(resumeStateAtom);
@@ -56,7 +53,7 @@ export const Mockup: React.FC = () => {
   useEffect(() => {
     if (resumeRef.current) {
       const resumeHeight = resumeRef.current.scrollHeight;
-      const pageHeight = 1056; // Approximate height of an A4 page in pixels
+      const pageHeight = 29.7 * 37.8; // A4 height in pixels (29.7cm)
       const calculatedPageCount = Math.ceil(resumeHeight / pageHeight);
       setPageCount(calculatedPageCount);
     }
@@ -178,11 +175,34 @@ export const Mockup: React.FC = () => {
   const handlePrint = useCallback(() => {
     window.print();
   }, []);
+  const handleDownload = async () => {
+    setIsLoading(true);
+    try {
+      const element = document.getElementById('resume-content');
+      if (!element) {
+        throw new Error("Resume element not found");
+      }
 
-  const handleDownload = useCallback(() => {
-    // This would be implemented with a PDF generation library
-    console.log("Download functionality would be implemented here");
-  }, []);
+      await pdfGenerator.generatePDF(element, {
+        filename: "resume.pdf",
+        scale: 2
+      });
+
+      toast({
+        title: "Success",
+        description: "Resume downloaded successfully",
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast({
+        title: "Error",
+        description: "Failed to download resume. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Calculate page positions for preview
   const pagePositions = useMemo(() => {
@@ -404,7 +424,7 @@ export const Mockup: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg p-2"
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-background/95 backdrop-blur-sm rounded-lg border shadow-sm p-2"
           >
             <div className="flex gap-1">
               {pagePositions.map((page) => (
@@ -433,7 +453,7 @@ export const Mockup: React.FC = () => {
         <ScrollArea className="h-full w-full flex items-center justify-center p-1">
           <div className="relative min-h-full flex items-center justify-center">
             <motion.div
-              id="resume"
+              id="resume-content"
               ref={resumeRef}
               style={{
                 scale: zoomLevel,
@@ -447,9 +467,9 @@ export const Mockup: React.FC = () => {
               animate={{ scale: zoomLevel }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={cn(
-                "w-[21cm] bg-background rounded-lg shadow-xl overflow-hidden cursor-grab active:cursor-grabbing",
+                "w-[21cm] bg-white rounded-lg overflow-hidden cursor-grab active:cursor-grabbing",
                 "transition-shadow duration-200",
-                "hover:shadow-2xl"
+                "shadow-xl"
               )}
             >
               <ResumeTemplate template={selectedTemplate} data={resumeData} />

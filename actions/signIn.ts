@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { prisma } from "@/lib/prisma";
 
 const signInSchema = z.object({
   email: z

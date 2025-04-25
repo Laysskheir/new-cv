@@ -35,21 +35,13 @@ interface FormVisibility {
   customSections: boolean;
 }
 
-interface TypesProps {
-  resumeState: TemplateProps;
-  setResumeState: (newState: TemplateProps) => void;
-  formVisibility: FormVisibility;
-  setFormVisibility: (visibility: FormVisibility) => void;
-}
+
 
 export default function Editor({ params }: { params: { resumeId: string } }) {
   const containterRef = useRef<HTMLDivElement | null>(null);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
-
-  const [resumeState, setResumeState] = useAtom(resumeStateAtom);
-  const [formVisibility, setFormVisibility] = useAtom(formVisibilityAtom);
 
   // Check if we're on mobile
   useEffect(() => {
@@ -152,7 +144,7 @@ export default function Editor({ params }: { params: { resumeId: string } }) {
 
         {/* Mockup Section */}
         {isPreviewVisible && (
-          <section className="hidden lg:flex items-center justify-center lg:pr-8 sticky top-0 h-screen">
+          <section className="hidden lg:flex items-center justify-center lg:pr-4 sticky top-0 h-screen">
             <ThemeWrapper>
               <Mockup />
             </ThemeWrapper>

@@ -18,7 +18,7 @@ import Polished from "./design/Polished";
 import Stylish from "./design/Stylish";
 import Modern from "./design/Modern";
 import Professional from "./design/Professional";
-
+import Minimal from "./design/Minimal";
 interface ResumeTemplateProps {
   template: string;
   data: TemplateProps;
@@ -34,6 +34,7 @@ const templateComponents = {
   Stylish,
   Modern,
   Professional,
+  Minimal,
 } as const;
 
 const ResumeTemplate: React.FC<ResumeTemplateProps> = ({

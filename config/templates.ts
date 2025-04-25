@@ -15,6 +15,16 @@ interface TemplateConfig {
 
 // Define your templates with categories
 export const templates: Record<string, TemplateConfig> = {
+  Minimal: {
+    name: "Minimal",
+    description: "A clean, minimalist design with numbered sections and perfect typography",
+    category: "Simple",
+    layout: ResumeTemplate,
+    miniCard: MiniCard,
+    layoutType: "1-column",
+    style: "minimal",
+    features: ["without-photo", "numbered-sections", "skills-section", "projects-section"],
+  },
   ElegantClassic: {
     name: "Elegant Classic",
     description: "A clean, professional template with a traditional layout",

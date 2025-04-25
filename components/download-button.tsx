@@ -4,49 +4,45 @@ import React, { useState } from "react";
 import { DownloadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { pdfGenerator } from '@/lib/pdf-generator';
 
 const DownloadButton = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDownload = async () => {
+    const resumeElement = document.getElementById('resume-content');
+    if (!resumeElement) {
+      toast({
+        title: "Error",
+        description: "Resume element not found",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const element = document.getElementById("resume");
-      if (!element) {
-        throw new Error("Resume element not found");
-      }
+      // Add print-mode class before generating PDF
+      resumeElement.classList.add('print-mode');
 
-      const html2pdf = (await import("html2pdf.js")).default;
-
-      const options = {
+      await pdfGenerator.generatePDF(resumeElement, {
         filename: "resume.pdf",
-        jsPDF: {
-          unit: "in",
-          format: "letter",
-          orientation: "portrait",
-        },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          letterRendering: true,
-        },
-        margin: 0.5,
-        pagebreak: { mode: ["avoid-all"] },
-      };
+        scale: 2
+      });
 
-      await html2pdf().set(options).from(element).save();
+      // Remove print-mode class after generating PDF
+      resumeElement.classList.remove('print-mode');
 
       toast({
         title: "Success",
-        description: "Resume downloaded successfully",
+        description: "PDF downloaded successfully!"
       });
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error('Error generating PDF:', error);
       toast({
         title: "Error",
-        description: "Failed to download resume. Please try again.",
-        variant: "destructive",
+        description: "Failed to download PDF",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -56,7 +52,7 @@ const DownloadButton = () => {
   return (
     <Button
       size="sm"
-      className="flex items-center justify-between "
+      className="flex items-center justify-between"
       onClick={handleDownload}
       disabled={isLoading}
       aria-label="Download resume as PDF"
@@ -65,7 +61,7 @@ const DownloadButton = () => {
         <DownloadCloud className="w-5 h-5 mr-2" />
         <div className="flex flex-col text-left">
           <p className="text-xs font-semibold">Download</p>
-          <p className="text-[10px] ">1x as pdf</p>
+          <p className="text-[10px]">PDF format</p>
         </div>
       </div>
     </Button>

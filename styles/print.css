@@ -1,0 +1,133 @@
+/* Print-specific styles */
+@media print {
+  /* Reset margins and padding */
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: black;
+  }
+
+  /* Resume content container */
+  #resume-content {
+    border: 1px solid #D1D5DB !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    background: white !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure proper page breaks */
+  section {
+    page-break-inside: avoid;
+    margin-bottom: 1.5rem;
+    border: none !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Optimize typography for print */
+  * {
+    color: black !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Adjust font sizes */
+  h1 { 
+    font-size: 20pt !important;
+    margin-bottom: 0.5rem !important;
+  }
+  h2 { 
+    font-size: 14pt !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid #D1D5DB !important;
+    padding-bottom: 0.25rem !important;
+  }
+  h3 { 
+    font-size: 12pt !important;
+    margin-bottom: 0.5rem !important;
+  }
+  p, li { 
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Remove decorative elements but keep borders */
+  .shadow-lg { box-shadow: none !important; }
+  .bg-gray-100 { background: transparent !important; }
+  .border-b { border-color: #D1D5DB !important; }
+
+  /* Ensure proper spacing */
+  .space-y-8 { margin-bottom: 1.25rem !important; }
+  .gap-6 { gap: 1rem !important; }
+  .mb-8 { margin-bottom: 1.25rem !important; }
+  .pb-4 { padding-bottom: 1rem !important; }
+
+  /* Optimize links */
+  a {
+    text-decoration: none !important;
+    color: black !important;
+  }
+
+  /* Ensure proper page margins */
+  @page {
+    margin: 0;
+  }
+
+  /* Prevent orphaned text */
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Specific styles for minimal template */
+  .rounded-full {
+    border: 1px solid #D1D5DB !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  .text-gray-600, .text-gray-500 {
+    color: #444 !important;
+  }
+
+  .list-disc {
+    margin-left: 1rem !important;
+  }
+
+  .grid-cols-2 {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Header styles */
+  header {
+    border-bottom: 1px solid #D1D5DB !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Section title numbers */
+  .w-6.h-6 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    border: 1px solid #D1D5DB !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 0.5rem !important;
+    font-size: 10pt !important;
+  }
+
+  /* Skills list */
+  .grid div::before {
+    content: "•";
+    margin-right: 0.25rem;
+  }
+} 

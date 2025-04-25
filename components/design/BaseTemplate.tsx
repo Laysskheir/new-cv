@@ -1,39 +1,57 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { TemplateProps } from "@/types/resume";
 
-export interface BaseTemplateProps {
+interface BaseTemplateProps extends TemplateProps {
   className?: string;
   children?: React.ReactNode;
 }
 
 export const Section: React.FC<{
-  title: string;
-  children: React.ReactNode;
+  title?: string;
   className?: string;
-}> = ({ title, children, className }) => (
-  <section className={cn("mb-6", className)}>
-    <h2 className="font-bold mb-4 text-black uppercase tracking-wide">{title}</h2>
+  children: React.ReactNode;
+}> = ({ title, className, children }) => (
+  <section className={cn("space-y-3", className)}>
+    {title && (
+      <h2 className="text-lg font-semibold border-b pb-1">
+        {title}
+      </h2>
+    )}
     {children}
   </section>
 );
 
 export const ContactItem: React.FC<{
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
+  href?: string;
   children: React.ReactNode;
-}> = ({ icon, children }) => (
-  <div className="flex items-center gap-2 text-gray-600">
-    {icon}
-    <span>{children}</span>
+}> = ({ icon, href, children }) => (
+  <div className="flex items-center gap-2 text-sm">
+    {icon && <span className="text-gray-500">{icon}</span>}
+    {href ? (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-blue-600 transition-colors"
+      >
+        {children}
+      </a>
+    ) : (
+      <span>{children}</span>
+    )}
   </div>
 );
 
 export const DateRange: React.FC<{
-  startDate: { month: string; year: string };
-  endDate: { month: string; year: string; current: boolean };
-}> = ({ startDate, endDate }) => (
-  <span className="text-muted-foreground text-sm">
-    {startDate.month} {startDate.year} -{" "}
-    {endDate.current ? "Present" : `${endDate.month} ${endDate.year}`}
+  startDate: string;
+  endDate?: string;
+  className?: string;
+}> = ({ startDate, endDate, className }) => (
+  <span className={cn("text-sm text-gray-500", className)}>
+    {startDate}
+    {endDate && endDate !== startDate && ` - ${endDate}`}
   </span>
 );
 
@@ -42,13 +60,16 @@ export const BaseTemplate: React.FC<BaseTemplateProps> = ({
   children,
 }) => {
   return (
-    <div
+    <article
+      id="resume-content"
       className={cn(
-        "max-w-2xl mx-auto px-4 space-y-[var(--section-spacing)] text-[length:var(--font-size)]",
+        "w-[210mm] min-h-[297mm] mx-auto bg-white p-6 ",
         className
       )}
     >
       {children}
-    </div>
+    </article>
   );
 };
+
+export default BaseTemplate;

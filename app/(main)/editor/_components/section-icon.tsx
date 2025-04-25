@@ -6,7 +6,6 @@ import {
   Compass,
   MousePointerClick,
   GraduationCap,
-  IconProps,
   Puzzle,
   Languages,
   User,
@@ -29,7 +28,7 @@ type SectionId =
   | "skills"
   | "custom";
 
-export const getSectionIcon = (id: SectionId, props: IconProps = {}) => {
+export const getSectionIcon = (id: SectionId, props: any = {}) => {
   switch (id) {
     // Left Sidebar
     case "heading": {
