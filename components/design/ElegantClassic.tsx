@@ -20,7 +20,7 @@ const ElegantClassic: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <BaseTemplate className="bg-white w-full max-w-none m-0 p-8">
+    <div className="bg-white text-black w-full max-w-none m-0 p-8">
       {/* Elegant Header with subtle border */}
       <header className="text-center border-b border-gray-200 pb-6 mb-8">
         <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">
@@ -138,7 +138,7 @@ const ElegantClassic: React.FC<TemplateProps> = ({
           ))}
         </div>
       </Section>
-    </BaseTemplate>
+    </div>
   );
 };
 

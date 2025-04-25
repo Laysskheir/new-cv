@@ -21,7 +21,7 @@ const Stylish: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="bg-white w-full max-w-none m-0 p-8 print:p-0 print:m-0">
+    <div className="bg-white text-black w-full max-w-none m-0 p-8 print:p-0 print:m-0">
       {/* Header with elegant spacing */}
       <header className="text-center mb-12 print:mb-8 print:pt-4" style={{ pageBreakInside: 'avoid' }}>
         <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:text-black">{`${firstName} ${surname}`}</h1>

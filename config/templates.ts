@@ -1,6 +1,7 @@
 // templates.ts
 import ResumeTemplate from "../components/ResumeTemplate";
 import MiniCard from "../components/MiniCard";
+import Premium from "../components/design/Premium";
 
 interface TemplateConfig {
   name: string;
@@ -15,6 +16,23 @@ interface TemplateConfig {
 
 // Define your templates with categories
 export const templates: Record<string, TemplateConfig> = {
+  Premium: {
+    name: "Premium",
+    description: "A sophisticated, modern template with comprehensive sections and elegant styling",
+    category: "Premium",
+    layout: Premium,
+    miniCard: MiniCard,
+    layoutType: "1-column",
+    style: "premium",
+    features: [
+      "with-photo",
+      "skills-section",
+      "projects-section",
+      "achievements-section",
+      "languages-section",
+      "custom-sections"
+    ],
+  },
   Minimal: {
     name: "Minimal",
     description: "A clean, minimalist design with numbered sections and perfect typography",
