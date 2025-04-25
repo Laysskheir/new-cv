@@ -71,7 +71,15 @@ const MiniCard: React.FC<MiniCardProps> = ({
             fill
             className="object-cover transition-transform duration-300"
             style={{ transform: isHovered ? "scale(1.05)" : "scale(1)" }}
-            onError={() => setImageError(true)}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              // Try .png if .jpg fails
+              if (target.src.endsWith('.jpg')) {
+                target.src = target.src.replace('.jpg', '.png');
+              } else {
+                setImageError(true);
+              }
+            }}
             priority
           />
         ) : (
