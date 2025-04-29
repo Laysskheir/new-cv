@@ -7,7 +7,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
@@ -25,6 +24,8 @@ model User {
 
   resumes             Resume[]
   onboardingCompleted Boolean  @default(false)
+
+  stripeCustomerId String?
 
   @@unique([email])
   @@map("user")
@@ -90,4 +91,19 @@ model Resume {
 
   @@unique([userId, id])
   @@map("resumes")
+}
+
+model Subscription {
+  id                   String    @id
+  plan                 String
+  referenceId          String
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  status               String?
+  periodStart          DateTime?
+  periodEnd            DateTime?
+  cancelAtPeriodEnd    Boolean?
+  seats                Int?
+
+  @@map("subscription")
 }

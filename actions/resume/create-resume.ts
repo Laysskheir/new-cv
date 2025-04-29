@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { checkResumeLimit } from "@/lib/subscription-utils";
 
 export async function createResume(
   prevState: any,
@@ -24,6 +25,19 @@ export async function createResume(
   }
 
   try {
+    // Check if the user has reached their resume limit
+    const { canCreate, needsUpgrade, currentCount, limit } =
+      await checkResumeLimit(session.user.id);
+
+    if (!canCreate) {
+      return {
+        error: `You've reached your limit of ${limit} resumes on the free plan.`,
+        needsUpgrade: true,
+        currentCount,
+        limit,
+      };
+    }
+
     const resume = await prisma.resume.create({
       data: {
         title,

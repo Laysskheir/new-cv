@@ -1,25 +1,29 @@
-import Tilt from "react-parallax-tilt";
-
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { defaultTiltProps } from "@/constants/parallax-tilt";
+import React from "react";
 
-type Props = {
+interface BaseResumeCardProps {
+  children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-  children?: React.ReactNode;
-};
+  disabled?: boolean;
+}
 
-export const BaseCard = ({ children, className, onClick }: Props) => (
-  <Tilt {...defaultTiltProps}>
-    <Card
+export function BaseResumeCard({
+  children,
+  className,
+  onClick,
+  disabled = false
+}: BaseResumeCardProps) {
+  return (
+    <div
       className={cn(
-        "relative flex aspect-[1/1.4142] scale-100 cursor-pointer items-center justify-center bg-secondary/50 p-0 transition-transform active:scale-95",
+        "relative flex h-48 flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow transition-colors",
+        disabled && "opacity-60 cursor-not-allowed",
         className
       )}
-      onClick={onClick}
+      onClick={!disabled ? onClick : undefined}
     >
       {children}
-    </Card>
-  </Tilt>
-);
+    </div>
+  );
+}

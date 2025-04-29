@@ -21,7 +21,7 @@ const DoubleColumn: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="bg-white w-full max-w-none m-0 p-0">
+    <div className="bg-white text-black w-full max-w-none m-0 p-0">
       <div className="max-w-6xl mx-auto p-8">
         {/* Header */}
         <div className="mb-8">

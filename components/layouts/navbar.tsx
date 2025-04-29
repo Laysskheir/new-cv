@@ -67,7 +67,7 @@ export default function Navbar({ resumeTitle }: { resumeTitle: string }) {
                 <HouseSimple />
               </Link>
             </Button>
-            <span className="mr-2 text-xs opacity-40">{"/"}</span>
+            <span className="text-xs opacity-40">{"/"}</span>
             <h1 className="font-medium">{resumeTitle}</h1>
           </div>
 

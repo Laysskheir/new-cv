@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { Pencil, Check, X, CheckIcon, XIcon } from "lucide-react";
 import { client as authClient } from "@/lib/auth-client";
+import axios from "axios";
 
 export default function AccountSection({
   session,
@@ -139,6 +140,92 @@ export default function AccountSection({
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
+
+            {/* New Subscription Section */}
+            <div className="pt-4 border-t">
+              <h3 className="text-lg font-medium mb-2">Subscription Management</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Manage your subscription plan and billing details
+              </p>
+
+              <div className="flex gap-4">
+                <Button
+                  variant="outline"
+                  onClick={() => window.location.href = "/dashboard/subscription"}
+                >
+                  View Subscription
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    try {
+                      // First, check active subscriptions
+                      const { data: subscriptions } = await authClient.subscription.list();
+                      console.log("Subscriptions:", subscriptions); // Debug logging
+
+                      // Find active subscription
+                      const activeSubscription = subscriptions?.find(
+                        sub => (sub.status === "active" || sub.status === "trialing")
+                      );
+
+                      console.log("Active subscription:", activeSubscription); // Debug logging
+
+                      if (activeSubscription) {
+                        // Check for customer ID
+                        const customerId = activeSubscription.stripeCustomerId;
+
+                        if (customerId) {
+                          console.log("Found customer ID:", customerId); // Debug logging
+
+                          try {
+                            const response = await axios.post('/api/subscription/portal', { customerId });
+                            console.log("Portal response:", response.data); // Debug logging
+
+                            if (response.data.url) {
+                              window.location.href = response.data.url;
+                            } else {
+                              throw new Error('No portal URL returned');
+                            }
+                          } catch (apiError: any) {
+                            console.error("API error:", apiError.response?.data || apiError.message);
+                            throw new Error(apiError.response?.data?.message || apiError.message || 'Failed to access billing portal');
+                          }
+                        } else {
+                          toast({
+                            description: "No billing information found. Going to subscription page instead.",
+                            duration: 3000,
+                          });
+                          // Redirect to subscription page
+                          setTimeout(() => {
+                            window.location.href = "/dashboard/subscription";
+                          }, 1500);
+                        }
+                      } else {
+                        toast({
+                          description: "No active subscription found. Redirecting to subscription page.",
+                          duration: 3000,
+                        });
+                        // Redirect to subscription page
+                        setTimeout(() => {
+                          window.location.href = "/dashboard/subscription";
+                        }, 1500);
+                      }
+                    } catch (error: any) {
+                      console.error("Billing portal error:", error); // Full error logging
+
+                      toast({
+                        variant: "destructive",
+                        description: `Billing error: ${error.message || "Could not access billing information. Please try again."}`,
+                        duration: 5000,
+                      });
+                    }
+                  }}
+                >
+                  Manage Billing Details
+                </Button>
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { formatDistanceToNow } from "date-fns";
-import { BaseCard } from "./base-card";
+import { BaseResumeCard } from "./base-card";
 import { cn } from "@/lib/utils";
 import { ResumeActionDialog } from "../_dialogs/resume-action-dialog";
 import { useRouter } from "next/navigation";
@@ -76,8 +76,9 @@ export default function ResumeCard({ resume }: Props) {
               }
             }}
             aria-label={`Resume: ${resume.title}`}
+            data-resume-card="true"
           >
-            <BaseCard
+            <BaseResumeCard
               className={cn(
                 "group relative space-y-0 overflow-hidden transition-all duration-200",
                 isHovered && "ring-2 ring-primary/20",
@@ -122,7 +123,7 @@ export default function ResumeCard({ resume }: Props) {
                   })}
                 </p>
               </motion.div>
-            </BaseCard>
+            </BaseResumeCard>
           </motion.div>
         </ContextMenuTrigger>
 

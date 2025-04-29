@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Loader2, ChevronRight, Check } from "lucide-react";
+
+import {  ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StepsBarProps {

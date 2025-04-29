@@ -1,8 +1,8 @@
-
 import { getServerSession } from "@/lib/auth";
 import { getAllResumes } from "@/actions/resume/getAllResumes";
 import { Suspense } from "react";
 import { ResumeView } from "./_components/resume-view";
+
 export default async function ResumesPage() {
   const session = await getServerSession();
 

@@ -18,7 +18,7 @@ const Polished: React.FC<TemplateProps> = ({
   projects,
   achievements,
 }) => (
-  <div className="bg-white w-full max-w-none m-0 p-0">
+  <div className="bg-white w-full max-w-none m-0 p-0 text-black">
     <div className="grid grid-cols-12 min-h-screen">
       {/* Left Sidebar */}
       <div className="col-span-4 bg-gray-50 p-8">

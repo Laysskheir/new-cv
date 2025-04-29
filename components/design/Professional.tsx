@@ -30,7 +30,7 @@ const Professional: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="text-black w-full max-w-none m-0 p-8">
+    <div className="text-black bg-white w-full max-w-none m-0 p-8">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold mb-1 text-gray-900">

@@ -6,12 +6,11 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ResumeTemplate from "../ResumeTemplate";
 import { ScrollArea } from "../ui/scroll-area";
+import { Icons } from "../icons";
 
 export default function PreviewModal({
   children,
@@ -22,14 +21,16 @@ export default function PreviewModal({
   template: any;
   data: any;
 }) {
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">{children}</Button>
+        <Button variant="outline" className="flex items-center gap-2">
+          {children}
+        </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl mt-4">
-        <ScrollArea className=" h-[80vh]">
-          {/* Render preview content here */}
+      <DialogContent className="sm:max-w-[700px]">
+        <ScrollArea className="h-[70vh]">
           <ResumeTemplate template={template} data={data} />
         </ScrollArea>
       </DialogContent>

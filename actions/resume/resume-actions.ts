@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { kebabCase } from "@/lib/utils";
+import { checkResumeLimit } from "@/lib/subscription-utils";
 
 async function getAuthenticatedUser() {
   const session = await auth.api.getSession({ headers: headers() });
@@ -61,9 +62,17 @@ export async function createResume(prevState: any, formData: FormData) {
     });
 
     revalidatePath("/dashboard/resumes");
-    return { success: true, message: "Resume created successfully", resumeId: resume.id };
+    return {
+      success: true,
+      message: "Resume created successfully",
+      resumeId: resume.id,
+    };
   } catch (error) {
-    return { error: `Failed to create resume: ${error instanceof Error ? error.message : "An unexpected error occurred"}` };
+    return {
+      error: `Failed to create resume: ${
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      }`,
+    };
   }
 }
 
@@ -72,14 +81,29 @@ export async function duplicateResume(id: string) {
     const user = await getAuthenticatedUser();
     const originalResume = await getResumeOrThrow(id, user.id);
 
+    // Check if the user has reached their resume limit
+    const { canCreate, needsUpgrade, limit } = await checkResumeLimit(user.id);
+
+    if (!canCreate) {
+      throw new Error(
+        `You've reached your limit of ${limit} resumes on the free plan. Please upgrade to create more.`
+      );
+    }
+
     const newTitle = `${originalResume.title} (Copy)`;
     const slug = await generateUniqueSlug(kebabCase(newTitle), user.id);
+
+    // Parse data to ensure it's valid JSON before storing
+    const resumeData =
+      typeof originalResume.data === "string"
+        ? JSON.parse(originalResume.data)
+        : originalResume.data;
 
     const newResume = await prisma.resume.create({
       data: {
         title: newTitle,
         slug,
-        data: originalResume.data,
+        data: resumeData || {},
         userId: user.id,
       },
     });
@@ -87,7 +111,11 @@ export async function duplicateResume(id: string) {
     revalidatePath("/dashboard/resumes");
     return newResume;
   } catch (error) {
-    throw new Error(`Failed to duplicate resume: ${error instanceof Error ? error.message : "An unexpected error occurred"}`);
+    throw new Error(
+      `Failed to duplicate resume: ${
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      }`
+    );
   }
 }
 
@@ -114,6 +142,10 @@ export async function renameResume(id: string, newTitle: string) {
     revalidatePath("/dashboard/resumes");
     return updatedResume;
   } catch (error) {
-    throw new Error(`Failed to rename resume: ${error instanceof Error ? error.message : "An unexpected error occurred"}`);
+    throw new Error(
+      `Failed to rename resume: ${
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      }`
+    );
   }
 }

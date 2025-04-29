@@ -6,13 +6,46 @@ import { prisma } from "./prisma";
 import { headers } from "next/headers";
 import { siteConfig } from "@/config/site";
 import { nextCookies } from "better-auth/next-js";
+import { stripe } from "@better-auth/stripe";
+import Stripe from "stripe";
+
+const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-02-24.acacia",
+});
 
 export const auth = betterAuth({
   appName: siteConfig.name,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    stripe({
+      stripeClient,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+      createCustomerOnSignUp: true,
+      subscription: {
+        enabled: true,
+        plans: [
+          {
+            name: "free",
+            priceId: process.env.STRIPE_PRICE_FREE!,
+            limits: { resumes: 3 },
+          },
+          {
+            name: "pro",
+            priceId: process.env.STRIPE_PRICE_PRO!,
+            limits: { resumes: 99 },
+          },
+        ],
+        requireEmailVerification: true,
+        onEvent: async (event: any) => {
+          console.log(`Processing Stripe event: ${event.type}`);
+          // Add specific handling for subscription events if needed
+        },
+      },
+    }),
+  ],
   minPasswordLength: 8,
   maxPasswordLength: 128,
   autoSignIn: true,

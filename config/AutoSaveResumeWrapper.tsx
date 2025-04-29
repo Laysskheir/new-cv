@@ -7,7 +7,7 @@ import { resumeStateAtom, isDataLoadedAtom } from "@/state/resumeAtoms";
 import { useEffect, useRef, useState } from "react";
 import { getResumeById } from "@/actions/resume/getResumeById";
 import { TemplateProps } from "@/types/resume";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 interface AutoSaveResumeWrapperProps {
   children: React.ReactNode;
@@ -59,7 +59,7 @@ export function AutoSaveResumeWrapper({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader className="h-8 w-8 animate-spin" />
       </div>
     );
   }

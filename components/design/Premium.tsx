@@ -18,7 +18,7 @@ const Premium: React.FC<TemplateProps> = ({
     languages,
 }) => {
     return (
-        <div className="max-w-[850px] mx-auto  text-black p-8 ">
+        <div className="max-w-[850px] mx-auto bg-white text-black p-8 ">
             {/* Header Section */}
             <header className="flex items-start gap-6 mb-6">
                 <div className="flex-1">

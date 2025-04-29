@@ -5,6 +5,7 @@ import {
   FadersHorizontal,
   ReadCvLogo,
   HouseSimple,
+  CreditCard,
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -108,6 +109,11 @@ export const Sidebar = ({ setOpen, session }: SidebarProps) => {
       path: "/dashboard/settings",
       name: "Settings",
       icon: <FadersHorizontal />,
+    },
+    {
+      path: "/dashboard/subscription",
+      name: "Subscription",
+      icon: <CreditCard />,
     },
   ];
 

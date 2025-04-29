@@ -19,7 +19,7 @@ export const IvyLeague: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="text-black w-full max-w-none m-0 p-0">
+    <div className="text-black bg-white w-full max-w-none m-0 p-0">
       <div className="max-w-5xl mx-auto p-8">
         {/* Header */}
         <header className="text-center mb-8">

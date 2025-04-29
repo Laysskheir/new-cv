@@ -17,7 +17,7 @@ const Minimal: React.FC<TemplateProps> = ({
     summary,
 }) => {
     return (
-        <div className="w-full max-w-none m-0 p-8 text-black" >
+        <div className="w-full max-w-none m-0 p-8 text-black bg-white" >
             {/* Header */}
             <header className="mb-8 border-b pb-4" style={{ pageBreakInside: 'avoid' }}>
                 <h1 className="text-2xl font-semibold mb-2">{`${firstName} ${surname}`}</h1>

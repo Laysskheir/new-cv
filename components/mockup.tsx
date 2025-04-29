@@ -448,7 +448,7 @@ export const Mockup: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="overflow-hidden h-[326px] md:h-[620px] bg-muted/30"
+        className="overflow-hidden h-[326px] md:h-[620px] bg-card"
       >
         <ScrollArea className="h-full w-full flex items-center justify-center p-1">
           <div className="relative min-h-full flex items-center justify-center">

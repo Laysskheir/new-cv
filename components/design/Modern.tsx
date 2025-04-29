@@ -20,7 +20,7 @@ const Modern: React.FC<TemplateProps> = ({
   languages,
 }) => {
   return (
-    <div className="bg-white w-full max-w-none m-0 p-0">
+    <div className="bg-white w-full max-w-none m-0 p-0 text-black">
       <div className="grid grid-cols-12 gap-0">
         {/* Left Column - Contact & Skills */}
         <div className="col-span-4 bg-gray-50 p-8 border-r border-gray-200 h-full">
