@@ -3,7 +3,7 @@
 import React from "react";
 import { useAtom } from "@/state/store";
 import { resumeTemplateAtom } from "../state/resumeAtoms";
-import { templateList } from "../config/templates";
+import { resumeTemplates } from "../app/constants/resumeTemplates";
 import MiniCard from "./MiniCard";
 import {
   Card,
@@ -21,26 +21,19 @@ const TemplateSelector: React.FC = () => {
   const [selectedTemplate, setTemplate] = useAtom(resumeTemplateAtom);
   const [activeCategory, setActiveCategory] = React.useState<string>("all");
 
-  // Group templates by category
+  // Group templates by category or use default categories
   const templatesByCategory = React.useMemo(() => {
-    const grouped = templateList.reduce((acc, template) => {
-      const category = template.category;
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(template);
-      return acc;
-    }, {} as Record<string, typeof templateList>);
+    const grouped: Record<string, typeof resumeTemplates> = {
+      "premium": resumeTemplates.filter(t => t.isPremium),
+      "free": resumeTemplates.filter(t => !t.isPremium),
+    };
 
     return grouped;
   }, []);
 
   // Get all unique categories
   const categories = React.useMemo(() => {
-    const uniqueCategories = Array.from(
-      new Set(templateList.map((t) => t.category))
-    );
-    return ["all", ...uniqueCategories];
+    return ["all", "free", "premium"];
   }, []);
 
   return (
@@ -69,32 +62,37 @@ const TemplateSelector: React.FC = () => {
           <TabsContent key={category} value={category} className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {(category === "all"
-                ? templateList
+                ? resumeTemplates
                 : templatesByCategory[category] || []
-              ).map(({ key, name, description }) => (
+              ).map((template) => (
                 <Card
-                  key={key}
+                  key={template.id}
                   className={cn(
                     "transition-all duration-200 hover:shadow-lg cursor-pointer group",
-                    selectedTemplate === key && "ring-2 ring-primary"
+                    selectedTemplate === template.id && "ring-2 ring-primary"
                   )}
-                  onClick={() => setTemplate(key)}
+                  onClick={() => setTemplate(template.id)}
                 >
                   <CardHeader className="p-4">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{name}</CardTitle>
-                      {selectedTemplate === key && (
+                      <CardTitle className="text-lg">{template.name}</CardTitle>
+                      {selectedTemplate === template.id && (
                         <Badge variant="default" className="ml-2">
                           Selected
                         </Badge>
                       )}
+                      {template.isPremium && (
+                        <Badge variant="secondary" className="ml-2">
+                          Premium
+                        </Badge>
+                      )}
                     </div>
-                    <CardDescription>{description}</CardDescription>
+                    <CardDescription>{template.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
                     <div className="aspect-[3/4] relative rounded-md overflow-hidden">
                       <MiniCard
-                        template={key}
+                        template={template.id}
                         showPreview={true}
                         className="group-hover:shadow-md transition-all duration-300"
                       />
@@ -105,7 +103,7 @@ const TemplateSelector: React.FC = () => {
                       className="w-full py-2 text-sm font-medium text-primary hover:underline"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setTemplate(key);
+                        setTemplate(template.id);
                       }}
                     >
                       Use this template

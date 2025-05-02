@@ -1,142 +1,250 @@
+"use client";
+
 import React from "react";
-import { PhoneIcon, MailIcon, GlobeIcon, LocateIcon } from "lucide-react";
-import { BaseTemplate, Section, ContactItem, DateRange } from "./BaseTemplate";
-import { TemplateProps } from "@/types/resume";
+import { TemplateProps, CustomSection } from "@/types/resume";
+import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
+import { LayoutRenderer, SectionHeader, MetaInfo, SectionItem, SectionTitle } from "./BaseTemplate";
+import { SectionType } from "@/state/layout-store";
+import { DynamicResumeLayout } from "@/components/dynamic-resume-layout";
 
-const Modern: React.FC<TemplateProps> = ({
-  firstName,
-  surname,
-  profession,
-  city,
-  country,
-  postalCode,
-  phone,
-  email,
-  workHistory,
-  education,
-  skills,
-  summary,
-  achievements,
-  languages,
-}) => {
-  return (
-    <div className="bg-white w-full max-w-none m-0 p-0 text-black">
-      <div className="grid grid-cols-12 gap-0">
-        {/* Left Column - Contact & Skills */}
-        <div className="col-span-4 bg-gray-50 p-8 border-r border-gray-200 h-full">
-          <header className="mb-8">
-            <h1 className="text-2xl font-bold mb-1 text-gray-900">
-              {firstName} {surname}
-            </h1>
-            <p className="text-gray-700 font-medium">{profession}</p>
-          </header>
+const Modern: React.FC<TemplateProps> = (props) => {
+  const {
+    firstName,
+    surname,
+    profession,
+    city,
+    country,
+    phone,
+    email,
+    workHistory,
+    education,
+    skills,
+    languages,
+    summary,
+    achievements,
+    projects,
+    customSections,
+  } = props;
 
-          <Section title="CONTACT" className="mb-8">
-            <div className="space-y-2 text-gray-700">
-              <ContactItem
-                icon={<PhoneIcon className="w-4 h-4 text-gray-600" />}
-              >
-                {phone}
-              </ContactItem>
-              <ContactItem
-                icon={<MailIcon className="w-4 h-4 text-gray-600" />}
-              >
-                {email}
-              </ContactItem>
-              <ContactItem
-                icon={<LocateIcon className="w-4 h-4 text-gray-600" />}
-              >
-                {city}, {country}
-              </ContactItem>
-            </div>
-          </Section>
+  // Function to render each section based on type
+  const renderSection = (sectionType: SectionType) => {
+    switch (sectionType) {
+      case "personalDetails":
+        return (
+          <div className="bg-theme-bg-secondary p-8">
+            <div className="max-w-5xl mx-auto">
+              <h1 className="text-3xl font-bold text-theme-heading">
+                {firstName} {surname}
+              </h1>
+              <p className="text-lg text-theme-text-secondary mt-1">{profession}</p>
 
-          <Section title="SKILLS" className="mb-8">
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                <span key={index} className="text-gray-700 block">
-                  • {skill}
-                </span>
-              ))}
-            </div>
-          </Section>
-
-          <Section title="LANGUAGES" className="mb-8">
-            <div className="space-y-1">
-              {languages.map((language, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span className="text-gray-700">{language.name}</span>
-                  <span className="text-gray-600">{language.proficiency}</span>
+              <div className="flex flex-wrap gap-4 mt-4 text-theme-text-secondary">
+                <div className="flex items-center">
+                  <PhoneIcon className="mr-2 h-4 w-4" />
+                  <span>{phone}</span>
                 </div>
-              ))}
+                <div className="flex items-center">
+                  <MailIcon className="mr-2 h-4 w-4" />
+                  <span>{email}</span>
+                </div>
+                <div className="flex items-center">
+                  <MapPinIcon className="mr-2 h-4 w-4" />
+                  <span>{`${city}, ${country}`}</span>
+                </div>
+              </div>
             </div>
-          </Section>
-        </div>
+          </div>
+        );
 
-        {/* Right Column - Experience & Education */}
-        <div className="col-span-8 p-8 bg-white">
-          <Section title="WORK EXPERIENCE" className="mb-8">
-            <div className="space-y-6">
-              {workHistory.map((job, index) => (
-                <div key={index} className="relative">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {job.title}
-                  </h3>
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="text-gray-700">
-                      {job.employer}, {job.location}
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      {job.startDate.month} {job.startDate.year} -{" "}
-                      {job.endDate.current
-                        ? "Present"
-                        : `${job.endDate.month} ${job.endDate.year}`}
-                    </p>
-                  </div>
-                  <ul className="list-disc text-gray-700 pl-4 space-y-1">
-                    {job.description.map((responsibility, idx) => (
-                      <li key={idx}>{responsibility}</li>
+      case "summary":
+        return summary ? (
+          <div>
+            <SectionHeader title="Summary" />
+            <p className="text-theme-text-secondary">{summary}</p>
+          </div>
+        ) : null;
+
+      case "workHistory":
+        return workHistory && workHistory.length > 0 ? (
+          <div>
+            <SectionHeader title="Experience" />
+            <div className="space-y-4">
+              {workHistory.map((job, idx) => (
+                <SectionItem
+                  key={idx}
+                  borderBottom={idx !== workHistory.length - 1}
+                >
+                  <SectionTitle
+                    title={
+                      <>
+                        <div className="text-lg font-medium text-theme-heading">{job.title}</div>
+                        <div className="text-theme-text-primary font-medium">{job.employer}</div>
+                        <div className="text-sm text-theme-text-secondary mb-2">{job.location}</div>
+                      </>
+                    }
+                    rightContent={
+                      <MetaInfo>
+                        {job.startDate.month} {job.startDate.year} -{" "}
+                        {job.endDate.current ? "Present" : `${job.endDate.month} ${job.endDate.year}`}
+                      </MetaInfo>
+                    }
+                  />
+                  <ul className="list-disc pl-5 text-theme-text-secondary space-y-1">
+                    {job.description.map((desc, i) => (
+                      <li key={i}>{desc}</li>
                     ))}
                   </ul>
-                </div>
+                </SectionItem>
               ))}
             </div>
-          </Section>
+          </div>
+        ) : null;
 
-          <Section title="EDUCATION" className="mb-8">
+      case "education":
+        return education && education.length > 0 ? (
+          <div>
+            <SectionHeader title="Education" />
             <div className="space-y-4">
-              {education.map((edu, index) => (
-                <div key={index}>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {edu.degree}
-                  </h3>
-                  <p className="text-gray-700">{edu.schoolName}</p>
-                  <p className="text-gray-600">
-                    {edu.graduationDate.month} {edu.graduationDate.year}
-                  </p>
-                </div>
+              {education.map((edu, idx) => (
+                <SectionItem
+                  key={idx}
+                  borderBottom={idx !== education.length - 1}
+                >
+                  <SectionTitle
+                    title={
+                      <>
+                        <div className="text-lg font-medium text-theme-heading">{edu.degree}</div>
+                        <div className="text-theme-text-primary">{edu.schoolName}</div>
+                        {edu.fieldOfStudy && (
+                          <div className="text-sm text-theme-text-secondary">Field of Study: {edu.fieldOfStudy}</div>
+                        )}
+                      </>
+                    }
+                    rightContent={
+                      <MetaInfo>
+                        {edu.graduationDate.month} {edu.graduationDate.year}
+                      </MetaInfo>
+                    }
+                  />
+                </SectionItem>
               ))}
             </div>
-          </Section>
+          </div>
+        ) : null;
 
-          <Section title="ACHIEVEMENTS">
+      case "skills":
+        return skills && skills.length > 0 ? (
+          <div>
+            <SectionHeader title="Skills" />
+            <ul className="space-y-1">
+              {skills.map((skill, idx) => (
+                <li key={idx} className="text-theme-text-secondary">{skill}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+
+      case "languages":
+        return languages && languages.length > 0 ? (
+          <div>
+            <SectionHeader title="Languages" />
+            <ul className="space-y-2">
+              {languages.map((language, idx) => (
+                <li key={idx} className="flex flex-col">
+                  <span className="font-medium text-theme-text-primary">{language.name}</span>
+                  <MetaInfo>{language.proficiency}</MetaInfo>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+
+      case "projects":
+        return projects && projects.length > 0 ? (
+          <div>
+            <SectionHeader title="Projects" />
             <div className="space-y-4">
-              {achievements.map((achievement, index) => (
-                <div key={index}>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-gray-600">{achievement.date}</p>
-                  <p className="text-gray-700 mt-1">
-                    {achievement.description}
-                  </p>
-                </div>
+              {projects.map((project, idx) => (
+                <SectionItem
+                  key={idx}
+                  borderBottom={idx !== projects.length - 1}
+                >
+                  <SectionTitle title={project.name} />
+                  <p className="text-theme-text-secondary mb-1">{project.description}</p>
+                  {project.technologies && (
+                    <MetaInfo>
+                      Technologies: {project.technologies.join(", ")}
+                    </MetaInfo>
+                  )}
+                  {project.link && (
+                    <a href={project.link} className="text-sm text-theme-accent-primary hover:underline">
+                      View Project
+                    </a>
+                  )}
+                </SectionItem>
               ))}
             </div>
-          </Section>
+          </div>
+        ) : null;
+
+      case "achievements":
+        return achievements && achievements.length > 0 ? (
+          <div>
+            <SectionHeader title="Achievements" />
+            <div className="space-y-4">
+              {achievements.map((achievement, idx) => (
+                <SectionItem
+                  key={idx}
+                  borderBottom={idx !== achievements.length - 1}
+                >
+                  <SectionTitle
+                    title={achievement.title}
+                    rightContent={
+                      <MetaInfo>{achievement.date}</MetaInfo>
+                    }
+                  />
+                  <p className="text-theme-text-secondary">{achievement.description}</p>
+                </SectionItem>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case "customSections":
+        return customSections && customSections.length > 0 ? (
+          <>
+            {customSections.map((section, index) => (
+              <div key={index}>
+                <SectionHeader title={section.title} />
+                <p className="text-theme-text-secondary mb-2">{section.description}</p>
+                {section.startDate && (
+                  <MetaInfo>
+                    {section.startDate.month} {section.startDate.year} -{" "}
+                    {section.endDate?.current
+                      ? "Present"
+                      : `${section.endDate?.month} ${section.endDate?.year}`}
+                  </MetaInfo>
+                )}
+              </div>
+            ))}
+          </>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <LayoutRenderer data={props}>
+      {() => (
+        <div className="bg-theme-bg-primary text-theme-text-primary w-full max-w-none m-0 p-0">
+          <DynamicResumeLayout renderSection={renderSection}>
+            <div className="hidden">Extra content if needed</div>
+          </DynamicResumeLayout>
         </div>
-      </div>
-    </div>
+      )}
+    </LayoutRenderer>
   );
 };
 

@@ -1,75 +1,63 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { useAtomValue } from "jotai";
+import { currentTemplateLayoutAtom, SectionType } from "@/state/layout-store";
 import { TemplateProps } from "@/types/resume";
+import { cn } from "@/lib/utils";
 
-interface BaseTemplateProps extends TemplateProps {
-  className?: string;
-  children?: React.ReactNode;
-}
+// Define default layout inline to avoid import issues
+export const DEFAULT_MAIN_SECTIONS: SectionType[] = [
+  "personalDetails",
+  "summary",
+  "workHistory",
+  "projects",
+  "education",
+];
 
-export const Section: React.FC<{
-  title?: string;
-  className?: string;
-  children: React.ReactNode;
-}> = ({ title, className, children }) => (
-  <section className={cn("space-y-3", className)}>
-    {title && (
-      <h2 className="text-lg font-semibold border-b pb-1">
-        {title}
-      </h2>
-    )}
-    {children}
-  </section>
-);
+export const DEFAULT_SIDEBAR_SECTIONS: SectionType[] = [
+  "skills",
+  "languages",
+  "achievements",
+];
 
-export const ContactItem: React.FC<{
-  icon?: React.ReactNode;
-  href?: string;
-  children: React.ReactNode;
-}> = ({ icon, href, children }) => (
-  <div className="flex items-center gap-2 text-sm">
-    {icon && <span className="text-gray-500">{icon}</span>}
-    {href ? (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-blue-600 transition-colors"
-      >
-        {children}
-      </a>
-    ) : (
-      <span>{children}</span>
-    )}
-  </div>
-);
+// Re-export themed components from ThemeComponents
+export { SectionHeader, MetaInfo, SectionItem, SectionTitle } from "./ThemeComponents";
 
-export const DateRange: React.FC<{
-  startDate: string;
-  endDate?: string;
-  className?: string;
-}> = ({ startDate, endDate, className }) => (
-  <span className={cn("text-sm text-gray-500", className)}>
-    {startDate}
-    {endDate && endDate !== startDate && ` - ${endDate}`}
-  </span>
-);
+// This is a wrapper component that provides layout customization 
+// capabilities for all resume templates
+export const LayoutRenderer: React.FC<{
+  children: (props: {
+    mainSections: SectionType[];
+    sidebarSections: SectionType[];
+    data: TemplateProps;
+  }) => React.ReactNode;
+  data: TemplateProps;
+}> = ({ children, data }) => {
+  // Get layout configuration from state for the current template
+  const layoutConfig = useAtomValue(currentTemplateLayoutAtom);
 
-export const BaseTemplate: React.FC<BaseTemplateProps> = ({
-  className,
-  children,
-}) => {
+  // Explicitly create a fresh copy of the sections to ensure no reference issues
+  // Handle the case when layoutConfig is null by using the default values
+  const layoutData = React.useMemo(() => {
+    // Always provide fallback values for safety
+    const mainSections = layoutConfig?.mainSections && layoutConfig.mainSections.length > 0
+      ? [...layoutConfig.mainSections]
+      : DEFAULT_MAIN_SECTIONS;
+
+    const sidebarSections = layoutConfig?.sidebarSections && layoutConfig.sidebarSections.length > 0
+      ? [...layoutConfig.sidebarSections]
+      : DEFAULT_SIDEBAR_SECTIONS;
+
+    return { mainSections, sidebarSections };
+  }, [layoutConfig]);
+
+  // Pass layout configuration and data to the child template
   return (
-    <article
-      id="resume-content"
-      className={cn(
-        "w-[210mm] min-h-[297mm] mx-auto bg-white p-6 ",
-        className
-      )}
-    >
-      {children}
-    </article>
+    <>
+      {children({
+        mainSections: layoutData.mainSections,
+        sidebarSections: layoutData.sidebarSections,
+        data
+      })}
+    </>
   );
 };
-
-export default BaseTemplate;

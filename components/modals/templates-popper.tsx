@@ -14,9 +14,10 @@ import { templates } from "@/config/templates";
 import { ChevronDown } from "lucide-react";
 import { Icons } from "../icons";
 import { cn } from "@/lib/utils";
+import MiniCard from "@/components/MiniCard";
 
-// Define categories
-const categories = ["All", "Simple", "Modern", "Creative"];
+// Define categories based on the templates data
+const categories = ["All", ...Array.from(new Set(Object.values(templates).map(t => t.category)))];
 
 export function TemplatesPopper({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +30,8 @@ export function TemplatesPopper({ children }: { children: React.ReactNode }) {
     selectedCategory === "All"
       ? Object.entries(templates)
       : Object.entries(templates).filter(
-          ([, template]) => template.category === selectedCategory
-        );
+        ([, template]) => template.category === selectedCategory
+      );
 
   return (
     <Popover onOpenChange={(open) => setIsOpen(open)}>
@@ -47,7 +48,7 @@ export function TemplatesPopper({ children }: { children: React.ReactNode }) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full max-w-xl p-4">
-        <div className="mb-4 flex  gap-2">
+        <div className="mb-4 flex flex-wrap gap-2 border-b pb-2">
           {/* Category Buttons */}
           {categories.map((category) => (
             <Button
@@ -55,11 +56,10 @@ export function TemplatesPopper({ children }: { children: React.ReactNode }) {
               variant="outline"
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className={`${
-                selectedCategory === category
-                  ? "text-primary bg-accent"
-                  : "text-muted-foreground"
-              }`}
+              className={`${selectedCategory === category
+                ? "text-primary bg-accent"
+                : "text-muted-foreground"
+                }`}
             >
               {category}
             </Button>
@@ -72,28 +72,26 @@ export function TemplatesPopper({ children }: { children: React.ReactNode }) {
             className="grid grid-cols-2 gap-4 p-2"
             onValueChange={setSelectedTemplate}
           >
-            {filteredTemplates.map(([key, template]) => {
-              const MiniCardComponent = template.miniCard;
-
-              return (
-                <div key={key} className="">
-                  <RadioGroupItem
-                    value={key}
-                    id={key}
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor={key}
-                    className={`relative flex cursor-pointer flex-col items-center justify-between rounded-md border-2 transition-transform hover:scale-105 duration-300 ease-in-out peer-data-[state=checked]:border-primary`}
-                  >
-                    <div className=" h-72 w-60 ">
-                      {/* Render the MiniCard component with data from the atom */}
-                      <MiniCardComponent template={key} data={resumeData} />
-                    </div>
-                  </Label>
-                </div>
-              );
-            })}
+            {filteredTemplates.map(([key, template]) => (
+              <div key={key} className="">
+                <RadioGroupItem
+                  value={key}
+                  id={key}
+                  className="peer sr-only"
+                />
+                <Label
+                  htmlFor={key}
+                  className={`relative flex cursor-pointer flex-col items-center justify-between rounded-md border-2 transition-transform hover:scale-105 duration-300 ease-in-out peer-data-[state=checked]:border-primary`}
+                >
+                  <div className="h-72 w-60 overflow-hidden">
+                    <MiniCard template={key} />
+                  </div>
+                  <div className="w-full p-2 text-center font-medium">
+                    {template.name}
+                  </div>
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         </div>
       </PopoverContent>

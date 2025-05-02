@@ -10,17 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
-import { TemplateProps, FormVisibility } from "@/types/resume";
+import { FormVisibility } from "@/types/resume";
 import { Trash2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 export function EducationForm() {
   const [resumeState, setResumeState] = useAtom(resumeStateAtom);
@@ -89,7 +83,9 @@ export function EducationForm() {
             {resumeState.education?.map((entry, index) => (
               <div key={index} className="space-y-4 border p-4 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-medium">Education {index + 1}</h3>
+                  <Label className="font-bold italic">
+                    Education #{index + 1}
+                  </Label>
                   <Button
                     variant="ghost"
                     size="icon"

@@ -91,7 +91,9 @@ export function WorkHistoryForm() {
               {resumeState.workHistory?.map((job, index) => (
                 <div key={index} className="space-y-4 border p-4 rounded-lg">
                   <div className="flex justify-between items-center">
-                    <h3 className="font-medium">Job {index + 1}</h3>
+                    <Label className="font-bold italic">
+                      Job #{index + 1}
+                    </Label>
                     <Button
                       variant="ghost"
                       size="icon"

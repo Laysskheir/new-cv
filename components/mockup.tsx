@@ -472,6 +472,7 @@ export const Mockup: React.FC = () => {
                 "shadow-xl"
               )}
             >
+              {/* Use the selected template instead of always using Dynamic */}
               <ResumeTemplate template={selectedTemplate} data={resumeData} />
             </motion.div>
           </div>

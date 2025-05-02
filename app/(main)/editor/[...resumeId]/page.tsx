@@ -2,15 +2,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { AchievementsForm } from "@/components/forms/Achievements";
-import { CustomSectionForm } from "@/components/forms/CustomSection";
-import { EducationForm } from "@/components/forms/Education";
-import { HeadingForm } from "@/components/forms/Heading";
-import { LanguagesForm } from "@/components/forms/Languages";
-import { ProjectsForm } from "@/components/forms/Projects";
-import { SkillsForm } from "@/components/forms/Skills";
-import { SummaryForm } from "@/components/forms/Summary";
-import { WorkHistoryForm } from "@/components/forms/WorkHistory";
 import { Mockup } from "@/components/mockup";
 import PreviewButton from "@/components/preview-button";
 import { ThemeWrapper } from "@/components/themes/theme-wrapper";
@@ -21,20 +12,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ResumeTitleProvider from "../_components/resume-title-provider";
-
-
-interface FormVisibility {
-  skills: boolean;
-  education: boolean;
-  workHistory: boolean;
-  projects: boolean;
-  summary: boolean;
-  personalDetails: boolean;
-  languages: boolean;
-  customSections: boolean;
-}
-
-
+import { LayoutEditor, DynamicSectionRenderer } from "@/components/layout-editor";
+import { JotaiProvider } from "@/state/store";
 
 const EditorClient = ({ resumeId, children }: { resumeId: string; children: React.ReactNode }) => {
   const containterRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +81,9 @@ const EditorClient = ({ resumeId, children }: { resumeId: string; children: Reac
           <div className="w-full max-w-3xl mx-auto flex items-center justify-between mb-4">
             <h1 className="text-xl font-semibold">Edit Resume</h1>
             <div className="flex items-center gap-2">
+              {/* Add Layout Editor Button */}
+              <LayoutEditor />
+
               <Button
                 variant="outline"
                 size="sm"
@@ -123,22 +105,8 @@ const EditorClient = ({ resumeId, children }: { resumeId: string; children: Reac
             </div>
           </div>
 
-          <ScrollArea
-            ref={containterRef}
-            className="h-[calc(100vh-5rem)] w-full flex flex-col gap-5 pb-20"
-          >
-            <div className="pt-0 max-w-3xl mx-auto w-full">
-              <HeadingForm />
-              <SummaryForm />
-              <WorkHistoryForm />
-              <EducationForm />
-              <ProjectsForm />
-              <AchievementsForm />
-              <SkillsForm />
-              <LanguagesForm />
-              <CustomSectionForm />
-            </div>
-          </ScrollArea>
+          {/* Dynamic Section Renderer */}
+          <DynamicSectionRenderer containerRef={containterRef} />
         </section>
 
         {/* Mockup Section */}
@@ -188,10 +156,12 @@ const EditorClient = ({ resumeId, children }: { resumeId: string; children: Reac
 // Server component wrapper
 export default function Editor({ params }: { params: { resumeId: string } }) {
   return (
-    <ResumeTitleProvider resumeId={params.resumeId}>
-      <EditorClient resumeId={params.resumeId}>
-        <div>Content</div>
-      </EditorClient>
-    </ResumeTitleProvider>
+    <JotaiProvider>
+      <ResumeTitleProvider resumeId={params.resumeId}>
+        <EditorClient resumeId={params.resumeId}>
+          <div>Content</div>
+        </EditorClient>
+      </ResumeTitleProvider>
+    </JotaiProvider>
   );
 }

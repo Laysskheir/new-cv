@@ -164,7 +164,7 @@ body::-webkit-scrollbar {
 /* Custom Scrollbar Styles */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #343434 #000000;
+  scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
 }
 
 /* Webkit (Chrome, Safari, newer versions of Opera) */
@@ -174,83 +174,216 @@ body::-webkit-scrollbar {
 }
 
 *::-webkit-scrollbar-track {
-  background: #000000;
+  background: hsl(var(--muted));
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #343434;
+  background-color: hsl(var(--muted-foreground));
   border-radius: 0 !important;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #cccccc;
+  background-color: hsl(var(--accent-foreground));
 }
 
 /* Theme Variables */
-:root {
+:root,
+:root[data-theme] {
   /* Default theme */
-  --text-primary: hsl(var(--primary));
-  --text-secondary: #4a4a4a;
-  --accent: hsl(var(--primary));
+  --text-primary: #222;
+  --text-secondary: #666;
+  --bg-primary: #fff;
+  --bg-secondary: #f5f5f5;
+  --accent-primary: #333;
+  --accent-secondary: #555;
+  --heading-color: #111;
+  --section-border: #eee;
 }
 
-/* Updated Theme Variables */
-.theme-modern {
-  --text-primary: #2c3e50; /* Dark Blue */
-  --text-secondary: #34495e; /* Charcoal */
-  --accent: #3498db; /* Light Blue */
+/* Professional resume themes */
+:root.theme-professional,
+html.theme-professional,
+body.theme-professional,
+[data-theme-root].theme-professional {
+  --text-primary: #14213d;
+  --text-secondary: #4f5e7b;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7f9;
+  --accent-primary: #2a6fc9;
+  --accent-secondary: #1a4b8c;
+  --heading-color: #14213d;
+  --section-border: #e6eaf0;
 }
 
-.theme-classic {
-  --text-primary: #000000; /* Black */
-  --text-secondary: #7f8c8d; /* Gray */
-  --accent: #000000; /* Black */
+/* Apply theme classes to all other themes similarly */
+:root.theme-executive,
+html.theme-executive,
+body.theme-executive,
+[data-theme-root].theme-executive {
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  --accent-primary: #333333;
+  --accent-secondary: #666666;
+  --heading-color: #262626;
+  --section-border: #e0e0e0;
 }
 
-.theme-sophisticated {
-  --text-primary: #ecf0f1; /* Light Gray */
-  --text-secondary: #34495e; /* Charcoal */
-  --accent: #e74c3c; /* Red */
+:root.theme-minimal,
+html.theme-minimal,
+body.theme-minimal,
+[data-theme-root].theme-minimal {
+  --text-primary: #000000;
+  --text-secondary: #505050;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --accent-primary: #000000;
+  --accent-secondary: #404040;
+  --heading-color: #000000;
+  --section-border: #dfdfdf;
 }
 
-.theme-creative {
-  --text-primary: #2980b9; /* Blue */
-  --text-secondary: #e67e22; /* Orange */
-  --accent: #e67e22; /* Orange */
+.theme-corporate {
+  --text-primary: #0a192f;
+  --text-secondary: #4a5568;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f9fc;
+  --accent-primary: #3e5c97;
+  --accent-secondary: #233554;
+  --heading-color: #0a192f;
+  --section-border: #e2e8f0;
 }
 
-.theme-minimalist {
-  --text-primary: #495057; /* Dark Gray */
-  --text-secondary: #6c757d; /* Medium Gray */
-  --accent: #6c757d; /* Medium Gray */
-}
-
-.theme-academic {
-  --text-primary: #003366; /* Dark Blue */
-  --text-secondary: #d4af37; /* Gold */
-  --accent: #d4af37; /* Gold */
+.theme-legal {
+  --text-primary: #2d2d2d;
+  --text-secondary: #595959;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --accent-primary: #7b2c34;
+  --accent-secondary: #5a2027;
+  --heading-color: #2d2d2d;
+  --section-border: #e6e6e6;
 }
 
 .theme-tech {
-  --text-primary: #007acc; /* Light Blue */
-  --text-secondary: #005f99; /* Dark Blue */
-  --accent: #005f99; /* Dark Blue */
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --accent-primary: #38b2ac;
+  --accent-secondary: #2c8a85;
+  --heading-color: #2d3748;
+  --section-border: #e2e8f0;
+}
+
+.theme-medical {
+  --text-primary: #1a3b34;
+  --text-secondary: #476761;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f9f7;
+  --accent-primary: #38a169;
+  --accent-secondary: #2f855a;
+  --heading-color: #1a3b34;
+  --section-border: #e6f0eb;
+}
+
+.theme-creative {
+  --text-primary: #2a4365;
+  --text-secondary: #4a5568;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --accent-primary: #4299e1;
+  --accent-secondary: #3182ce;
+  --heading-color: #2a4365;
+  --section-border: #e2e8f0;
+}
+
+.theme-academic {
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --accent-primary: #9b2c2c;
+  --accent-secondary: #742121;
+  --heading-color: #1a202c;
+  --section-border: #e2e8f0;
+}
+
+.theme-consultancy {
+  --text-primary: #322659;
+  --text-secondary: #4a5568;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --accent-primary: #805ad5;
+  --accent-secondary: #6b46c1;
+  --heading-color: #322659;
+  --section-border: #e9e3f5;
+}
+
+/* Updated theme styles using the variables from themes.ts */
+.theme-modern {
+  --text-primary: #2c3e50;
+  --text-secondary: #34495e;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --accent-primary: #3498db;
+  --accent-secondary: #2980b9;
+  --heading-color: #2c3e50;
+  --section-border: #e0e0e0;
+}
+
+.theme-classic {
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --accent-primary: #333333;
+  --accent-secondary: #7f8c8d;
+  --heading-color: #000000;
+  --section-border: #cccccc;
+}
+
+.theme-sophisticated {
+  --text-primary: #ecf0f1;
+  --text-secondary: #bdc3c7;
+  --bg-primary: #34495e;
+  --bg-secondary: #2c3e50;
+  --accent-primary: #e74c3c;
+  --accent-secondary: #c0392b;
+  --heading-color: #ecf0f1;
+  --section-border: #2c3e50;
 }
 
 .theme-earthy {
-  --text-primary: #2c5f2d; /* Dark Green */
-  --text-secondary: #8e735b; /* Brown */
-  --accent: #8e735b; /* Brown */
+  --text-primary: #2c5f2d;
+  --text-secondary: #3a7a37;
+  --bg-primary: #f5f8f5;
+  --bg-secondary: #d0e1d4;
+  --accent-primary: #8e735b;
+  --accent-secondary: #6d5746;
+  --heading-color: #2c5f2d;
+  --section-border: #d0e1d4;
 }
 
 .theme-sunset {
-  --text-primary: #ff5733; /* Orange */
-  --text-secondary: #c70039; /* Red */
-  --accent: #c70039; /* Red */
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --bg-primary: #fff9e6;
+  --bg-secondary: #ffcc00;
+  --accent-primary: #ff5733;
+  --accent-secondary: #c70039;
+  --heading-color: #c70039;
+  --section-border: #ffcc00;
 }
 
 .theme-oceanic {
-  --text-primary: #003b6f; /* Dark Blue */
-  --text-secondary: #1abc9c; /* Teal */
-  --accent: #1abc9c; /* Teal */
+  --text-primary: #003b6f;
+  --text-secondary: #004d99;
+  --bg-primary: #ecf5fe;
+  --bg-secondary: #60a3d9;
+  --accent-primary: #1abc9c;
+  --accent-secondary: #16a085;
+  --heading-color: #003b6f;
+  --section-border: #60a3d9;
 }

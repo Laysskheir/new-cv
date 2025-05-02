@@ -18,7 +18,8 @@ interface TemplateConfig {
 export const templates: Record<string, TemplateConfig> = {
   Premium: {
     name: "Premium",
-    description: "A sophisticated, modern template with comprehensive sections and elegant styling",
+    description:
+      "A sophisticated, modern template with comprehensive sections and elegant styling",
     category: "Premium",
     layout: Premium,
     miniCard: MiniCard,
@@ -30,18 +31,24 @@ export const templates: Record<string, TemplateConfig> = {
       "projects-section",
       "achievements-section",
       "languages-section",
-      "custom-sections"
+      "custom-sections",
     ],
   },
   Minimal: {
     name: "Minimal",
-    description: "A clean, minimalist design with numbered sections and perfect typography",
+    description:
+      "A clean, minimalist design with numbered sections and perfect typography",
     category: "Simple",
     layout: ResumeTemplate,
     miniCard: MiniCard,
     layoutType: "1-column",
     style: "minimal",
-    features: ["without-photo", "numbered-sections", "skills-section", "projects-section"],
+    features: [
+      "without-photo",
+      "numbered-sections",
+      "skills-section",
+      "projects-section",
+    ],
   },
   ElegantClassic: {
     name: "Elegant Classic",

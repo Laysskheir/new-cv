@@ -30,9 +30,9 @@ export default function PreviewModal({
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px]">
-        <ScrollArea className="h-[70vh]">
+        <div className="h-[70vh] overflow-y-auto">
           <ResumeTemplate template={template} data={data} />
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );

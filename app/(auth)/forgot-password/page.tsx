@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { client } from "@/lib/auth-client";
 import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -138,7 +139,7 @@ export default function ForgotPassword() {
             password if the account exists.
           </p>
           <div className="flex items-center justify-center">
-            <img
+            <Image
               src="https://github.com/shadcn.png"
               alt="Rick Blalock"
               className="h-12 w-12 rounded-full mr-4"

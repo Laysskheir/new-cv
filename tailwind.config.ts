@@ -65,6 +65,22 @@ const config = {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
+
+        // Theme system colors - added for resume themes
+        "theme-text": {
+          primary: "var(--text-primary)",
+          secondary: "var(--text-secondary)",
+        },
+        "theme-bg": {
+          primary: "var(--bg-primary)",
+          secondary: "var(--bg-secondary)",
+        },
+        "theme-accent": {
+          primary: "var(--accent-primary)",
+          secondary: "var(--accent-secondary)",
+        },
+        "theme-heading": "var(--heading-color)",
+        "theme-border": "var(--section-border)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -21,7 +21,7 @@ export const InfiniteMovingText = ({
 
   useEffect(() => {
     addAnimation();
-  }, []);
+  }, [addAnimation]);
 
   const [start, setStart] = useState(false);
 

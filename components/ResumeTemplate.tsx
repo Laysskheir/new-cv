@@ -9,17 +9,20 @@ import {
   fontFamilyAtom,
 } from "@/state/resumeAtoms";
 import { cn } from "@/lib/utils";
+import { ThemeWrapper } from "./themes/theme-wrapper";
 
 // Import all templates
 import ElegantClassic from "./design/ElegantClassic";
 import DoubleColumn from "./design/DoubleColumn";
-import { IvyLeague } from "./design/IvyLeague";
 import Polished from "./design/Polished";
 import Stylish from "./design/Stylish";
 import Modern from "./design/Modern";
 import Professional from "./design/Professional";
 import Minimal from "./design/Minimal";
 import Premium from "./design/Premium";
+import DynamicTemplate from "./design/DynamicTemplate";
+import IvyLeague from "./design/IvyLeague";
+
 interface ResumeTemplateProps {
   template: string;
   data: TemplateProps;
@@ -36,8 +39,12 @@ const templateComponents = {
   Modern,
   Professional,
   Minimal,
-  Premium
+  Premium,
 } as const;
+
+// TODO: Create a template converter utility that wraps all templates with DynamicResumeLayout
+// This would ensure consistent layout rearrangement support across all templates
+// For now, each template needs to be manually updated to use the DynamicResumeLayout component
 
 const ResumeTemplate: React.FC<ResumeTemplateProps> = ({
   template,
@@ -60,27 +67,23 @@ const ResumeTemplate: React.FC<ResumeTemplateProps> = ({
   );
 
   const TemplateComponent =
-    templateComponents[template as keyof typeof templateComponents];
-
-  if (!TemplateComponent) {
-    return (
-      <div className="flex justify-center items-center h-full text-destructive font-bold">
-        Invalid template selected: {template}
-      </div>
-    );
-  }
+    templateComponents[template as keyof typeof templateComponents] ||
+    templateComponents.IvyLeague; // Fallback to IvyLeague if template not found
 
   return (
     <ThemeProvider>
-      <div
-        className={cn(
-          "bg-[var(--bg-primary)] text-[var(--text-primary)] space-y-[var(--section-spacing)] text-[length:var(--font-size)]",
-          className
-        )}
-        style={style as React.CSSProperties}
-      >
-        <TemplateComponent {...data} />
-      </div>
+      <ThemeWrapper>
+        <div
+          className={cn(
+            "bg-theme-bg-primary text-theme-text-primary space-y-[var(--section-spacing)]",
+            className
+          )}
+          style={style as React.CSSProperties}
+          id="resume-content"
+        >
+          <TemplateComponent {...data} />
+        </div>
+      </ThemeWrapper>
     </ThemeProvider>
   );
 };

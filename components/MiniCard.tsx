@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 import { Card } from "./ui/card";
+import { resumeTemplates } from "@/app/constants/resumeTemplates";
 
 interface MiniCardProps {
   template: string;
@@ -19,6 +20,11 @@ const MiniCard: React.FC<MiniCardProps> = ({
 }) => {
   const [imageError, setImageError] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
+
+  // Find the template data to get the thumbnail
+  const templateData = React.useMemo(() => {
+    return resumeTemplates.find(t => t.id === template);
+  }, [template]);
 
   // Generate a simple preview based on template name
   const renderPreview = () => {
@@ -60,36 +66,31 @@ const MiniCard: React.FC<MiniCardProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Badge variant="secondary" className="absolute top-2 left-2 z-10">
-        {template.split(/(?=[A-Z])/).join(" ")}
+        {templateData?.name || template.split(/(?=[A-Z])/).join(" ")}
       </Badge>
 
       <div className="relative w-full h-full">
         {!imageError ? (
           <Image
-            src={`/images/templates/${template.toLowerCase()}.jpg`}
-            alt={`${template} template preview`}
+            src={templateData?.thumbnail || `/images/templates/${template.toLowerCase()}.jpg`}
+            alt={`${templateData?.name || template} template preview`}
             fill
             className="object-cover transition-transform duration-300"
             style={{ transform: isHovered ? "scale(1.05)" : "scale(1)" }}
             onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              // Try .png if .jpg fails
-              if (target.src.endsWith('.jpg')) {
-                target.src = target.src.replace('.jpg', '.png');
-              } else {
-                setImageError(true);
-              }
+              setImageError(true);
             }}
             priority
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full bg-muted">
-            {renderPreview() || (
-              <span className="text-muted-foreground">
-                Preview not available
-              </span>
-            )}
-          </div>
+          <Image
+            src="/placeholder.svg"
+            alt={`${templateData?.name || template} template preview (placeholder)`}
+            fill
+            className="object-cover transition-transform duration-300"
+            style={{ transform: isHovered ? "scale(1.05)" : "scale(1)" }}
+            priority
+          />
         )}
       </div>
     </div>

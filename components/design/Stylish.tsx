@@ -1,65 +1,126 @@
 import React from "react";
 import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
 import { TemplateProps } from "../../types/resume";
+import { LayoutRenderer } from "./BaseTemplate";
+import { SectionType } from "@/state/layout-store";
 
-const Stylish: React.FC<TemplateProps> = ({
-  firstName,
-  surname,
-  profession,
-  city,
-  country,
-  postalCode,
-  phone,
-  email,
-  workHistory,
-  education,
-  projects,
-  skills,
-  summary,
-  achievements,
-  customSections,
-  languages,
-}) => {
-  return (
-    <div className="bg-white text-black w-full max-w-none m-0 p-8 print:p-0 print:m-0">
-      {/* Header with elegant spacing */}
-      <header className="text-center mb-12 print:mb-8 print:pt-4" style={{ pageBreakInside: 'avoid' }}>
-        <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:text-black">{`${firstName} ${surname}`}</h1>
-        <p className="text-xl text-gray-700 mb-6 print:text-lg print:text-black">{profession}</p>
-        <div className="flex justify-center gap-6 print:gap-4 print:text-sm">
-          <div className="flex items-center text-gray-700 print:text-black">
-            <PhoneIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {phone}
-          </div>
-          <div className="flex items-center text-gray-700 print:text-black">
-            <MailIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {email}
-          </div>
-          <div className="flex items-center text-gray-700 print:text-black">
-            <MapPinIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {`${city}, ${country}`}
-          </div>
-        </div>
-      </header>
+const Stylish: React.FC<TemplateProps> = (props) => {
+  const {
+    firstName,
+    surname,
+    profession,
+    city,
+    country,
+    postalCode,
+    phone,
+    email,
+    workHistory,
+    education,
+    projects,
+    skills,
+    summary,
+    achievements,
+    customSections,
+    languages,
+  } = props;
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8 print:gap-x-8 print:gap-y-6">
-        {/* Left Column */}
-        <div className="space-y-8 print:space-y-6">
+  // Function to render each section based on type
+  const renderSection = (sectionType: SectionType) => {
+    switch (sectionType) {
+      case "personalDetails":
+        return (
+          <header className="text-center mb-8 print:mb-6 print:pt-4" style={{ pageBreakInside: 'avoid' }}>
+            <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:text-black">{`${firstName} ${surname}`}</h1>
+            <p className="text-xl text-gray-700 mb-6 print:text-lg print:text-black">{profession}</p>
+            <div className="flex justify-center gap-6 print:gap-4 print:text-sm">
+              <div className="flex items-center text-gray-700 print:text-black">
+                <PhoneIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {phone}
+              </div>
+              <div className="flex items-center text-gray-700 print:text-black">
+                <MailIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {email}
+              </div>
+              <div className="flex items-center text-gray-700 print:text-black">
+                <MapPinIcon className="w-4 h-4 mr-2 print:w-3 print:h-3" /> {`${city}, ${country}`}
+              </div>
+            </div>
+          </header>
+        );
+
+      case "summary":
+        return summary ? (
           <ProfileSummarySection summary={summary} />
-          <WorkExperienceSection workHistory={workHistory} />
-          <ProjectsSection projects={projects} />
-        </div>
+        ) : null;
 
-        {/* Right Column */}
-        <div className="space-y-8 print:space-y-6">
+      case "workHistory":
+        return workHistory && workHistory.length > 0 ? (
+          <WorkExperienceSection workHistory={workHistory} />
+        ) : null;
+
+      case "education":
+        return education && education.length > 0 ? (
           <EducationSection education={education} />
+        ) : null;
+
+      case "skills":
+        return skills && skills.length > 0 ? (
           <SkillsSection skills={skills} />
+        ) : null;
+
+      case "languages":
+        return languages && languages.length > 0 ? (
           <LanguagesSection languages={languages} />
+        ) : null;
+
+      case "projects":
+        return projects && projects.length > 0 ? (
+          <ProjectsSection projects={projects} />
+        ) : null;
+
+      case "achievements":
+        return achievements && achievements.length > 0 ? (
           <AchievementsSection achievements={achievements} />
-          {customSections && customSections.length > 0 && (
-            <CustomSectionsSection customSections={customSections} />
-          )}
+        ) : null;
+
+      case "customSections":
+        return customSections && customSections.length > 0 ? (
+          <CustomSectionsSection customSections={customSections} />
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <LayoutRenderer data={props}>
+      {({ mainSections, sidebarSections }) => (
+        <div className="bg-white text-black w-full max-w-[750px] mx-auto p-8 print:p-0 print:m-0">
+          <div className="flex flex-col">
+            {/* Always render personal details at the top */}
+            {renderSection("personalDetails")}
+
+            {/* Single column layout - all sections in order */}
+            <div className="flex flex-col gap-4">
+              {/* Main sections first (excluding personalDetails) */}
+              {mainSections
+                .filter((section: SectionType) => section !== "personalDetails")
+                .map((section: SectionType) => (
+                  <div key={section} className="mb-2">
+                    {renderSection(section)}
+                  </div>
+                ))}
+
+              {/* Sidebar sections after main sections */}
+              {sidebarSections.map((section: SectionType) => (
+                <div key={section} className="mb-2">
+                  {renderSection(section)}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </LayoutRenderer>
   );
 };
 

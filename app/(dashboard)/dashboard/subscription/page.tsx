@@ -232,55 +232,74 @@ const SubscriptionPage = () => {
     }
 
     return (
-        <div className="container mx-auto p-4 py-8 space-y-8">
-            <div className="text-center space-y-2 max-w-3xl mx-auto mb-10">
-                <h1 className="text-3xl md:text-4xl font-bold">Your Subscription Plan</h1>
-                <p className="text-muted-foreground">Choose the plan that works best for your career goals</p>
-                <Separator className="mt-6 mx-auto w-1/2" />
+        <div className="container mx-auto p-4 py-12 space-y-16">
+            {/* Hero Section */}
+            <div className="text-center space-y-6 max-w-3xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium text-primary">Choose Your Plan</span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                    Your Subscription Plan
+                </h1>
+                <p className="text-base text-muted-foreground max-w-xl mx-auto">
+                    Choose the plan that works best for your career goals. Upgrade anytime to unlock premium features.
+                </p>
+                <Separator className="mt-8 mx-auto w-1/4" />
             </div>
 
-            {showCancelSuccess && (
-                <Alert className="max-w-4xl mx-auto bg-warning/10 border-warning">
-                    <AlertTriangle className="h-4 w-4 text-warning" />
-                    <AlertTitle className="text-warning">Subscription Canceled</AlertTitle>
-                    <AlertDescription className="text-warning">
-                        Your Pro subscription has been canceled. You'll continue to have access to Pro features until the end of your current billing period.
-                    </AlertDescription>
-                </Alert>
-            )}
+            {/* Status Alerts */}
+            <div className="space-y-4 max-w-3xl mx-auto">
+                {showCancelSuccess && (
+                    <Alert className="bg-warning/5 border-warning/20 animate-in slide-in-from-top duration-500">
+                        <AlertTriangle className="h-4 w-4 text-warning" />
+                        <AlertTitle className="text-warning font-medium">Subscription Canceled</AlertTitle>
+                        <AlertDescription className="text-warning/90">
+                            Your Pro subscription has been canceled. You'll continue to have access to Pro features until the end of your current billing period.
+                        </AlertDescription>
+                    </Alert>
+                )}
 
-            {currentPlan === 'pro' && (
-                <Alert className={`max-w-4xl mx-auto ${subscriptionDetails?.cancelAtPeriodEnd ? 't border-warning' : 'border-success'}`}>
-                    <Crown className={`h-4 w-4 ${subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning' : 'text-success'}`} />
-                    <AlertTitle className={subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning' : 'text-success'}>
-                        {subscriptionDetails?.cancelAtPeriodEnd
-                            ? "Your Pro Plan is scheduled to end"
-                            : "You're on the Pro Plan!"}
-                    </AlertTitle>
-                    <AlertDescription className={subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning' : 'text-success'}>
-                        {subscriptionDetails?.cancelAtPeriodEnd
-                            ? `Your subscription has been canceled. You'll continue to have access to Pro features until ${subscriptionDetails.currentPeriodEnd}, after which you'll be downgraded to the Free plan.`
-                            : "You have access to all premium features including unlimited resumes, premium templates, and advanced AI suggestions."}
-                        {!subscriptionDetails?.cancelAtPeriodEnd && subscriptionDetails?.currentPeriodEnd && (
-                            <span className="block mt-1">
-                                Your subscription {subscriptionDetails.status === 'trialing' ? 'trial' : 'renewal'} date: <strong>{subscriptionDetails.currentPeriodEnd}</strong>
-                            </span>
-                        )}
-                    </AlertDescription>
-                </Alert>
-            )}
+                {currentPlan === 'pro' && (
+                    <Alert className={`animate-in slide-in-from-top duration-500 ${subscriptionDetails?.cancelAtPeriodEnd
+                        ? 'bg-warning/5 border-warning/20'
+                        : 'bg-success/5 border-success/20'
+                        }`}>
+                        <Crown className={`h-4 w-4 ${subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning' : 'text-success'
+                            }`} />
+                        <AlertTitle className={subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning' : 'text-success'}>
+                            {subscriptionDetails?.cancelAtPeriodEnd
+                                ? "Your Pro Plan is scheduled to end"
+                                : "You're on the Pro Plan!"}
+                        </AlertTitle>
+                        <AlertDescription className={subscriptionDetails?.cancelAtPeriodEnd ? 'text-warning/90' : 'text-success/90'}>
+                            {subscriptionDetails?.cancelAtPeriodEnd
+                                ? `Your subscription has been canceled. You'll continue to have access to Pro features until ${subscriptionDetails.currentPeriodEnd}, after which you'll be downgraded to the Free plan.`
+                                : "You have access to all premium features including unlimited resumes, premium templates, and advanced AI suggestions."}
+                            {!subscriptionDetails?.cancelAtPeriodEnd && subscriptionDetails?.currentPeriodEnd && (
+                                <span className="block mt-2 text-sm font-medium">
+                                    Your subscription {subscriptionDetails.status === 'trialing' ? 'trial' : 'renewal'} date: <strong>{subscriptionDetails.currentPeriodEnd}</strong>
+                                </span>
+                            )}
+                        </AlertDescription>
+                    </Alert>
+                )}
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Pricing Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                {/* Free Plan Card */}
                 <Card
-                    className={`w-full transition-all duration-300 
-                    ${currentPlan === 'free' ? 'border-primary shadow-md ring-1 ring-primary' : 'hover:shadow-md hover:border-primary/50'}
-                    `}
+                    className={`w-full transition-all duration-300 hover:shadow-lg
+                    ${currentPlan === 'free'
+                            ? 'border-primary/50 shadow-lg ring-1 ring-primary/50 scale-[1.02]'
+                            : 'hover:border-primary/30 hover:scale-[1.01]'
+                        }`}
                 >
                     {currentPlan === 'free' && (
                         <div className="absolute -top-1 -right-1">
                             <div className="relative">
-                                <div className="absolute top-0 right-0 h-12 w-12 bg-primary -z-10 rotate-45 transform origin-bottom-left"></div>
-                                <Badge className="m-2 relative text-xs bg-primary hover:bg-primary">
+                                <Badge className="m-2 relative text-xs bg-primary/90 hover:bg-primary/90">
                                     Current Plan
                                 </Badge>
                             </div>
@@ -298,33 +317,36 @@ const SubscriptionPage = () => {
                                 )}
                             </div>
                         </div>
-                        <CardDescription className="text-sm">Get started with basic features</CardDescription>
+                        <CardDescription className="text-sm mt-1">Get started with basic features</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">$0<span className="text-xs font-normal text-muted-foreground">/month</span></div>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-2xl font-bold">$0</span>
+                            <span className="text-sm text-muted-foreground">/month</span>
+                        </div>
                         <ul className="mt-6 space-y-3">
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span>3 Resumes</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm">3 Resumes</span>
                             </li>
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span>Basic Templates</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm">Basic Templates</span>
                             </li>
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span>PDF Export</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm">PDF Export</span>
                             </li>
-                            <li className="flex items-center text-muted-foreground">
-                                <X className="mr-3 h-4 w-4" />
-                                <span>Premium Features</span>
+                            <li className="flex items-start text-muted-foreground">
+                                <X className="mr-3 h-4 w-4 shrink-0 mt-0.5" />
+                                <span className="text-sm">Premium Features</span>
                             </li>
                         </ul>
                     </CardContent>
                     <CardFooter>
                         {currentPlan === 'free' ? (
                             <Button
-                                className="w-full text-sm"
+                                className="w-full text-sm h-10"
                                 variant="outline"
                                 disabled={true}
                             >
@@ -334,7 +356,7 @@ const SubscriptionPage = () => {
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button
-                                        className="w-full text-sm"
+                                        className="w-full text-sm h-10"
                                         variant={subscriptionDetails?.cancelAtPeriodEnd ? "outline" : "outline"}
                                         disabled={subscriptionDetails?.cancelAtPeriodEnd}
                                     >
@@ -343,13 +365,13 @@ const SubscriptionPage = () => {
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-md">
                                     <DialogHeader>
-                                        <DialogTitle>Downgrade to Free Plan</DialogTitle>
-                                        <DialogDescription>
+                                        <DialogTitle className="text-lg">Downgrade to Free Plan</DialogTitle>
+                                        <DialogDescription className="text-sm">
                                             Are you sure you want to downgrade to the Free plan?
                                         </DialogDescription>
                                     </DialogHeader>
-                                    <div className="space-y-4 py-3">
-                                        <p className="text-sm">When you downgrade:</p>
+                                    <div className="space-y-4 py-4">
+                                        <p className="text-sm font-medium">When you downgrade:</p>
                                         <ul className="text-sm space-y-2 list-disc pl-5">
                                             <li>Your Pro subscription will remain active until the end of your current billing period</li>
                                             <li>After your billing period ends, you'll be switched to the Free plan</li>
@@ -357,9 +379,9 @@ const SubscriptionPage = () => {
                                             <li>If you have more than 3 resumes, you'll need to delete some to create new ones</li>
                                         </ul>
                                     </div>
-                                    <DialogFooter className="flex sm:justify-between">
+                                    <DialogFooter className="flex sm:justify-between gap-3">
                                         <DialogClose asChild>
-                                            <Button variant="outline" className="mt-2 sm:mt-0">
+                                            <Button variant="outline" className="mt-2 sm:mt-0 flex-1 h-10">
                                                 Keep Pro Plan
                                             </Button>
                                         </DialogClose>
@@ -367,10 +389,11 @@ const SubscriptionPage = () => {
                                             variant="destructive"
                                             onClick={handleCancelSubscription}
                                             disabled={isLoading}
+                                            className="flex-1 h-10"
                                         >
                                             {isLoading ? (
                                                 <>
-                                                    <Loader className="mr-2 h-3 w-3 animate-spin" />
+                                                    <Loader className="mr-2 h-4 w-4 animate-spin" />
                                                     Processing...
                                                 </>
                                             ) : "Downgrade to Free"}
@@ -382,19 +405,19 @@ const SubscriptionPage = () => {
                     </CardFooter>
                 </Card>
 
+                {/* Pro Plan Card */}
                 <Card
-                    className={`w-full relative overflow-hidden transition-all duration-300 
+                    className={`w-full relative overflow-hidden transition-all duration-300 hover:shadow-lg
                     ${currentPlan === 'pro' && !subscriptionDetails?.cancelAtPeriodEnd
-                            ? 'border-success shadow-lg ring-1 ring-success'
+                            ? 'border-success/50 shadow-lg ring-1 ring-success/50 scale-[1.02]'
                             : currentPlan === 'pro' && subscriptionDetails?.cancelAtPeriodEnd
-                                ? 'border-warning shadow-lg ring-1 ring-warning'
-                                : 'hover:shadow-md hover:border-primary/50'}`}
+                                ? 'border-warning/50 shadow-lg ring-1 ring-warning/50 scale-[1.02]'
+                                : 'hover:border-primary/30 hover:scale-[1.01]'}`}
                 >
                     {currentPlan === 'pro' && !subscriptionDetails?.cancelAtPeriodEnd && (
                         <div className="absolute -top-1 -right-1">
                             <div className="relative">
-                                <div className="absolute top-0 right-0 h-12 w-12 bg-success -z-10 rotate-45 transform origin-bottom-left"></div>
-                                <Badge className="m-2 relative text-xs bg-success hover:bg-success">
+                                <Badge className="m-2 relative text-xs bg-success/90 hover:bg-success/90">
                                     <Crown className="h-3 w-3 mr-1" /> Active
                                 </Badge>
                             </div>
@@ -404,8 +427,7 @@ const SubscriptionPage = () => {
                     {currentPlan === 'pro' && subscriptionDetails?.cancelAtPeriodEnd && (
                         <div className="absolute -top-1 -right-1">
                             <div className="relative">
-                                <div className="absolute top-0 right-0 h-12 w-12 bg-warning -z-10 rotate-45 transform origin-bottom-left"></div>
-                                <Badge className="m-2 relative text-xs bg-warning hover:bg-warning">
+                                <Badge className="m-2 relative text-xs bg-warning/90 hover:bg-warning/90">
                                     Ending Soon
                                 </Badge>
                             </div>
@@ -415,15 +437,19 @@ const SubscriptionPage = () => {
                     {currentPlan !== 'pro' && (
                         <div className="absolute -top-1 -right-1">
                             <div className="relative">
-                                <div className="absolute top-0 right-0 h-12 w-12 bg-primary -z-10 rotate-45 transform origin-bottom-left"></div>
-                                <Badge className="m-2 relative text-xs bg-primary hover:bg-primary">
+                                <Badge className="m-2 relative text-xs bg-primary/90 hover:bg-primary/90">
                                     <Sparkles className="h-3 w-3 mr-1" /> Recommended
                                 </Badge>
                             </div>
                         </div>
                     )}
 
-                    <CardHeader className={`${currentPlan === 'pro' && !subscriptionDetails?.cancelAtPeriodEnd ? 'bg-success/5' : currentPlan === 'pro' && subscriptionDetails?.cancelAtPeriodEnd ? 'bg-warning/5' : 'bg-primary/5'} border-b pb-3`}>
+                    <CardHeader className={`${currentPlan === 'pro' && !subscriptionDetails?.cancelAtPeriodEnd
+                        ? 'bg-success/5'
+                        : currentPlan === 'pro' && subscriptionDetails?.cancelAtPeriodEnd
+                            ? 'bg-warning/5'
+                            : 'bg-primary/5'
+                        } border-b pb-3`}>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <CardTitle className="text-xl font-bold">Pro Plan</CardTitle>
@@ -444,26 +470,29 @@ const SubscriptionPage = () => {
                                 )}
                             </div>
                         </div>
-                        <CardDescription className="text-sm">Unlock all premium features</CardDescription>
+                        <CardDescription className="text-sm mt-1">Unlock all premium features</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">$20<span className="text-xs font-normal text-muted-foreground">/month</span></div>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-2xl font-bold">$20</span>
+                            <span className="text-sm text-muted-foreground">/month</span>
+                        </div>
                         <ul className="mt-6 space-y-3">
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span className="font-medium">Unlimited Resumes</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm font-medium">Unlimited Resumes</span>
                             </li>
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span className="font-medium">All Premium Templates</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm font-medium">All Premium Templates</span>
                             </li>
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span className="font-medium">Advanced AI Suggestions</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm font-medium">Advanced AI Suggestions</span>
                             </li>
-                            <li className="flex items-center">
-                                <Check className="mr-3 h-4 w-4 text-success" />
-                                <span className="font-medium">Priority Support</span>
+                            <li className="flex items-start">
+                                <Check className="mr-3 h-4 w-4 text-success shrink-0 mt-0.5" />
+                                <span className="text-sm font-medium">Priority Support</span>
                             </li>
                         </ul>
                     </CardContent>
@@ -472,14 +501,14 @@ const SubscriptionPage = () => {
                             subscriptionDetails?.cancelAtPeriodEnd ? (
                                 <div className="w-full">
                                     <Button
-                                        className="w-full text-sm"
+                                        className="w-full text-sm h-10"
                                         variant="default"
                                         onClick={() => handleRestoreSubscription()}
                                         disabled={isLoading}
                                     >
                                         {isLoading ? (
                                             <>
-                                                <Loader className="mr-2 h-3 w-3 animate-spin" />
+                                                <Loader className="mr-2 h-4 w-4 animate-spin" />
                                                 Processing...
                                             </>
                                         ) : "Resume Subscription"}
@@ -489,9 +518,9 @@ const SubscriptionPage = () => {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="w-full grid grid-cols-2 gap-2">
+                                <div className="w-full grid grid-cols-2 gap-3">
                                     <Button
-                                        className="text-sm"
+                                        className="text-sm h-10"
                                         variant="outline"
                                         onClick={() => router.push('/dashboard/settings')}
                                     >
@@ -500,7 +529,7 @@ const SubscriptionPage = () => {
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Button
-                                                className="text-sm"
+                                                className="text-sm h-10"
                                                 variant="outline"
                                                 disabled={isLoading}
                                             >
@@ -509,13 +538,13 @@ const SubscriptionPage = () => {
                                         </DialogTrigger>
                                         <DialogContent className="sm:max-w-md">
                                             <DialogHeader>
-                                                <DialogTitle>Cancel Pro Subscription</DialogTitle>
-                                                <DialogDescription>
+                                                <DialogTitle className="text-lg">Cancel Pro Subscription</DialogTitle>
+                                                <DialogDescription className="text-sm">
                                                     Are you sure you want to cancel your Pro subscription?
                                                 </DialogDescription>
                                             </DialogHeader>
-                                            <div className="space-y-4 py-3">
-                                                <p className="text-sm">When you cancel:</p>
+                                            <div className="space-y-4 py-4">
+                                                <p className="text-sm font-medium">When you cancel:</p>
                                                 <ul className="text-sm space-y-2 list-disc pl-5">
                                                     <li>Your subscription will remain active until the end of your current billing period</li>
                                                     <li>You'll continue to have access to all Pro features until then</li>
@@ -523,9 +552,9 @@ const SubscriptionPage = () => {
                                                     <li>You may lose access to some of your resumes if you exceed the Free plan limit</li>
                                                 </ul>
                                             </div>
-                                            <DialogFooter className="flex sm:justify-between">
+                                            <DialogFooter className="flex sm:justify-between gap-3">
                                                 <DialogClose asChild>
-                                                    <Button variant="outline" className="mt-2 sm:mt-0">
+                                                    <Button variant="outline" className="mt-2 sm:mt-0 flex-1 h-10">
                                                         Keep Subscription
                                                     </Button>
                                                 </DialogClose>
@@ -533,10 +562,11 @@ const SubscriptionPage = () => {
                                                     variant="destructive"
                                                     onClick={handleCancelSubscription}
                                                     disabled={isLoading}
+                                                    className="flex-1 h-10"
                                                 >
                                                     {isLoading ? (
                                                         <>
-                                                            <Loader className="mr-2 h-3 w-3 animate-spin" />
+                                                            <Loader className="mr-2 h-4 w-4 animate-spin" />
                                                             Processing...
                                                         </>
                                                     ) : "Cancel Subscription"}
@@ -548,13 +578,13 @@ const SubscriptionPage = () => {
                             )
                         ) : (
                             <Button
-                                className="w-full text-sm"
+                                className="w-full text-sm h-10"
                                 onClick={() => handleUpgrade('pro')}
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
                                     <>
-                                        <Loader className="mr-2 h-3 w-3 animate-spin" />
+                                        <Loader className="mr-2 h-4 w-4 animate-spin" />
                                         Processing...
                                     </>
                                 ) : "Upgrade to Pro"}
@@ -564,23 +594,43 @@ const SubscriptionPage = () => {
                 </Card>
             </div>
 
-            <div className="mt-16 max-w-4xl mx-auto">
-                <h2 className="text-xl font-bold mb-6 text-center">Compare Plans</h2>
-                <div className="border rounded-lg overflow-hidden bg-card">
+            {/* Feature Comparison */}
+            <div className="mt-16 max-w-3xl mx-auto">
+                <div className="text-center mb-6">
+                    <h2 className="text-xl font-bold mb-2">Compare Plans</h2>
+                    <p className="text-sm text-muted-foreground">See what each plan offers to make the right choice</p>
+                </div>
+                <div className="border rounded-lg overflow-hidden bg-card shadow-sm">
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-muted/50">
-                                <TableHead className="w-1/3 font-semibold">Feature</TableHead>
-                                <TableHead className="font-semibold">Free</TableHead>
-                                <TableHead className="font-semibold">Pro</TableHead>
+                                <TableHead className="w-1/3 font-medium text-sm">Feature</TableHead>
+                                <TableHead className="font-medium text-sm">Free</TableHead>
+                                <TableHead className="font-medium text-sm">Pro</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {features.map((feature, index) => (
-                                <TableRow key={index} className={index % 2 === 0 ? "bg-card" : "bg-muted/20"}>
-                                    <TableCell className="font-medium">{feature.name}</TableCell>
-                                    <TableCell>{feature.free === "No" ? <X className="h-4 w-4 text-muted-foreground" /> : feature.free}</TableCell>
-                                    <TableCell className="text-primary font-medium">{feature.pro === "Yes" ? <Check className="h-4 w-4 text-success" /> : feature.pro}</TableCell>
+                                <TableRow
+                                    key={index}
+                                    className={`${index % 2 === 0 ? "bg-card" : "bg-muted/20"
+                                        } hover:bg-muted/30 transition-colors`}
+                                >
+                                    <TableCell className="font-medium text-sm">{feature.name}</TableCell>
+                                    <TableCell className="text-sm">
+                                        {feature.free === "No" ? (
+                                            <X className="h-4 w-4 text-muted-foreground" />
+                                        ) : (
+                                            feature.free
+                                        )}
+                                    </TableCell>
+                                    <TableCell className="text-sm">
+                                        {feature.pro === "Yes" ? (
+                                            <Check className="h-4 w-4 text-success" />
+                                        ) : (
+                                            <span className="text-primary font-medium">{feature.pro}</span>
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -588,12 +638,20 @@ const SubscriptionPage = () => {
                 </div>
             </div>
 
-            <div className="mt-16 text-center">
-                <h2 className="text-lg font-semibold mb-2">Need Help Deciding?</h2>
-                <p className="text-sm text-muted-foreground mb-4">Contact our team for personalized advice</p>
-                <Button variant="outline" size="sm" onClick={() => router.push('/contact')}>
-                    Contact Support
-                </Button>
+            {/* Help Section */}
+            <div className="mt-16 text-center max-w-2xl mx-auto">
+                <div className="bg-muted/20 rounded-lg p-6">
+                    <h2 className="text-lg font-semibold mb-2">Need Help Deciding?</h2>
+                    <p className="text-sm text-muted-foreground mb-4">Our team is here to help you choose the right plan for your needs</p>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => router.push('/contact')}
+                        className="h-9 px-4"
+                    >
+                        Contact Support
+                    </Button>
+                </div>
             </div>
         </div>
     );

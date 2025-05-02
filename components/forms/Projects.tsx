@@ -17,6 +17,7 @@ import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
 import { TemplateProps, FormVisibility, Project } from "@/types/resume";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
+import { Trash2 } from "lucide-react";
 
 export function ProjectsForm() {
   const [resumeState, setResumeState] = useAtom(resumeStateAtom);
@@ -100,10 +101,22 @@ export function ProjectsForm() {
       {formVisibility.projects && (
         <CardContent>
           {resumeState.projects?.map((project, index) => (
-            <div key={index} className="space-y-4">
+            <div key={index} className="space-y-4 border p-4 rounded-lg">
+              <div className="flex justify-between items-center">
+                <Label className="font-bold italic">
+                  Project #{index + 1}
+                </Label>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => deleteProject(index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
               <div>
                 <Label>
-                  Project Name <span className="text-red-500">*</span>
+                  Project Name
                 </Label>
                 <Input
                   type="text"
@@ -118,7 +131,7 @@ export function ProjectsForm() {
               </div>
               <div>
                 <Label>
-                  Description <span className="text-red-500">*</span>
+                  Description
                 </Label>
                 <Textarea
                   name={`projects.${index}.description`}
@@ -133,7 +146,7 @@ export function ProjectsForm() {
               </div>
               <div>
                 <Label>
-                  Technologies <span className="text-red-500">*</span>
+                  Technologies
                 </Label>
                 <Input
                   type="text"
@@ -161,15 +174,6 @@ export function ProjectsForm() {
                   placeholder="Enter project URL"
                 />
               </div>
-              <Button
-                type="button"
-                onClick={() => deleteProject(index)}
-                size="icon"
-                variant="outline"
-                className="size-8 bg-destructive"
-              >
-                <Icons.trash className="w-3 h-3" />
-              </Button>
             </div>
           ))}
           <div className="flex justify-end w-full">

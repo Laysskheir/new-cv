@@ -73,6 +73,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="!scroll-smooth">
       <body
         className={cn("overflow-x-hidden antialiased", chillaxFont.variable)}
+        data-theme-root="true"
       >
         <JotaiProvider>
           <ThemeProvider
