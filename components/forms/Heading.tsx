@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import {
   Card,
   CardContent,

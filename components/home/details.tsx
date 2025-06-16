@@ -11,7 +11,7 @@ const Details: React.FC = () => {
   });
 
   return (
-    <div className=" flex items-center justify-center container">
+    <div className=" flex items-center justify-center lg:container xl:!max-w-none">
       <div className="w-full flex flex-col md:flex-row gap-10 items-center justify-center">
         {/* Text Section */}
         <motion.div

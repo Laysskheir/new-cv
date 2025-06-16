@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import {
   shareIdAtom,
   resumeStateAtom,

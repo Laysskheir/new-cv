@@ -2,7 +2,7 @@
 "use client";
 
 import { useAutoSaveResume } from "@/hooks/useAutoSaveResume";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom, isDataLoadedAtom } from "@/state/resumeAtoms";
 import { useEffect, useRef, useState } from "react";
 import { getResumeById } from "@/actions/resume/getResumeById";

@@ -2,13 +2,11 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import localFont from "next/font/local";
 import { JotaiProvider } from "@/state/store";
-import { Inter } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-
-const inter = Inter({ subsets: ["latin"] });
+import NextTopLoader from "nextjs-toploader";
 
 export const chillaxFont = localFont({
   src: "../public/fonts/chillax/Chillax-Regular.woff2",
@@ -78,10 +76,18 @@ export default function RootLayout({
         <JotaiProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader
+              color="#000"
+              height={3}
+              showSpinner={false}
+              shadow="0 0 10px #000, 0 0 5px #000"
+              zIndex={1000}
+              showAtBottom={false}
+            />
             {children}
             <Toaster />
           </ThemeProvider>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { UploadIcon, X } from "lucide-react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom } from "@/state/resumeAtoms";
 import { useToast } from "@/components/ui/use-toast";
 

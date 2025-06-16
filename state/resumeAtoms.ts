@@ -1,6 +1,6 @@
 //state/resumeAtoms.ts
 import { TemplateProps, FormVisibility } from "@/types/resume";
-import { atom, useAtom } from "jotai";
+import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 export const pageMarginsAtom = atomWithStorage("pageMargins", 2);
@@ -163,7 +163,8 @@ export const resumeStateAtom = atom(
         achievements: localData.achievements || defaultResumeData.achievements,
         skills: localData.skills || defaultResumeData.skills,
         languages: localData.languages || defaultResumeData.languages,
-        customSections: localData.customSections || defaultResumeData.customSections,
+        customSections:
+          localData.customSections || defaultResumeData.customSections,
       };
     }
     return defaultResumeData;

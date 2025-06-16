@@ -1,7 +1,7 @@
 // src/components/TemplateSelector.tsx
 
 import React from "react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeTemplateAtom } from "../state/resumeAtoms";
 import { resumeTemplates } from "../app/constants/resumeTemplates";
 import MiniCard from "./MiniCard";

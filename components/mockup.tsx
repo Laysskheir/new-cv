@@ -7,7 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom, resumeTemplateAtom } from "../state/resumeAtoms";
 import ResumeTemplate from "./ResumeTemplate";
 import { ScrollArea } from "./ui/scroll-area";
@@ -178,14 +178,14 @@ export const Mockup: React.FC = () => {
   const handleDownload = async () => {
     setIsLoading(true);
     try {
-      const element = document.getElementById('resume-content');
+      const element = document.getElementById("resume-content");
       if (!element) {
         throw new Error("Resume element not found");
       }
 
       await pdfGenerator.generatePDF(element, {
         filename: "resume.pdf",
-        scale: 2
+        scale: 2,
       });
 
       toast({
@@ -448,7 +448,7 @@ export const Mockup: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="overflow-hidden h-[326px] md:h-[620px] bg-card"
+        className="overflow-hidden h-[calc(100vh-150px)] bg-card"
       >
         <ScrollArea className="h-full w-full flex items-center justify-center p-1">
           <div className="relative min-h-full flex items-center justify-center">

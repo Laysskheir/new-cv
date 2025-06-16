@@ -1,6 +1,6 @@
 "use client";
 
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom, resumeTemplateAtom } from "../state/resumeAtoms";
 import React from "react";
 import { Drawer } from "vaul";

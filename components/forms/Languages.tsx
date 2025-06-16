@@ -1,7 +1,7 @@
 // forms/languages.tsx
 "use client";
 import React from "react";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom, formVisibilityAtom } from "@/state/resumeAtoms";
 import {
   Card,

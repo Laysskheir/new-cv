@@ -8,7 +8,7 @@ export default function TextMoving() {
         <InfiniteMovingText
           text="Spark your career story — Transform your CV into a vibrant showcase —"
           direction="left"
-          speed="normal"
+          speed="slow"
         />
       </div>
     </div>

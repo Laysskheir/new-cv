@@ -1,7 +1,7 @@
 import React from "react";
 import { TemplateProps } from "../types/resume";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import {
   pageMarginsAtom,
   sectionSpacingAtom,
@@ -20,7 +20,6 @@ import Modern from "./design/Modern";
 import Professional from "./design/Professional";
 import Minimal from "./design/Minimal";
 import Premium from "./design/Premium";
-import DynamicTemplate from "./design/DynamicTemplate";
 import IvyLeague from "./design/IvyLeague";
 
 interface ResumeTemplateProps {

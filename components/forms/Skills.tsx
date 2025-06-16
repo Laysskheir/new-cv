@@ -3,7 +3,7 @@
 
 import React from "react";
 import { useAtom } from "@/state/store";
-import { skillsAtom, formVisibilityAtom } from "@/state/resumeAtoms";
+import { skillsAtom, formVisibilityAtom, resumeStateAtom } from "@/state/resumeAtoms";
 import {
   Card,
   CardContent,

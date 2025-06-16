@@ -13,7 +13,7 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ResumeTitleProvider from "../_components/resume-title-provider";
 import { LayoutEditor, DynamicSectionRenderer } from "@/components/layout-editor";
-import { JotaiProvider } from "@/state/store";
+import { Provider as JotaiProvider } from "jotai";
 
 const EditorClient = ({ resumeId, children }: { resumeId: string; children: React.ReactNode }) => {
   const containterRef = useRef<HTMLDivElement | null>(null);

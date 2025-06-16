@@ -8,25 +8,13 @@ import ScalableFoundation from "./home/ScalableFoundation";
 import { CVCreationSteps } from "./home/CVCreationSteps";
 
 export default function StartPage() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <main className="overflow-hidden">
       <div
-        className={`transition-all duration-300 ease-in-out ${
-          scrolled ? "p-0" : "p-4 md:p-10"
-        }`}
+        className={`transition-all duration-300 ease-in-out`}
       >
-        <Hero className={`${scrolled ? "" : "rounded-lg"} shadow-lg`} />
+        <Hero className={`shadow-lg`} />
       </div>
       <div className="container mx-auto px-0 space-y-16 md:space-y-24">
         <TextMoving />

@@ -9,7 +9,7 @@ import { AppMenu } from "../modals/app-menu";
 import { TemplatesPopper } from "../modals/templates-popper";
 import { FeedbackModal } from "../modals/feedback-modal";
 import { Icons } from "../icons";
-import { useAtom } from "@/state/store";
+import { useAtom } from "jotai";
 import { resumeStateAtom, resumeTemplateAtom } from "@/state/resumeAtoms";
 import PreviewModal from "../modals/preview-modal";
 import { ThemePopper } from "../modals/themes-popper";

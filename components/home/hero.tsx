@@ -36,7 +36,7 @@ export default function Hero({ className }: { className?: string }) {
   return (
     <motion.div
       className={cn(
-        "relative p-8 container bg-primary min-h-[90vh] flex flex-col justify-between items-start overflow-hidden",
+        "relative p-8 bg-primary min-h-[90vh] flex flex-col justify-between items-start overflow-hidden lg:container xl:!max-w-none",
         className
       )}
       variants={containerVariants}
@@ -107,7 +107,12 @@ export default function Hero({ className }: { className?: string }) {
         </motion.h1>
 
         <motion.div className="w-full sm:w-auto">
-          <Button variant="secondary" size="lg" asChild className="w-full sm:w-auto">
+          <Button
+            variant="secondary"
+            size="lg"
+            asChild
+            className="w-full sm:w-auto"
+          >
             <Link href="/dashboard/resumes">
               {session?.session ? "Go to Dashboard" : "Let's Start"}
             </Link>
