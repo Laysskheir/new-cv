@@ -30,7 +30,7 @@ const Feature: React.FC<FeatureProps> = ({ title, description, icon }) => (
 
 const ScalableFoundation: React.FC = () => {
   return (
-    <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 overflow-hidden">
+    <section className="relative  px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />

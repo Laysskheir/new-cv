@@ -14,7 +14,7 @@ const Footer = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 py-12">
+      <div className=" px-4 md:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 p-6">
           {/* About Section */}
           <div>
@@ -114,7 +114,7 @@ const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+          <div className=" flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm mb-4 md:mb-0">
               © {new Date().getFullYear()} {siteConfig.name}. All rights
               reserved.

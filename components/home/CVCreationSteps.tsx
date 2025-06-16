@@ -8,7 +8,7 @@ export function CVCreationSteps() {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative max-w-7xl container px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16"
+      className="relative px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16"
     >
       <div className="absolute top-0 left-0 w-full h-full opacity-20"></div>
       <div className="relative z-10">

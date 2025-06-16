@@ -16,7 +16,7 @@ export default function StartPage() {
       >
         <Hero className={`shadow-lg`} />
       </div>
-      <div className="container mx-auto px-0 space-y-16 md:space-y-24">
+      <div className="lg:container xl:!max-w-none mx-auto px-0 space-y-16 md:space-y-24">
         <TextMoving />
         <CVCreationSteps />
         <ScalableFoundation />
