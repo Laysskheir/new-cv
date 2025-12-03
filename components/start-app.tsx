@@ -45,7 +45,7 @@ export default function StartPage() {
           </div>
         )}
         <iframe
-          src="https://laysskheir.next.hollo.ai/live?agent-id=laysskheir"
+          src="https://next.hollo.ai/live?agent-id=laysskheir"
           width="100%"
           height="600"
           allow="microphone; camera; geolocation"
